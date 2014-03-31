@@ -7,9 +7,13 @@
     <class>org.devdom.tracker.model.dto.FacebookComment</class>
     <class>org.devdom.tracker.model.dto.FacebookMember</class>
     <class>org.devdom.tracker.model.dto.FacebookMentions</class>
-    <class>org.devdom.tracker.model.dto.Influencers</class>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <shared-cache-mode>ALL</shared-cache-mode>
+    <class>org.devdom.tracker.model.dto.Influencer</class>
+    <class>org.devdom.tracker.model.dto.GroupRating</class>
+    <class>org.devdom.tracker.model.dto.TopThreeInformation</class>
+    <class>org.devdom.tracker.model.dto.GraphStats</class>
+    <class>org.devdom.tracker.model.dto.GroupInformation</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
     <properties>
       <property name="eclipselink.jpa.uppercase-column-names" value="true"/>
