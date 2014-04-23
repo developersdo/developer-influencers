@@ -28,7 +28,6 @@ public class Callback extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Facebook facebook = (Facebook) request.getSession().getAttribute("facebook");
         String oauthCode = request.getParameter("code");
-        
         try {
             facebook.getOAuthAccessToken(oauthCode);
             setProfile(request,response,facebook);
@@ -65,5 +64,5 @@ public class Callback extends HttpServlet{
         } catch (FacebookException ex) {
             Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    }   
 }

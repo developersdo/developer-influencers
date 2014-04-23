@@ -26,5 +26,4 @@ public class SignIn extends HttpServlet{
         callbackURL.replace(index, callbackURL.length(), "").append("/callback");
         response.sendRedirect(facebook.getOAuthAuthorizationURL(callbackURL.toString()));
     }
-    
 }

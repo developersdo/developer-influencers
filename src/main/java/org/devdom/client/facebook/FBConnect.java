@@ -7,7 +7,6 @@ import facebook4j.FacebookFactory;
 import facebook4j.Like;
 import facebook4j.PagableList;
 import facebook4j.Post;
-import facebook4j.auth.AccessToken;
 import facebook4j.conf.ConfigurationBuilder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
