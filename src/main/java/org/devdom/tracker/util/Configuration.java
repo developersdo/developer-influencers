@@ -1,6 +1,8 @@
 package org.devdom.tracker.util;
 
 import facebook4j.conf.ConfigurationBuilder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -11,6 +13,10 @@ public class Configuration{
 
     private Configuration(){ }
 
+    public static int POST_LIMIT = 20;
+    public static String JPA_PU = "jpa";
+    public static String[] SEEK_GROUPS = {"23232","2322"};
+    
     public static ConfigurationBuilder getFacebookConfig(){
        return new ConfigurationBuilder()
                .setDebugEnabled(true)
@@ -18,4 +24,10 @@ public class Configuration{
 
     }
     
+    public static Map JPAConfig(){
+        Map<String, String> properties = new HashMap<>();
+        properties.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
+        return properties;
+    }
+
 }
