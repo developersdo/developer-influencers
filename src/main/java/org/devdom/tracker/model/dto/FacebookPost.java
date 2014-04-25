@@ -7,6 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Direction;
+import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
+import org.eclipse.persistence.annotations.NamedStoredProcedureQuery;
+import org.eclipse.persistence.annotations.StoredProcedureParameter;
 
 /**
  *
@@ -14,6 +18,34 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery( name="FacebookPost.addPost", 
+                                procedureName="addPost",
+                                returnsResultSet=true,
+                                resultClass=FacebookPost.class,
+                                parameters={    
+                                    @StoredProcedureParameter(queryParameter="post_id",
+                                                              name="in_post_id",
+                                                              direction=Direction.IN,
+                                                              type=String.class),    
+                                    @StoredProcedureParameter(queryParameter="from_id", 
+                                                              name="in_from_id",
+                                                              direction=Direction.IN, 
+                                                              type=String.class),    
+                                    @StoredProcedureParameter(queryParameter="message",
+                                                              name="in_message",
+                                                              direction=Direction.IN,
+                                                              type=String.class),
+                                    @StoredProcedureParameter(queryParameter="like_count", 
+                                                              name="in_like_count",
+                                                              direction=Direction.IN,
+                                                              type=Integer.class),
+                                    @StoredProcedureParameter(queryParameter="created_time", 
+                                                              name="in_created_time",
+                                                              direction=Direction.IN,
+                                                              type=Date.class)
+                                })
+})
 public class FacebookPost implements Serializable {
     
     private static final long serialVersionUID = 1L;
