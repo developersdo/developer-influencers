@@ -5,6 +5,9 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.eclipse.persistence.annotations.Direction;
@@ -17,11 +20,12 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
  * @author Carlos Vásquez Polanco
  */
 @Entity
+@Table(name = "dev_dom_post")
 @XmlRootElement
 @NamedStoredProcedureQueries({
     @NamedStoredProcedureQuery( name="FacebookPost.addPost", 
                                 procedureName="addPost",
-                                returnsResultSet=true,
+                                returnsResultSet=false,
                                 resultClass=FacebookPost.class,
                                 parameters={    
                                     @StoredProcedureParameter(queryParameter="post_id",
@@ -46,6 +50,9 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                               type=Date.class)
                                 })
 })
+@NamedQueries({
+    @NamedQuery(name = "FacebookPost.findAll", query = "SELECT u FROM FacebookPost u")
+})
 public class FacebookPost implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -63,7 +70,7 @@ public class FacebookPost implements Serializable {
     @Column(name = "like_count")
     private Integer likeCount;
     
-    @Column(name = "creation_date")
+    @Column(name = "created_time")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date creationDate;
 
