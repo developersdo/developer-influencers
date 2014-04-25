@@ -3,6 +3,8 @@
   <persistence-unit name="tracker_pu" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>org.devdom.tracker.model.dto.User</class>
+    <class>org.devdom.tracker.model.dto.FacebookComments</class>
+    <class>org.devdom.tracker.model.dto.FacebookPost</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <validation-mode>CALLBACK</validation-mode>
     <properties>
