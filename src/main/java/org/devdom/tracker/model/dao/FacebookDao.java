@@ -32,15 +32,15 @@ public class FacebookDao {
         return emf.createEntityManager(Configuration.JPAConfig());
     }
     
-    public void syncInformation(){
+    public void syncInformation(String groupId){
         EntityManager em = getEntityManager();
         Facebook fb = new FacebookFactory(cb.build()).getInstance();
 
         try {
             em.getTransaction().begin();
             Reading reading = new Reading();
-            reading.limit(250);
-            ResponseList<Post> group = fb.getGroupFeed("201514949865358",reading);
+            reading.limit(Configuration.POST_LIMIT);
+            ResponseList<Post> group = fb.getGroupFeed(groupId,reading);
 
             List<Post> posts = group.subList(1,group.size());            
             List<FacebookPost> list = em.createNamedQuery("FacebookPost.findAll").getResultList();
