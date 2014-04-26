@@ -5,6 +5,9 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -13,12 +16,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Carlos Vásquez Polanco
  */
 @Entity
+@Table(name = "dev_dom_comments")
 @XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "FacebookComment.findAll", query = "SELECT c FROM FacebookComment c")
+})
 public class FacebookComment implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
-    @Column(name = "creation_date")
+    @Column(name = "created_time")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date createTime;
     
