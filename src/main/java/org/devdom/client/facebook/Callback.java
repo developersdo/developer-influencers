@@ -66,7 +66,7 @@ public class Callback extends HttpServlet{
             FacebookDao dao = new FacebookDao();
 
             for(String groupId : Configuration.SEEK_GROUPS)
-                dao.syncInformation(groupId);
+                dao.syncGroupInformation(groupId);
             
         } catch (FacebookException ex) {
             Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
