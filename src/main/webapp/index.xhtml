@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+        <ui:composition template="template/layout.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <c:choose>                        
+                        <c:when test="#{fb.logged}">
+                            <c:choose>                        
+                                <c:when test="#{fb.logged}">
+                                    <p:tabMenu activeIndex="1">
+                                        <p:menuitem value="Inicio" action="welcome" icon="ui-icon-home" />
+                                        <p:menuitem value="Perfil" action="profile" icon="ui-icon-person" />
+                                    </p:tabMenu>
+                                </c:when>
+                            </c:choose>
+                            
+                            
+                            
+                        </c:when>
+                        <c:otherwise>
+                            <a id="fbbutton" href="signin">Iniciar sesión con facebook</a> <br/>
+                        </c:otherwise>
+                    </c:choose>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </html>      
