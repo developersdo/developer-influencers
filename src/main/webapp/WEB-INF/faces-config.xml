@@ -6,6 +6,12 @@
 
     <application> </application> 
     
+    <managed-bean>
+        <managed-bean-name>fb</managed-bean-name>
+        <managed-bean-class>org.devdom.tracker.bean.FacebookController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
     <navigation-rule>
         <from-view-id>/index.xhtml</from-view-id>
         <navigation-case>
