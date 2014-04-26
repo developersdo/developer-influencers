@@ -9,15 +9,12 @@ import facebook4j.Post;
 import facebook4j.Reading;
 import facebook4j.ResponseList;
 import facebook4j.conf.ConfigurationBuilder;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import org.devdom.client.facebook.FBConnect;
 import org.devdom.tracker.model.dto.FacebookComment;
 import org.devdom.tracker.model.dto.FacebookPost;
 import org.devdom.tracker.util.Configuration;
@@ -83,7 +80,7 @@ public class FacebookDao {
             });
             em.getTransaction().commit();
         } catch (FacebookException ex) {
-            Logger.getLogger(FBConnect.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacebookDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.devdom.tracker.model.bean.FacebookController;
+import org.devdom.trackerbean.FacebookController;
 import org.devdom.tracker.model.dao.FacebookDao;
 import org.devdom.tracker.model.dto.FacebookProfile;
 import org.devdom.tracker.util.Configuration;
