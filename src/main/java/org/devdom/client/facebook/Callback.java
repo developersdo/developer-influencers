@@ -61,8 +61,7 @@ public class Callback extends HttpServlet{
                     Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            HttpSession session = request.getSession();
-            
+
             FacebookDao dao = new FacebookDao();
 
             for(String groupId : Configuration.SEEK_GROUPS)
