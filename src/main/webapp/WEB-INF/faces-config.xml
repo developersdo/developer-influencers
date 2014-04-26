@@ -5,10 +5,16 @@
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
     <application> </application> 
-    
+
     <managed-bean>
         <managed-bean-name>fb</managed-bean-name>
         <managed-bean-class>org.devdom.tracker.bean.FacebookController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>admin</managed-bean-name>
+        <managed-bean-class>org.devdom.tracker.bean.AdministrationController</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
