@@ -13,9 +13,9 @@ public class Configuration{
 
     private Configuration(){ }
 
-    public static int POST_LIMIT = 20;
+    public static int POST_LIMIT = 200;
     public static String JPA_PU = "jpa";
-    public static String[] SEEK_GROUPS = {"23232","2322"};
+    public static String[] SEEK_GROUPS = {"201514949865358"};
     
     public static ConfigurationBuilder getFacebookConfig(){
        return new ConfigurationBuilder()
