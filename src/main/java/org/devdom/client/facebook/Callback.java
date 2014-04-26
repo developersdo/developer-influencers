@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.devdom.tracker.model.bean.FacebookController;
 import org.devdom.tracker.model.dao.FacebookDao;
 import org.devdom.tracker.model.dto.FacebookProfile;
+import org.devdom.tracker.util.Configuration;
 
 /**
  *
@@ -63,7 +64,9 @@ public class Callback extends HttpServlet{
             HttpSession session = request.getSession();
             
             FacebookDao dao = new FacebookDao();
-            dao.syncInformation();
+
+            for(String groupId : Configuration.SEEK_GROUPS)
+                dao.syncInformation(groupId);
             
         } catch (FacebookException ex) {
             Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
