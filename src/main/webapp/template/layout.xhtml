@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+        <f:view contentType="text/html">
+            <h:head>
+                <f:facet name="first">
+                    <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                    <title>quiz.developers.do</title>
+                    <h:outputStylesheet library="css" name="styles.css"/>
+                </f:facet>
+                <style type="text/css">
+                    .ui-layout-north {
+                        z-index:20 !important;
+                        overflow:visible !important;;
+                    }
+                    .ui-layout-north .ui-layout-unit-content {
+                        overflow:visible !important;
+                    }
+                </style>
+            </h:head>
+            <h:body>
+                <div id="page">
+                    <p:layout fullPage="true">
+
+                        <!-- header -->
+                        <div id="header">
+                            <ui:insert name="header">
+                                <ui:include src="header.xhtml" />
+                            </ui:insert>
+                        </div>
+
+                        <!-- content display -->
+                        <div id="center">
+                            <p:layoutUnit styleClass="layoutUnitCenter"   position="center">
+                                <h:form id="mainForm">
+                                    <ui:insert name="content" />
+                                </h:form>
+                            </p:layoutUnit>
+                        </div>
+                        <!-- menu -->
+                        <div id="menu">
+                            <ui:insert name="menu">
+                                <ui:include src="menu.xhtml" />
+                            </ui:insert>
+                        </div>
+                        <!-- footer -->
+                        <div id="footer">
+                            <ui:insert name="footer">
+                                <ui:include src="footer.xhtml" />
+                            </ui:insert>
+                        </div>
+                    </p:layout>
+                </div>
+            </h:body>
+        </f:view>
+    </html>      

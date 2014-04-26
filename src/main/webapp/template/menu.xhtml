@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <c:choose>
+        <c:when test="#{fb.logged}">
+            <p:layoutUnit position="west" size="25%" header="#{fb.loggedName}" style="border:solid 0px #fff;">
+                <h:form>
+                    <div style="text-align: center;"><img src="#{fb.profilePicture}" class="circularProfileImage"/></div>
+                    <hr style="color:beige;"/>
+                    <p:menu>
+                        <p:submenu label="Resources">
+                            <p:menuitem value="Demo" url="http://www.primefaces.org/showcase-labs/ui/home.jsf" />
+                            <p:menuitem value="Documentation" url="http://www.primefaces.org/documentation.html" />
+                            <p:menuitem value="Forum" url="http://forum.primefaces.org/" />
+                            <p:menuitem value="Themes" url="http://www.primefaces.org/themes.html" />
+                        </p:submenu>
+                    </p:menu>
+                </h:form>
+            </p:layoutUnit>
+        </c:when>
+    </c:choose>
+</ui:composition>
