@@ -25,7 +25,7 @@ public class FacebookController implements Serializable{
     
     private static final long serialVersionUID = 1L;
     
-    private final FacesContext facesContext = FacesContext.getCurrentInstance();
+    private FacesContext facesContext = FacesContext.getCurrentInstance();
     private HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
 
     public String getProfilePicture(){
@@ -76,6 +76,12 @@ public class FacebookController implements Serializable{
             Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public boolean isLogged(){
+        facesContext = FacesContext.getCurrentInstance();
+        session = (HttpSession) facesContext.getExternalContext().getSession(true);
+        return session.getAttribute("facebook") != null;
     }
 
 }
