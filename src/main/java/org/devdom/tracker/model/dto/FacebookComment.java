@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
-public class FacebookComments implements Serializable {
+public class FacebookComment implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
