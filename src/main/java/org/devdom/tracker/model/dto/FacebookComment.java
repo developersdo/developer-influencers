@@ -35,7 +35,7 @@ public class FacebookComment implements Serializable {
     @Column(name = "from_id")
     private String fromId;
     
-    @Column(name = "mesage")
+    @Column(name = "message")
     private String message;
     
     @Id
