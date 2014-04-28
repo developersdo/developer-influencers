@@ -18,7 +18,14 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
+    <managed-bean>
+        <managed-bean-name>influencers</managed-bean-name>
+        <managed-bean-class>org.devdom.tracker.bean.InfluencersController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
     <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>influencers</from-outcome>
             <to-view-id>influencers.xhtml</to-view-id>
