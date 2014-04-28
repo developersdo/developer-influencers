@@ -2,12 +2,24 @@ package org.devdom.tracker.model.dto;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
+import org.eclipse.persistence.annotations.NamedStoredProcedureQuery;
 
 /**
  *
  * @author Carlos Vásquez Polanco
  */
+@Entity
+@XmlRootElement
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery( name="Influencers.findTop10DevsInfluents", 
+                                procedureName="findTop10DevsInfluents",
+                                returnsResultSet=true,
+                                resultClass=Influencers.class)
+})
 public class Influencers  implements Serializable {
     
     private static final long serialVersionUID = 1L;
