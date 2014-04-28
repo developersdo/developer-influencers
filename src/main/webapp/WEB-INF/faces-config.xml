@@ -19,6 +19,13 @@
     </managed-bean>
 
     <navigation-rule>
+        <navigation-case>
+            <from-outcome>influencers</from-outcome>
+            <to-view-id>influencers.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
         <from-view-id>/index.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>welcome</from-outcome>
