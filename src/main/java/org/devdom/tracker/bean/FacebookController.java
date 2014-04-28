@@ -84,4 +84,7 @@ public class FacebookController implements Serializable{
         return session.getAttribute("facebook") != null;
     }
 
+    public String getLoginButton(){
+        return "<center><a id=\"fbbutton\" href=\"signin\">Iniciar sesión con facebook</a> <br/></center>";
+    }
 }
