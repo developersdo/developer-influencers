@@ -4,6 +4,7 @@ import facebook4j.Comment;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
+import facebook4j.Like;
 import facebook4j.PagableList;
 import facebook4j.Post;
 import facebook4j.Reading;
@@ -28,6 +29,7 @@ public class FacebookDao {
     private static final long serialVersionUID = 1L;
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
     private static final ConfigurationBuilder cb = Configuration.getFacebookConfig();
+    private final Facebook fb = new FacebookFactory(cb.build()).getInstance();
     public FacebookDao(){ }
 
     public EntityManager getEntityManager(){
@@ -38,7 +40,6 @@ public class FacebookDao {
 
         PagableList<Comment> comments = post.getComments();
         comments.parallelStream().forEach((comment) -> {
-
             if( (comment.getId()!=null) && (post.getId()!=null) && (comment.getFrom()!=null) ){
                 FacebookComment newComment = new FacebookComment();            
                 newComment.setCreateTime(comment.getCreatedTime());
@@ -51,36 +52,59 @@ public class FacebookDao {
             }
         });
     } 
-
+    
+    /**
+    * Sincroniza la información de facebook para cada developer
+    *
+    * @param groupId identificador del grupo que se desea revisar
+    */
     public void syncGroupInformation(String groupId){
         EntityManager em = getEntityManager();
-        Facebook fb = new FacebookFactory(cb.build()).getInstance();
 
         try {
             em.getTransaction().begin();
             Reading reading = new Reading();
-            reading.limit(Configuration.POST_LIMIT);
+            reading.limit(Configuration.POSTS_LIMIT);
             ResponseList<Post> group = fb.getGroupFeed(groupId,reading);
 
             List<Post> posts = group.subList(1,group.size());
-
             posts.stream().forEach((post) -> {
+                
                 if(post.getFrom()!=null){
+                    int likes = getPostLikes(post);
                     FacebookPost newPost = new FacebookPost();
                     newPost.setPostId(post.getId().split("_")[1]);
                     newPost.setFromId(post.getFrom().getId());
                     newPost.setCreationDate(post.getCreatedTime());
-                    newPost.setLikeCount(post.getLikes().size());
+                    newPost.setLikeCount(likes);
                     newPost.setMessage(post.getMessage());
 
                     em.merge(newPost);
 
-                    syncMessageInformation(em,post);
+                    //syncMessageInformation(em,post);
                 }
             });
             em.getTransaction().commit();
         } catch (FacebookException ex) {
             Logger.getLogger(FacebookDao.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }   
+        
+    /**
+    * Retorna la cantidad total de likes que contiene un post
+    *
+    * @param post con información del post que se encuentra recorriendo en ese momento
+    * @return retorna la cantidad total de likes para un post
+    */
+    public int getPostLikes(Post post){
+        try {
+            Reading reading = new Reading();
+            reading.limit(Configuration.POSTS_LIMIT);
+            ResponseList<Like> likes = fb.getPostLikes(post.getId(),reading);
+            return likes.size();
+        } catch (FacebookException ex) {
+            Logger.getLogger(FacebookDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 }
