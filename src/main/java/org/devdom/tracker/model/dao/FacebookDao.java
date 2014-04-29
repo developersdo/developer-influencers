@@ -41,9 +41,10 @@ public class FacebookDao {
         PagableList<Comment> comments = post.getComments();
         comments.parallelStream().forEach((comment) -> {
             if( (comment.getId()!=null) && (post.getId()!=null) && (comment.getFrom()!=null) ){
+                int likes = getCommentLikes(comment);
                 FacebookComment newComment = new FacebookComment();            
                 newComment.setCreateTime(comment.getCreatedTime());
-                newComment.setLikeCount(comment.getLikeCount());
+                newComment.setLikeCount(likes);
                 newComment.setFromId(comment.getFrom().getId());
                 newComment.setMessage(comment.getMessage());
                 newComment.setMessageId(comment.getId());
@@ -78,14 +79,14 @@ public class FacebookDao {
                     newPost.setCreationDate(post.getCreatedTime());
                     newPost.setLikeCount(likes);
                     newPost.setMessage(post.getMessage());
-
+                    
                     em.merge(newPost);
-
-                    //syncMessageInformation(em,post);
+                    
+                    syncMessageInformation(em,post);
                 }
             });
             em.getTransaction().commit();
-        } catch (FacebookException ex) {
+        } catch (FacebookException | IllegalArgumentException ex) {
             Logger.getLogger(FacebookDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }   
@@ -97,10 +98,29 @@ public class FacebookDao {
     * @return retorna la cantidad total de likes para un post
     */
     public int getPostLikes(Post post){
-        try {
-            Reading reading = new Reading();
-            reading.limit(Configuration.POSTS_LIMIT);
+        Reading reading = new Reading();
+        reading.limit(Configuration.POSTS_LIMIT);
+
+        try {            
             ResponseList<Like> likes = fb.getPostLikes(post.getId(),reading);
+            return likes.size();
+        } catch (FacebookException ex) {
+            Logger.getLogger(FacebookDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    /**
+    * Retorna la cantidad total de likes que contiene un comentario
+    *
+    * @param comment con información del comentario que se encuentra recorriendo en ese momento
+    * @return retorna la cantidad total de likes para un comentario
+    */
+    public int getCommentLikes(Comment comment){
+        Reading reading = new Reading();
+        reading.limit(Configuration.LIKES_LIMIT);
+
+        try {
+            ResponseList<Like> likes = fb.getCommentLikes(comment.getId(), reading);
             return likes.size();
         } catch (FacebookException ex) {
             Logger.getLogger(FacebookDao.class.getName()).log(Level.SEVERE, null, ex);
