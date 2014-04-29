@@ -12,7 +12,7 @@
                             Bienvenido!
                         </c:when>
                         <c:otherwise>
-                            #{fb.loginButton}
+                            <h:outputText value="#{fb.loginButton}" escape="false" />
                         </c:otherwise>
                     </c:choose>
                 </h:form>
