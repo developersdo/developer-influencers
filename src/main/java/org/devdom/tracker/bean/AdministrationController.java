@@ -18,11 +18,11 @@ public class AdministrationController {
 
     public String getMojarraVersion(){
         Package p = FacesContext.class.getPackage();
-        return p.getImplementationTitle() + " - " + p.getImplementationVersion();
+        return p.getImplementationTitle() + " " + p.getImplementationVersion();
     }
 
     public String getPrimefacesVersion(){
         return Constants.ContextParams.class.getPackage().getImplementationTitle() + 
-                " - " + Constants.ContextParams.class.getPackage().getImplementationVersion();
+                " " + Constants.ContextParams.class.getPackage().getImplementationVersion();
     }
 }
