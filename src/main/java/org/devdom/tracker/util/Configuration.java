@@ -13,7 +13,8 @@ public class Configuration{
 
     private Configuration(){ }
 
-    public static int POST_LIMIT = 200;
+    public static int POSTS_LIMIT = 4000; //Determina la cantidad máxima de post que se retornarán
+    pulic static int LIKES_LIMIT = 300; // Determina la cantidad máxima de likes que se quiere buscar
     public static String JPA_PU = "jpa";
     public static String[] SEEK_GROUPS = {"201514949865358"};
     
