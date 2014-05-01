@@ -30,7 +30,6 @@ public class FacebookDao {
     private static final long serialVersionUID = 1L;
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
     private static final ConfigurationBuilder cb = Configuration.getFacebookConfig();
-    //Facebook facebook = (Facebook) request.getSession().getAttribute("facebook");
     Facebook facebook = new FacebookFactory(cb.build()).getInstance();
     public FacebookDao(){ }
 
@@ -42,16 +41,18 @@ public class FacebookDao {
 
         PagableList<Comment> comments = post.getComments();
         comments.parallelStream().forEach((comment) -> {
-            if( (comment.getId()!=null) && (post.getId()!=null) && (comment.getFrom()!=null) ){
-                int likes = this.getCommentLikes(comment);
-                FacebookComment newComment = new FacebookComment();            
-                newComment.setCreateTime(comment.getCreatedTime());
-                newComment.setLikeCount(likes);
-                newComment.setFromId(comment.getFrom().getId());
-                newComment.setMessage(comment.getMessage());
-                newComment.setMessageId(comment.getId());
-                newComment.setPostId(post.getId().split("_")[1]);
-                em.merge(newComment);
+            if(comment!=null){
+                if( (comment.getId()!=null) && (post.getId()!=null) && (comment.getFrom()!=null) ){
+                    int likes = this.getCommentLikes(comment);
+                    FacebookComment newComment = new FacebookComment();            
+                    newComment.setCreateTime(comment.getCreatedTime());
+                    newComment.setLikeCount(likes);
+                    newComment.setFromId(comment.getFrom().getId());
+                    newComment.setMessage(comment.getMessage());
+                    newComment.setMessageId(comment.getId());
+                    newComment.setPostId(post.getId().split("_")[1]);
+                    em.merge(newComment);
+                }
             }
         });
     } 
