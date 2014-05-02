@@ -6,6 +6,7 @@ import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
 import facebook4j.Like;
 import facebook4j.PagableList;
+import facebook4j.Paging;
 import facebook4j.Post;
 import facebook4j.Reading;
 import facebook4j.ResponseList;
@@ -67,28 +68,43 @@ public class FacebookDao {
         EntityManager em = getEntityManager();
 
         try {
-            em.getTransaction().begin();
+            
             Reading reading = new Reading();
             reading.limit(Configuration.POSTS_LIMIT);
-            ResponseList<Post> group = facebook.getGroupFeed(groupId,reading);
+            
+            ResponseList<Post> group = null;
+            Paging<Post> paging;
+            int records = 0;
 
-            List<Post> posts = group.subList(1,group.size());
-            posts.stream().forEach((Post post) -> {
-                if(post.getFrom()!=null){
-                    int likes = getPostLikes(post);
-                    FacebookPost newPost = new FacebookPost();
-                    newPost.setPostId(post.getId().split("_")[1]);
-                    newPost.setFromId(post.getFrom().getId());
-                    newPost.setCreationDate(post.getCreatedTime());
-                    newPost.setLikeCount(likes);
-                    newPost.setMessage(post.getMessage());
-                    
-                    em.merge(newPost);
-                    
-                    syncMessageInformation(em,post);
+            for(int i=0; i<50;i++){
+                em.getTransaction().begin();
+                if(i==0){
+                    group = facebook.getGroupFeed(groupId,reading);
                 }
-            });
-            em.getTransaction().commit();
+
+                records += group.size();
+                group.stream().forEach((post) -> {
+                    if(post.getFrom()!=null){
+                        try{
+                            int likes = getPostLikes(post);
+                            FacebookPost newPost = new FacebookPost();
+                            newPost.setPostId(post.getId().split("_")[1]);
+                            newPost.setFromId(post.getFrom().getId());
+                            newPost.setCreationDate(post.getCreatedTime());
+                            newPost.setLikeCount(likes);
+                            newPost.setMessage(post.getMessage());
+                            em.merge(newPost);
+                        }catch(Exception ex){
+                            Logger.getLogger(FacebookDao.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        syncMessageInformation(em,post);
+                    }
+                });
+                em.getTransaction().commit();
+                paging = group.getPaging();
+                group = facebook.fetchNext(paging);
+            }
+            
         } catch (FacebookException | IllegalArgumentException ex) {
             Logger.getLogger(FacebookDao.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
