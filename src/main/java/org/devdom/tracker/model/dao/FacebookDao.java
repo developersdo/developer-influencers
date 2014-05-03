@@ -11,7 +11,6 @@ import facebook4j.Post;
 import facebook4j.Reading;
 import facebook4j.ResponseList;
 import facebook4j.conf.ConfigurationBuilder;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -37,21 +36,31 @@ public class FacebookDao {
     public EntityManager getEntityManager(){
         return emf.createEntityManager(Configuration.JPAConfig());
     }
-    
+
+    /**
+     * Método para sincronizar los comentarios que se reciban de un post
+     * 
+     * @param em instancia del EntityManager
+     * @param post objeto post con información del post que se procesa en el momento
+     */
     public void syncMessageInformation(EntityManager em, Post post){
 
         PagableList<Comment> comments = post.getComments();
         comments.parallelStream().forEach((comment) -> {
             if(comment!=null){
                 if( (comment.getId()!=null) && (post.getId()!=null) && (comment.getFrom()!=null) ){
-                    int likes = this.getCommentLikes(comment);
+
+                    String postId = post.getId().split("_")[1];
+                    String commentId = comment.getId();
+                    int likes = getCommentLikes(postId,commentId);
+
                     FacebookComment newComment = new FacebookComment();            
                     newComment.setCreateTime(comment.getCreatedTime());
                     newComment.setLikeCount(likes);
                     newComment.setFromId(comment.getFrom().getId());
                     newComment.setMessage(comment.getMessage());
-                    newComment.setMessageId(comment.getId());
-                    newComment.setPostId(post.getId().split("_")[1]);
+                    newComment.setMessageId(commentId);
+                    newComment.setPostId(postId);
                     em.merge(newComment);
                 }
             }
@@ -104,7 +113,7 @@ public class FacebookDao {
                 paging = group.getPaging();
                 group = facebook.fetchNext(paging);
             }
-            
+
         } catch (FacebookException | IllegalArgumentException ex) {
             Logger.getLogger(FacebookDao.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
@@ -112,7 +121,7 @@ public class FacebookDao {
                 em.close();
         }
     }
-
+    
     /**
     * Retorna la cantidad total de likes que contiene un post
     *
@@ -123,26 +132,31 @@ public class FacebookDao {
         Reading reading = new Reading();
         reading.limit(Configuration.POSTS_LIMIT);
 
-        try {            
-            ResponseList<Like> likes = facebook.getPostLikes(post.getId(),reading);
+        try {
+            String postId = post.getId().split("_")[1];
+            ResponseList<Like> likes = facebook.getPostLikes(postId/*post id*/,reading);
             return likes.size();
         } catch (FacebookException ex) {
             Logger.getLogger(FacebookDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
     }
+
     /**
     * Retorna la cantidad total de likes que contiene un comentario
     *
-    * @param comment con información del comentario que se encuentra recorriendo en ese momento
+    * @param commentId id del comentario actual
+    * @param postId id del post actual
     * @return retorna la cantidad total de likes para un comentario
     */
-    public int getCommentLikes(Comment comment){
+    public int getCommentLikes(String postId, String commentId){
+        String id = postId+"_"+commentId;
+        System.out.println("@@@@@ comment_id @@@@@ => "+id);
         Reading reading = new Reading();
         reading.limit(Configuration.LIKES_LIMIT);
 
         try {
-            ResponseList<Like> likes = facebook.getCommentLikes(comment.getId());
+            ResponseList<Like> likes = facebook.getCommentLikes(id);
             return likes.size();
         } catch (FacebookException ex) {
             Logger.getLogger(FacebookDao.class.getName()).log(Level.SEVERE, null, ex);
