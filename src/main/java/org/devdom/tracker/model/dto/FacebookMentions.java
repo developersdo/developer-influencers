@@ -5,6 +5,9 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -14,15 +17,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @Entity
+@Table(name = "dev_dom_mentions")
 @XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "FacebookMentions.findAll", query = "SELECT c FROM FacebookMentions c")
+})
 public class FacebookMentions  implements Serializable {
     
     private static final long serialVersionUID = 1L;
-    
-    @Id
-    @Column(name = "id")
-    private int id;
-    
+
     @Column(name = "from_id")
     private String fromId;
     
@@ -36,22 +39,9 @@ public class FacebookMentions  implements Serializable {
     @Column(name = "type")
     private String type;
     
+    @Id
     @Column(name = "object_id")
     private String objectId;
-
-    /**
-     * @return the id
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
 
     /**
      * @return the fromId
