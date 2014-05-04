@@ -32,6 +32,12 @@ public class Mentions  implements Serializable {
     @Column(name = "created_time")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdTime;
+    
+    @Column(name = "type")
+    private String type;
+    
+    @Column(name = "object_id")
+    private String objectId;
 
     /**
      * @return the id
@@ -87,6 +93,34 @@ public class Mentions  implements Serializable {
      */
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * @return the objectId
+     */
+    public String getObjectId() {
+        return objectId;
+    }
+
+    /**
+     * @param objectId the objectId to set
+     */
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 
 }
