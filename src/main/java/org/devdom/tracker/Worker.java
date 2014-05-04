@@ -176,33 +176,35 @@ public class Worker implements Runnable{
             FacebookComment newComment = new FacebookComment();
             JSONObject message = comments.getJSONObject(i);
             boolean hasMentions = !(message.isNull("message_tags"));
-            
-            Date createTime = getDateFormatted(message.getString("created_time"));
-            int likes = Integer.parseInt(message.getString("like_count"));
-            String fromId = message.getJSONObject("from").getString("id");
-            String comment = message.isNull("message")?"":message.getString("message");
-            String messageId = message.getString("id");
+            boolean hasFrom = !(message.isNull("from"));
 
-            newComment.setCreateTime(createTime);
-            newComment.setLikeCount(likes);
-            newComment.setFromId(fromId);
-            newComment.setMessage(comment);
-            newComment.setMessageId(messageId);
-            newComment.setPostId(postId);
-            em.merge(newComment);
-            
-            if(hasMentions){
-                JSONArray collection = message.getJSONArray("message_tags");
-                syncRawMentions(messageId, fromId, "MESSAGE", collection, em);
+            if(hasFrom){ // Revisar si el comentario tiene destinatario. 
+                Date createTime = getDateFormatted(message.getString("created_time"));
+                int likes = Integer.parseInt(message.getString("like_count"));
+                String fromId = message.getJSONObject("from").getString("id");
+                String comment = message.isNull("message")?"":message.getString("message");
+                String messageId = message.getString("id");
+
+                LOGGER.log(Level.INFO, "(Message) createTime {0}", createTime);
+                LOGGER.log(Level.INFO, "(Message) likes {0}", likes);
+                LOGGER.log(Level.INFO, "(Message) fromId {0}", fromId);
+                LOGGER.log(Level.INFO, "(Message) comment {0}", comment);
+                LOGGER.log(Level.INFO, "(Message) messageId {0}", messageId);
+                LOGGER.log(Level.INFO, "(Message) postId {0}", postId);
+
+                newComment.setCreateTime(createTime);
+                newComment.setLikeCount(likes);
+                newComment.setFromId(fromId);
+                newComment.setMessage(comment);
+                newComment.setMessageId(messageId);
+                newComment.setPostId(postId);
+                em.merge(newComment);
+
+                if(hasMentions){
+                    JSONArray collection = message.getJSONArray("message_tags");
+                    syncRawMentions(messageId, fromId, "MESSAGE", collection, em);
+                }
             }
-
-            LOGGER.log(Level.INFO, "(Message) createTime {0}", createTime);
-            LOGGER.log(Level.INFO, "(Message) likes {0}", likes);
-            LOGGER.log(Level.INFO, "(Message) fromId {0}", fromId);
-            LOGGER.log(Level.INFO, "(Message) comment {0}", comment);
-            LOGGER.log(Level.INFO, "(Message) messageId {0}", messageId);
-            LOGGER.log(Level.INFO, "(Message) postId {0}", postId);
-
         }
     }
     
@@ -223,19 +225,18 @@ public class Worker implements Runnable{
         for(int i=0;i<len;i++){
             FacebookMentions newMention = new FacebookMentions();
             JSONObject mention = mentions.getJSONObject(i);
-            
             String toId = mention.getString("id");
-            newMention.setFromId(fromId);
-            newMention.setObjectId(objectId);
-            newMention.setToId(toId);
-            newMention.setType(type);
-            em.merge(newMention);
 
             LOGGER.log(Level.INFO, "(MENTION) ({0}) objectId {1}", new Object[]{type, objectId});
             LOGGER.log(Level.INFO, "(MENTION) ({0}) fromId {1}", new Object[]{type, fromId});
             LOGGER.log(Level.INFO, "(MENTION) ({0}) toId {1}", new Object[]{type, toId});
             LOGGER.log(Level.INFO, "(MENTION) ({0}) type {1}", new Object[]{type, type});
 
+            newMention.setFromId(fromId);
+            newMention.setObjectId(objectId);
+            newMention.setToId(toId);
+            newMention.setType(type);
+            em.merge(newMention);            
         }
     }
 
