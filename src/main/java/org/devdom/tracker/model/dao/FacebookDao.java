@@ -8,9 +8,15 @@ import facebook4j.Like;
 import facebook4j.PagableList;
 import facebook4j.Paging;
 import facebook4j.Post;
+import facebook4j.RawAPIResponse;
 import facebook4j.Reading;
 import facebook4j.ResponseList;
+import facebook4j.Tag;
 import facebook4j.conf.ConfigurationBuilder;
+import facebook4j.internal.org.json.JSONArray;
+import facebook4j.internal.org.json.JSONException;
+import facebook4j.internal.org.json.JSONObject;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -33,6 +39,11 @@ public class FacebookDao {
     Facebook facebook = new FacebookFactory(cb.build()).getInstance();
     public FacebookDao(){ }
 
+    /**
+     * 
+     * 
+     * @return
+     */
     public EntityManager getEntityManager(){
         return emf.createEntityManager(Configuration.JPAConfig());
     }
@@ -65,17 +76,23 @@ public class FacebookDao {
                 }
             }
         });
-    } 
+    }
     
     /**
     * Sincroniza la información de facebook para cada developer
     *
-     * @param request request from servlet
+    * @param request request from servlet
     * @param groupId identificador del grupo que se desea revisar
     */
     public void syncGroupInformation(HttpServletRequest request, String groupId){
         EntityManager em = getEntityManager();
 
+        try{
+            syncPostTags(null, em);
+        }catch(FacebookException | JSONException ex){
+            Logger.getLogger(FacebookDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        /*
         try {
             
             Reading reading = new Reading();
@@ -120,6 +137,7 @@ public class FacebookDao {
             if(em!=null|em.isOpen())
                 em.close();
         }
+        */
     }
     
     /**
@@ -131,7 +149,7 @@ public class FacebookDao {
     public int getPostLikes(Post post){
         Reading reading = new Reading();
         reading.limit(Configuration.POSTS_LIMIT);
-
+        
         try {
             String postId = post.getId().split("_")[1];
             ResponseList<Like> likes = facebook.getPostLikes(postId/*post id*/,reading);
@@ -141,17 +159,34 @@ public class FacebookDao {
         }
         return 0;
     }
-
+    
+    /**
+     * tomar la cantidad de tags de un post 
+     * 
+     * @param post
+     */
+    public void getPostTags(Post post){
+        
+        post.getMessageTags().stream().forEach((tag) -> {
+            System.out.println(post.getId()+"-tag.getId() -----> "+ tag.getId());
+            System.out.println(post.getId()+"-tag.getName() -----> "+ tag.getName());
+            System.out.println(post.getId()+"-tag.getType() -----> "+ tag.getType());
+            System.out.println(post.getId()+"-tag.getCreatedTime() -----> "+ tag.getCreatedTime());
+            System.out.println(post.getId()+"-tag.getLength() -----> "+ tag.getLength());
+            System.out.println(post.getId()+"-tag.getMetadata() -----> "+ tag.getMetadata());
+        });
+    }
+    
     /**
     * Retorna la cantidad total de likes que contiene un comentario
     *
-    * @param commentId id del comentario actual
     * @param postId id del post actual
+    * @param commentId id del comentario actual    
     * @return retorna la cantidad total de likes para un comentario
     */
     public int getCommentLikes(String postId, String commentId){
+
         String id = postId+"_"+commentId;
-        System.out.println("@@@@@ comment_id @@@@@ => "+id);
         Reading reading = new Reading();
         reading.limit(Configuration.LIKES_LIMIT);
 
@@ -162,5 +197,55 @@ public class FacebookDao {
             Logger.getLogger(FacebookDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
+    }
+
+    private void syncPostTags(Post post, EntityManager em) throws FacebookException, JSONException {
+        String relURL = "201514949865358_846925331990980?fields=id,message,message_tags,name,created_time,from,likes.limit(300).fields(id,name,username),comments.limit(1000).fields(from,id,like_count,message,message_tags,user_likes,created_time)";
+        RawAPIResponse response = facebook.callGetAPI(relURL);
+        JSONObject jsonObject = response.asJSONObject();
+        
+        System.out.println("jsonObject.length() => "+ jsonObject.length() );
+        System.out.println("jsonObject.get(\"id\"); => "+ jsonObject.get("id") );
+
+    }
+    
+    /**
+     * 
+     * Llamada al API de Facebook para retornar un JSON crudo para ser manipulado
+     * con información referente a los post del grupo que se especifique según su ID
+     * 
+     * @param groupId
+     * @throws FacebookException
+     * @throws JSONException 
+     */
+    public void getRawPostsInGroup(String groupId) throws FacebookException, JSONException {
+        
+        EntityManager em = getEntityManager();
+        try{
+            String relURL = groupId + "?fields=feed.limit(55).fields(id,link),id,name,link";
+            RawAPIResponse response = facebook.callGetAPI(relURL);
+            JSONObject json = response.asJSONObject();
+
+            JSONArray posts = json.getJSONObject("feed").getJSONArray("data");
+
+            int len = posts.length();
+            for(int i=0;i<=len;i++){
+                em.getTransaction().begin();
+                JSONObject post = posts.getJSONObject(i);
+                syncRawPost(post,em);
+                em.getTransaction().commit();
+            }
+        }finally{
+            if(em!=null|em.isOpen())
+                em.close();
+        }
+    }
+
+    private void syncRawPost(JSONObject post, EntityManager em) throws JSONException, FacebookException{
+        String id = post.getString("id");
+        
+        String relURL = id + "?fields=id,message,message_tags,name,created_time,from,likes.limit(300).fields(id,name,username),comments.limit(1000).fields(from,id,like_count,message,message_tags,user_likes,created_time)";
+        RawAPIResponse response = facebook.callGetAPI(relURL);
+        
     }
 }
