@@ -24,7 +24,7 @@ import org.devdom.tracker.util.Configuration;
 
 /**
  *
- * @author Carlos Vásquez Polanco
+ * @author Carlos Vasquez Polanco
  */
 public class Worker implements Runnable{
 
@@ -56,7 +56,7 @@ public class Worker implements Runnable{
     /**
      * 
      * Llamada al API de Facebook para retornar un JSON crudo para ser manipulado
-     * con información referente a los post del grupo que se especifique según su ID
+     * con informacion referente a los post del grupo que se especifique segun su ID
      * 
      * @param groupId
      * @throws FacebookException
@@ -101,7 +101,7 @@ public class Worker implements Runnable{
     }
 
     /**
-     * Sincronizar la información contenida en un post
+     * Sincronizar la informacion contenida en un post
      * 
      * @param post
      * @param em
@@ -215,7 +215,7 @@ public class Worker implements Runnable{
     }
     
     /**
-     * Sincronizar información acerca de los mentions que se realizan en un post
+     * Sincronizar informacion acerca de los mentions que se realizan en un post
      * o comentario
      * 
      * @param groupId
