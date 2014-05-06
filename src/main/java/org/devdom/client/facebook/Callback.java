@@ -12,10 +12,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.devdom.tracker.Worker;
 import org.devdom.tracker.bean.FacebookController;
-import org.devdom.tracker.model.dao.FacebookDao;
 import org.devdom.tracker.model.dto.FacebookProfile;
-import org.devdom.tracker.util.Configuration;
 
 /**
  *
@@ -61,11 +60,11 @@ public class Callback extends HttpServlet{
                 }
             }
 
-            FacebookDao dao = new FacebookDao();
+            Runnable worker = new Worker();
+            Thread thread = new Thread(worker);
+            thread.setName("w");
+            thread.start();
 
-            for(String groupId : Configuration.SEEK_GROUPS)
-                dao.syncGroupInformation(request, groupId);
-            
         } catch (FacebookException ex) {
             Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
         }
