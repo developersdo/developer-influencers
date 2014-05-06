@@ -41,7 +41,10 @@ public class FacebookPost implements Serializable {
     @Column(name = "created_time")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date creationDate;
-
+    
+    @Column(name = "group_id")
+    private String groupId;
+    
     public String getPostId() {
         return postId;
     }
@@ -104,6 +107,20 @@ public class FacebookPost implements Serializable {
      */
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    /**
+     * @return the groupId
+     */
+    public String getGroupId() {
+        return groupId;
+    }
+
+    /**
+     * @param groupId the groupId to set
+     */
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
     
 }
