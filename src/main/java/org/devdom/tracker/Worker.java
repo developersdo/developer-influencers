@@ -66,9 +66,9 @@ public class Worker implements Runnable{
         
         EntityManager em = getEntityManager();
         try{
-            String relURL = groupId + "/feed?fields=id&limit=500";
+            String relURL = groupId + "/feed?fields=id&limit=20";
             
-            for(int p=0;p<50;p++){
+            for(int p=0;p<2;p++){
                 RawAPIResponse response = facebook.callGetAPI(relURL);
                 JSONObject json = response.asJSONObject();
 
@@ -85,10 +85,10 @@ public class Worker implements Runnable{
                     em.getTransaction().begin();
                     JSONObject post = posts.getJSONObject(i);
                     LOGGER.log(Level.INFO, "POST ID ******** => {0}", post.getString("id"));
-                    syncRawPost(post,em);
+                    syncRawPost(groupId,post,em);
                     em.getTransaction().commit();
                     LOGGER.log(Level.INFO, "{0}Posts ===> ", len);
-                    Thread.sleep(10000);
+                    Thread.sleep(2000);
                 }
                 LOGGER.log(Level.INFO, "NEXT===> {0}", relURL);
             }
@@ -108,7 +108,7 @@ public class Worker implements Runnable{
      * @throws JSONException
      * @throws FacebookException 
      */
-    private void syncRawPost(JSONObject post, EntityManager em) throws JSONException, FacebookException{
+    private void syncRawPost(String groupId, JSONObject post, EntityManager em) throws JSONException, FacebookException{
         String id = post.getString("id");
         
         String relURL = id + "?fields=id,message,message_tags,name,created_time,from,likes.limit(300).fields(id,name,username),comments.limit(1000).fields(from,id,like_count,message,message_tags,user_likes,created_time)";
@@ -132,15 +132,18 @@ public class Worker implements Runnable{
         newPost.setCreationDate(createdTime);
         newPost.setLikeCount(likes);
         newPost.setMessage(message);
+        newPost.setGroupId(groupId);
         em.merge(newPost); // crear o actualizar un post existente
+
         LOGGER.log(Level.INFO, "(POST) postId {0}", postId);
         LOGGER.log(Level.INFO, "(POST) fromId {0}", fromId);
         LOGGER.log(Level.INFO, "(POST) createdTime {0}", createdTime);
         LOGGER.log(Level.INFO, "(POST) likes {0}", likes);
         LOGGER.log(Level.INFO, "(POST) message {0}", message);
+        LOGGER.log(Level.INFO, "(POST) groupId {0}", groupId);
 
         if(hasMessages)
-            syncRawMessages(postId,json.getJSONObject("comments").getJSONArray("data"),em);
+            syncRawMessages(groupId, postId, json.getJSONObject("comments").getJSONArray("data"), em);
 
         /*
         El API de facebook retorna un formato diferente para extraer los mentions 
@@ -155,7 +158,7 @@ public class Worker implements Runnable{
                 JSONArray mentions = json.getJSONObject("message_tags").getJSONArray(tag);
                 for(int x=0;x<mentions.length();x++){
                     JSONArray collection = json.getJSONObject("message_tags").getJSONArray(tag);
-                    syncRawMentions(postId, fromId, "POST", collection, em);
+                    syncRawMentions(groupId, postId, fromId, "POST", collection, em);
                 }
             }
         }
@@ -165,12 +168,13 @@ public class Worker implements Runnable{
      * 
      * Sincronizar mensajes que se contienen en un post
      * 
+     * @param groupId
      * @param postId
      * @param comments
      * @param em
      * @throws JSONException 
      */
-    private void syncRawMessages(String postId, JSONArray comments, EntityManager em) throws JSONException {
+    private void syncRawMessages(String groupId, String postId, JSONArray comments, EntityManager em) throws JSONException {
         int len = comments.length();
         for(int i=0;i<len;i++){
             FacebookComment newComment = new FacebookComment();
@@ -191,6 +195,7 @@ public class Worker implements Runnable{
                 LOGGER.log(Level.INFO, "(Message) comment {0}", comment);
                 LOGGER.log(Level.INFO, "(Message) messageId {0}", messageId);
                 LOGGER.log(Level.INFO, "(Message) postId {0}", postId);
+                LOGGER.log(Level.INFO, "(Message) groupId {0}", groupId);
 
                 newComment.setCreateTime(createTime);
                 newComment.setLikeCount(likes);
@@ -198,11 +203,12 @@ public class Worker implements Runnable{
                 newComment.setMessage(comment);
                 newComment.setMessageId(messageId);
                 newComment.setPostId(postId);
+                newComment.setGroupId(groupId);
                 em.merge(newComment);
 
                 if(hasMentions){
                     JSONArray collection = message.getJSONArray("message_tags");
-                    syncRawMentions(messageId, fromId, "MESSAGE", collection, em);
+                    syncRawMentions(groupId, messageId, fromId, "MESSAGE", collection, em);
                 }
             }
         }
@@ -212,6 +218,7 @@ public class Worker implements Runnable{
      * Sincronizar información acerca de los mentions que se realizan en un post
      * o comentario
      * 
+     * @param groupId
      * @param objectId
      * @param fromId
      * @param type
@@ -219,7 +226,7 @@ public class Worker implements Runnable{
      * @param em
      * @throws JSONException 
      */
-    private void syncRawMentions(String objectId, String fromId, String type, JSONArray mentions, EntityManager em) throws JSONException{
+    private void syncRawMentions(String groupId, String objectId, String fromId, String type, JSONArray mentions, EntityManager em) throws JSONException{
 
         int len = mentions.length();
         for(int i=0;i<len;i++){
@@ -231,11 +238,13 @@ public class Worker implements Runnable{
             LOGGER.log(Level.INFO, "(MENTION) ({0}) fromId {1}", new Object[]{type, fromId});
             LOGGER.log(Level.INFO, "(MENTION) ({0}) toId {1}", new Object[]{type, toId});
             LOGGER.log(Level.INFO, "(MENTION) ({0}) type {1}", new Object[]{type, type});
+            LOGGER.log(Level.INFO, "(MENTION) ({0}) group id {1}", new Object[]{type, groupId});
 
             newMention.setFromId(fromId);
             newMention.setObjectId(objectId);
             newMention.setToId(toId);
             newMention.setType(type);
+            newMention.setGroupId(groupId);
             em.merge(newMention);            
         }
     }
