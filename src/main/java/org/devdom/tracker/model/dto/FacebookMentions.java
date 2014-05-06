@@ -42,6 +42,9 @@ public class FacebookMentions  implements Serializable {
     @Id
     @Column(name = "object_id")
     private String objectId;
+    
+    @Column(name = "group_id")
+    private String groupId;
 
     /**
      * @return the fromId
@@ -111,6 +114,20 @@ public class FacebookMentions  implements Serializable {
      */
     public void setObjectId(String objectId) {
         this.objectId = objectId;
+    }
+
+    /**
+     * @return the groupId
+     */
+    public String getGroupId() {
+        return groupId;
+    }
+
+    /**
+     * @param groupId the groupId to set
+     */
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
 }
