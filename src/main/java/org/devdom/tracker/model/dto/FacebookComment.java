@@ -44,6 +44,9 @@ public class FacebookComment implements Serializable {
     
     @Column(name = "post_id")
     private String postId;
+    
+    @Column(name = "group_id")
+    private String groupId;
 
     /**
      * @return the createTime
@@ -127,6 +130,20 @@ public class FacebookComment implements Serializable {
      */
     public void setPostId(String postId) {
         this.postId = postId;
+    }
+
+    /**
+     * @return the groupId
+     */
+    public String getGroupId() {
+        return groupId;
+    }
+
+    /**
+     * @param groupId the groupId to set
+     */
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
 }
