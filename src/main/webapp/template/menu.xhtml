@@ -5,9 +5,19 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <c:choose>
         <c:when test="#{fb.logged}">
-            <p:layoutUnit position="west" size="230" style="border:solid 0px #fff;">
+            <p:layoutUnit id="leftMenu" position="west" size="320">
                 <h:form>
-                    <img src="#{fb.profilePicture}" class="circularProfileImage"/>
+                    <br/>
+                    <div style="text-align:center">
+                        <img src="#{fb.profilePicture}" class="circularProfileImage"/>
+                    </div>
+                    <div id="devs-carrousel">
+                        <div class="dev-carrousel-button circularProfileImage" style="background-image:url('#{fb.profilePicture}');" > 
+                            <span style="float-left:-10px;">+</span> 
+                        </div>
+                        <div style="float: left;width: 138px;"><br/></div>
+                        <div><img src="#{fb.profilePicture}" class="dev-carrousel dev-carrousel-button circularProfileImage"  style="width:60px;line-height: 0px;"/> + </div>
+                    </div>
                     <br/><br/>
                     <p:menu>
                         <p:submenu label="Estadísticas">
