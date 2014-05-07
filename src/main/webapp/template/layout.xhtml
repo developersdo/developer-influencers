@@ -12,30 +12,19 @@
                     <title>influencers.developers.do</title>
                     <h:outputStylesheet library="css" name="styles.css"/>
                 </f:facet>
-                <style type="text/css">
-                    .ui-layout-north {
-                        z-index:20 !important;
-                        overflow:visible !important;;
-                    }
-                    .ui-layout-north .ui-layout-unit-content {
-                        overflow:visible !important;
-                    }
-                </style>
             </h:head>
             <h:body>
                 <div id="page">
                     <p:layout fullPage="true">
-
                         <!-- header -->
                         <div id="header">
                             <ui:insert name="header">
                                 <ui:include src="header.xhtml" />
                             </ui:insert>
                         </div>
-
                         <!-- content display -->
                         <div id="center">
-                            <p:layoutUnit styleClass="layoutUnitCenter"   position="center">
+                            <p:layoutUnit id="content" styleClass="layoutUnitCenter"   position="center">
                                 <h:form id="mainForm">
                                     <ui:insert name="content" />
                                 </h:form>
