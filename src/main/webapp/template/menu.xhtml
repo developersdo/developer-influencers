@@ -5,18 +5,21 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <c:choose>
         <c:when test="#{fb.logged}">
-            <p:layoutUnit id="leftMenu" position="west" size="320">
-                <h:form>
+            <p:layoutUnit id="leftMenu" position="west" size="320" collapsed="false" collapsible="true">
+                <h:form id="leftForm">
                     <br/>
                     <div style="text-align:center">
-                        <img src="#{fb.profilePicture}" class="circularProfileImage"/>
+                        <img src="#{fb.profilePicture}" class="circularProfileImage glow"/>
+                        <div class="titleProfile">#{fb.loggedName}</div>
                     </div>
                     <div id="devs-carrousel">
-                        <div class="dev-carrousel-button circularProfileImage" style="background-image:url('#{fb.profilePicture}');" > 
-                            <span style="float-left:-10px;">+</span> 
+                        <div class="dev-carrousel-button"> 
+                            <img class="circularProfileImage dev-carrousel-button" src="#{fb.profilePicture}"/> 
                         </div>
-                        <div style="float: left;width: 138px;"><br/></div>
-                        <div><img src="#{fb.profilePicture}" class="dev-carrousel dev-carrousel-button circularProfileImage"  style="width:60px;line-height: 0px;"/> + </div>
+                        <div style="float: left;width:138px;"><br/></div>
+                        <div>
+                            <img class="dev-carrousel-button circularProfileImage" src="#{fb.profilePicture}"/>
+                        </div>
                     </div>
                     <br/><br/>
                     <p:menu>
