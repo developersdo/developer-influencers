@@ -1,0 +1,122 @@
+.bgHeader{
+    background-color:#000;
+}
+
+#header{
+    border:solid 0px #fff; /*reset*/
+    border-bottom: solid 1px #EEEEEE;
+    border-bottom-color: #EEEEEE -moz-use-text-color #FFFFFF;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    padding: 0px;
+    font-size:12px;
+    height: 75px;
+    padding: 4px 0;
+    position: relative;
+}
+
+#logo {
+    text-align: left;
+    width: 30%;
+    padding-left: 10px;
+    position: absolute;
+}
+
+
+#top-menu{
+    height:129px;
+    overflow: hidden;
+    padding-right:0px;
+    position: absolute;
+    right:0px;
+    top: 15px;
+    width:350px;
+}
+
+.circularProfileImage{
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border:solid 4px #fff;
+    width: 140px;
+}
+
+#fbbutton{
+    -moz-user-select: none;
+    background: #2A49A5;
+    border: 1px solid #082783;
+    box-shadow: 0 1px #4C6BC7 inset;
+    color: white;
+    padding: 3px 5px;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 #082783;
+    font: 15px Verdana, sans-serif;
+}
+
+.ui-widget-content{
+    background-color:transparent;
+}
+
+#header-unit{
+    padding:0px;
+    border:solid 0px #fff; 
+    background-image: url('../images/header-bg.png');
+    background-position: 0 38px;
+    background-repeat: repeat-x;
+}
+
+#header, #content, #leftMenu{
+    padding:0px;
+    border:solid 0px #fff;
+}
+
+#leftMenu{
+    background-color:#F5F5F5;
+    height:100%;
+    border-right: solid 1px #2C2D2D;   
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+.ui-layout-north {
+    z-index:20 !important;
+    overflow:visible !important;;
+}
+
+.ui-layout-north .ui-layout-unit-content {
+    overflow:visible !important;
+}
+
+#devs-carrousel{
+    position:relative;
+    top:-125px;
+    left:15px;
+    text-align: center;
+    z-index: -1;
+}
+
+.dev-carrousel-button{
+    background-size: 65px auto;
+    float: left;
+    width:70px;
+    height:70px;
+    background-position: 0px 0px;
+    opacity:0.4;
+    filter:alpha(opacity=40); /* For IE8 and earlier */
+}
+
+.glow{
+    -webkit-box-shadow: 0px 0px 3px 3px rgba(44, 45, 45, .75);
+    -moz-box-shadow: 0px 0px 3px 3px rgba(44, 45, 45, .75);
+    box-shadow: 0px 0px 3px 3px rgba(44, 45, 45, .75); 
+}
+
+#leftForm{
+    overflow-y:hidden;
+    overflow-x:hidden;
+}
+
+.titleProfile{
+    text-shadow: 0px 2px 0px rgba(255, 255, 255, 1);
+    font-size:12px;
+}
