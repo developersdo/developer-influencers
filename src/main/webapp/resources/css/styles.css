@@ -119,5 +119,8 @@
 
 .titleProfile{
     text-shadow: 0px 2px 0px rgba(255, 255, 255, 1);
-    font-size:13px;
+    font-size:12px;
+    font-weight: bold;
+    position: relative;
+    top: 5px;
 }
