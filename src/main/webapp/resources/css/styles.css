@@ -71,9 +71,10 @@
 }
 
 #leftMenu{
-    background-color:#F5F5F5;
+    background-image: url('../images/left-bg.png');
+    background-position:right;
+    background-repeat: repeat-y;
     height:100%;
-    border-right: solid 1px #2C2D2D;   
     overflow-y:auto;
     overflow-x:hidden;
 }
@@ -118,5 +119,5 @@
 
 .titleProfile{
     text-shadow: 0px 2px 0px rgba(255, 255, 255, 1);
-    font-size:12px;
+    font-size:13px;
 }
