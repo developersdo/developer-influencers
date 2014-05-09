@@ -90,10 +90,19 @@
 
 #devs-carrousel{
     position:relative;
-    top:-125px;
-    left:15px;
+    top:-130px;
+    left:0px;
     text-align: center;
     z-index: -1;
+    border:solid 1px gray;
+    height:75px;
+}
+
+.left-carrousel-image{
+    position:relative;
+    top:-17px;
+    float:20px;
+    left:125px;
 }
 
 .dev-carrousel-button{
@@ -107,9 +116,9 @@
 }
 
 .glow{
-    -webkit-box-shadow: 0px 0px 3px 3px rgba(44, 45, 45, .75);
-    -moz-box-shadow: 0px 0px 3px 3px rgba(44, 45, 45, .75);
-    box-shadow: 0px 0px 3px 3px rgba(44, 45, 45, .75); 
+    -webkit-box-shadow: 0px 0px 2px 2px rgba(190, 192, 194, .75);
+    -moz-box-shadow: 0px 0px 2px 2px rgba(190, 192, 194, .75);
+    box-shadow: 0px 0px 2px 2px rgba(190, 192, 194, .75); 
 }
 
 #leftForm{
