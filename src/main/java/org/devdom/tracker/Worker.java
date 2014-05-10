@@ -278,41 +278,33 @@ public class Worker implements Runnable{
      */
     private void getRawMembersInGroup(String groupId) throws FacebookException, JSONException{
         EntityManager em = getEntityManager();
-        try{
-            String relURL = groupId + "/members?fields=first_name,last_name,id,picture.type(normal)&offset=5&limit=500";
-
-            for(int p=0;p<15;p++){
-                RawAPIResponse response = facebook.callGetAPI(relURL);
-                JSONObject json = response.asJSONObject();
-
-                JSONArray members = json.getJSONArray("data");
-                String nextPage = json.getJSONObject("paging").getString("next");
-                LOGGER.log(Level.INFO, "(nextPage)===> {0}", nextPage);
-
-                int len = members.length();
-                int startLength = nextPage.indexOf(groupId);
-                relURL = nextPage.substring(startLength,nextPage.length());
-                LOGGER.log(Level.INFO, "(nextPage)===> {0}", relURL);
-
-                for(int i=0;i<len;i++){
-                    em.getTransaction().begin();
-                    JSONObject member = members.getJSONObject(i);
-                    LOGGER.log(Level.INFO, "MEMBER ID ******** => {0}", member.getString("id"));
-                    syncRawMember(groupId,member,em);
-                    em.getTransaction().commit();
-                    LOGGER.log(Level.INFO, "Members {0}  ===> ", len);
-                    Thread.sleep(1000);
-                }
-                LOGGER.log(Level.INFO, "NEXT===> {0}", relURL);
+        String relURL = groupId + "/members?fields=first_name,last_name,id,picture.type(normal)&offset=5&limit=500";
+        for(int p=0;p<15;p++){
+            RawAPIResponse response = facebook.callGetAPI(relURL);
+            JSONObject json = response.asJSONObject();
+            
+            JSONArray members = json.getJSONArray("data");
+            String nextPage = json.getJSONObject("paging").getString("next");
+            LOGGER.log(Level.INFO, "(nextPage)===> {0}", nextPage);
+            
+            int len = members.length();
+            int startLength = nextPage.indexOf(groupId);
+            relURL = nextPage.substring(startLength,nextPage.length());
+            LOGGER.log(Level.INFO, "(nextPage)===> {0}", relURL);
+            
+            for(int i=0;i<len;i++){
+                em.getTransaction().begin();
+                JSONObject member = members.getJSONObject(i);
+                LOGGER.log(Level.INFO, "PAGE -> {0}, member row -> {1}", new Object[]{p, i});
+                LOGGER.log(Level.INFO, "MEMBER ID ******** => {0}", member.getString("id"));
+                syncRawMember(groupId,member,em);
+                em.getTransaction().commit();
+                LOGGER.log(Level.INFO, "Members {0}  ===> ", len);
             }
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            if(em!=null|em.isOpen())
-                em.close();
+            LOGGER.log(Level.INFO, "NEXT===> {0}", relURL);
         }
     }
-    
+
     /**
      * Actualizar información de miembros de grupos según el objeto JSON recibido
      * @param groupId
