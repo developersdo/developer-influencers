@@ -153,21 +153,14 @@ div.demo > p{
 }
 
 #score{
-    /*
-    position:relative;
-    float:left;
-    left:35px;
-    top:-62px;
-    height: 60px;
-    */
     position:relative;
     float:left;
     left:-60px;
-    top:-80px;
+    top:-65px;
     text-align: center;
 }
 
-#firstPlace{
+#firstPlace, #secondPlace, #thirdPlace{
     position:relative;
     float:left;
     left:85px;
@@ -175,38 +168,18 @@ div.demo > p{
     height:40px;
 }
 
-#secondPlace{
+#group{
     position:relative;
     float:left;
-    left:85px;
-    width:80px;
-    height:40px;
+    top:-68px;
+    font-size: 12px;
+    text-align: center;
+    left:25px;
 }
 
-#thirdPlace{
-    position:relative;
+#firstTitle, #secondTitle, #thirdTitle{
     float:left;
-    left:85px;
     width:80px;
-    height:40px;
-}
-
-#firstPlace #secondPlace #thirdPlace{
-    float:left;
-    position:relative;
-    top: -25px;
-    font-size:14px;
-    width:100px;    
-    left: -30px;
-}
-/*
-#firstPlace #secondPlace #thirdPlace{
-    position:relative;
-    float: left;
-    width:100px;
-    left:100px;
-}
-*/
-#firstTitle secondTitle thirdTitle{
     
+    position:relative;
 }
