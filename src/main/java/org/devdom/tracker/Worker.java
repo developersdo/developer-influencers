@@ -67,7 +67,7 @@ public class Worker implements Runnable{
      * @throws JSONException 
      */
     public void getRawPostsInGroup(String groupId) throws FacebookException, JSONException {
-        
+
         EntityManager em = getEntityManager();
         try{
             String relURL = groupId + "/feed?fields=id&limit=20";
@@ -292,15 +292,16 @@ public class Worker implements Runnable{
             relURL = nextPage.substring(startLength,nextPage.length());
             LOGGER.log(Level.INFO, "(nextPage)===> {0}", relURL);
             
+            em.getTransaction().begin();
             for(int i=0;i<len;i++){
-                em.getTransaction().begin();
                 JSONObject member = members.getJSONObject(i);
                 LOGGER.log(Level.INFO, "PAGE -> {0}, member row -> {1}", new Object[]{p, i});
                 LOGGER.log(Level.INFO, "MEMBER ID ******** => {0}", member.getString("id"));
                 syncRawMember(groupId,member,em);
-                em.getTransaction().commit();
                 LOGGER.log(Level.INFO, "Members {0}  ===> ", len);
             }
+            em.getTransaction().commit();
+
             LOGGER.log(Level.INFO, "NEXT===> {0}", relURL);
         }
     }
