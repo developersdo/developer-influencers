@@ -23,7 +23,7 @@ public class FacebookMember implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "uid")
-    private String uid = "";
+    private String uid;
     
     @Column(name = "first_name")
     private String firstName;
@@ -44,7 +44,7 @@ public class FacebookMember implements Serializable {
      * @param lastName
      * @param pic 
      */
-    public FacebookMember(String uid, String firstName, String lastName, String pic){
+    public FacebookMember(String uid /*Id de Facebook*/, String firstName, String lastName, String pic){
         this.uid = uid;
         this.firstName = firstName;
         this.lastName = lastName;
