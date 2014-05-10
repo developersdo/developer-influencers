@@ -100,9 +100,10 @@
 
 .left-carrousel-image{
     position:relative;
-    top:-17px;
-    float:20px;
-    left:125px;
+    top:0px;
+    float:left;
+    left:10px;
+    overflow:scroll;
 }
 
 .dev-carrousel-button{
@@ -126,10 +127,86 @@
     overflow-x:hidden;
 }
 
-.titleProfile{
+.textShadow{
     text-shadow: 0px 2px 0px rgba(255, 255, 255, 1);
+}
+
+.titleProfile{
     font-size:12px;
     font-weight: bold;
     position: relative;
     top: 5px;
+}
+
+.ui-layout-unit-content .ui-widget-content{
+    overflow:hidden;
+}
+
+p{
+    font-size: 30px; line-height: 30px
+}
+div.demo{
+    text-align: center; width: 280px; float: left
+}
+div.demo > p{
+    font-size: 20px
+}
+
+#score{
+    /*
+    position:relative;
+    float:left;
+    left:35px;
+    top:-62px;
+    height: 60px;
+    */
+    position:relative;
+    float:left;
+    left:-60px;
+    top:-80px;
+    text-align: center;
+}
+
+#firstPlace{
+    position:relative;
+    float:left;
+    left:85px;
+    width:80px;
+    height:40px;
+}
+
+#secondPlace{
+    position:relative;
+    float:left;
+    left:85px;
+    width:80px;
+    height:40px;
+}
+
+#thirdPlace{
+    position:relative;
+    float:left;
+    left:85px;
+    width:80px;
+    height:40px;
+}
+
+#firstPlace #secondPlace #thirdPlace{
+    float:left;
+    position:relative;
+    top: -25px;
+    font-size:14px;
+    width:100px;    
+    left: -30px;
+}
+/*
+#firstPlace #secondPlace #thirdPlace{
+    position:relative;
+    float: left;
+    width:100px;
+    left:100px;
+}
+*/
+#firstTitle secondTitle thirdTitle{
+    
 }
