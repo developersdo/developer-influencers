@@ -17,13 +17,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "dev_dom_user")
 @XmlRootElement
-public class User implements Serializable {
+public class FacebookMember implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "uid")
-    private long uid = 0;
+    private String uid = "";
     
     @Column(name = "user_id")
     private Long userId;
@@ -43,11 +43,37 @@ public class User implements Serializable {
     @Column(name = "roles")
     private String roles;
     
-    public Long getId() {
+    @Column(name = "pic")
+    private String pic;
+
+    public FacebookMember() {
+    }
+    
+    /**
+     * Definir una nueva instancia desde el constructor
+     * @param uid
+     * @param firstName
+     * @param lastName
+     * @param pic 
+     */
+    public FacebookMember(String uid, String firstName, String lastName, String pic){
+        this.uid = uid;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.pic = pic;
+    }
+
+    /**
+     * @return Facebook Id
+     */
+    public String getId() {
         return getUid();
     }
 
-    public void setId(Long id) {
+    /**
+     * @param id 
+     */
+    public void setId(String id) {
         this.setUid(id);
     }
 
@@ -82,14 +108,14 @@ public class User implements Serializable {
     /**
      * @return the uid
      */
-    public long getUid() {
+    public String getUid() {
         return uid;
     }
 
     /**
      * @param uid the uid to set
      */
-    public void setUid(long uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
@@ -148,6 +174,19 @@ public class User implements Serializable {
     public void setRoles(String roles) {
         this.roles = roles;
     }
-    
-    
+
+    /**
+     * @return the pic
+     */
+    public String getPic() {
+        return pic;
+    }
+
+    /**
+     * @param pic the pic to set
+     */
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
+
 }
