@@ -10,8 +10,17 @@
                 <f:facet name="first">
                     <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                     <title>influencers.developers.do</title>
-                    <h:outputStylesheet library="css" name="styles.css"/>
+                    <style>
+                        .ui-layout-unit-content .ui-widget-content{
+                            overflow:hidden;
+                        }
+                    </style>                    
                 </f:facet>
+                <!-- facet -->
+                <script src="http://anthonyterrien.com/js/jquery.knob.js"></script>
+                <h:outputScript library="js" name="main.js"/>
+                <link href="http://anthonyterrien.com/css/layout.css" rel="stylesheet"/>
+                <h:outputStylesheet library="css" name="styles.css"/>
             </h:head>
             <h:body>
                 <div id="page">
