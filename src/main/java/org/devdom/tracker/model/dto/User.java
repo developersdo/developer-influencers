@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -14,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Carlos Vásquez Polanco
  */
 @Entity
+@Table(name = "dev_dom_user")
 @XmlRootElement
 public class User implements Serializable {
     
