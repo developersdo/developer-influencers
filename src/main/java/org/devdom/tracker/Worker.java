@@ -49,7 +49,7 @@ public class Worker implements Runnable{
             try{
                 LOGGER.log(Level.INFO, "GROUP {0}", groupId);
                 getRawMembersInGroup(groupId); // Actualizar miembros en grupo
-                //getRawPostsInGroup(groupId);
+                getRawPostsInGroup(groupId);
             }catch(FacebookException | JSONException ex){
                 Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -70,9 +70,8 @@ public class Worker implements Runnable{
 
         EntityManager em = getEntityManager();
         try{
-            String relURL = groupId + "/feed?fields=id&limit=20";
-
-            for(int p=0;p<2;p++){
+            String relURL = groupId + "/feed?fields=id&limit=500";
+            for(int p=0;p<30;p++){
                 RawAPIResponse response = facebook.callGetAPI(relURL);
                 JSONObject json = response.asJSONObject();
 
@@ -88,11 +87,12 @@ public class Worker implements Runnable{
                 for(int i=0;i<len;i++){
                     em.getTransaction().begin();
                     JSONObject post = posts.getJSONObject(i);
-                    LOGGER.log(Level.INFO, "POST ID ******** => {0}", post.getString("id"));
                     syncRawPost(groupId,post,em);
-                    em.getTransaction().commit();
-                    LOGGER.log(Level.INFO, "{0}Posts ===> ", len);
-                    Thread.sleep(2000);
+                    LOGGER.log(Level.INFO, "POST ID ******** => {0}", post.getString("id"));
+                    LOGGER.log(Level.INFO, "PAGE -> {0}, row -> {1}", new Object[]{p, i});
+                    LOGGER.log(Level.INFO, "Posts '{'0'}' ===> {0}", len);
+                    em.getTransaction().commit();                    
+                    Thread.sleep(1000);
                 }
                 LOGGER.log(Level.INFO, "NEXT===> {0}", relURL);
             }
@@ -161,8 +161,8 @@ public class Worker implements Runnable{
                 String tag = tags.getString(i);
                 JSONArray mentions = json.getJSONObject("message_tags").getJSONArray(tag);
                 for(int x=0;x<mentions.length();x++){
-                    JSONArray collection = json.getJSONObject("message_tags").getJSONArray(tag);
-                    syncRawMentions(groupId, postId, fromId, "POST", collection, em);
+                    JSONArray mention = json.getJSONObject("message_tags").getJSONArray(tag);
+                    syncRawMentions(groupId, postId, fromId, "POST", mention, createdTime, em);
                 }
             }
         }
@@ -181,12 +181,12 @@ public class Worker implements Runnable{
     private void syncRawMessages(String groupId, String postId, JSONArray comments, EntityManager em) throws JSONException {
         int len = comments.length();
         for(int i=0;i<len;i++){
-            FacebookComment newComment = new FacebookComment();
             JSONObject message = comments.getJSONObject(i);
             boolean hasMentions = !(message.isNull("message_tags"));
             boolean hasFrom = !(message.isNull("from"));
 
-            if(hasFrom){ // Revisar si el comentario tiene destinatario. 
+            if(hasFrom){ // Revisar si el comentario tiene el id del creador 
+                FacebookComment newComment = new FacebookComment();
                 Date createTime = getDateFormatted(message.getString("created_time"));
                 int likes = Integer.parseInt(message.getString("like_count"));
                 String fromId = message.getJSONObject("from").getString("id");
@@ -211,8 +211,8 @@ public class Worker implements Runnable{
                 em.merge(newComment);
 
                 if(hasMentions){
-                    JSONArray collection = message.getJSONArray("message_tags");
-                    syncRawMentions(groupId, messageId, fromId, "MESSAGE", collection, em);
+                    JSONArray mentions = message.getJSONArray("message_tags");
+                    syncRawMentions(groupId, messageId, fromId, "MESSAGE", mentions, createTime, em);
                 }
             }
         }
@@ -230,7 +230,7 @@ public class Worker implements Runnable{
      * @param em
      * @throws JSONException 
      */
-    private void syncRawMentions(String groupId, String objectId, String fromId, String type, JSONArray mentions, EntityManager em) throws JSONException{
+    private void syncRawMentions(String groupId, String objectId, String fromId, String type, JSONArray mentions, Date createdTime, EntityManager em) throws JSONException{
 
         int len = mentions.length();
         for(int i=0;i<len;i++){
@@ -249,7 +249,8 @@ public class Worker implements Runnable{
             newMention.setToId(toId);
             newMention.setType(type);
             newMention.setGroupId(groupId);
-            em.merge(newMention);            
+            newMention.setCreatedTime(createdTime);
+            em.merge(newMention);
         }
     }
 
@@ -278,11 +279,11 @@ public class Worker implements Runnable{
      */
     private void getRawMembersInGroup(String groupId) throws FacebookException, JSONException{
         EntityManager em = getEntityManager();
-        String relURL = groupId + "/members?fields=first_name,last_name,id,picture.type(normal)&offset=5&limit=500";
+        String relURL = groupId + "/members?fields=first_name,last_name,id,picture.type(large)&offset=5&limit=500";
         for(int p=0;p<15;p++){
             RawAPIResponse response = facebook.callGetAPI(relURL);
             JSONObject json = response.asJSONObject();
-            
+
             JSONArray members = json.getJSONArray("data");
             String nextPage = json.getJSONObject("paging").getString("next");
             LOGGER.log(Level.INFO, "(nextPage)===> {0}", nextPage);
@@ -296,7 +297,6 @@ public class Worker implements Runnable{
             for(int i=0;i<len;i++){
                 JSONObject member = members.getJSONObject(i);
                 LOGGER.log(Level.INFO, "PAGE -> {0}, member row -> {1}", new Object[]{p, i});
-                LOGGER.log(Level.INFO, "MEMBER ID ******** => {0}", member.getString("id"));
                 syncRawMember(groupId,member,em);
                 LOGGER.log(Level.INFO, "Members {0}  ===> ", len);
             }
@@ -316,19 +316,19 @@ public class Worker implements Runnable{
      */
     private void syncRawMember(String groupId, JSONObject member, EntityManager em) throws JSONException, FacebookException{
 
-        String membetId = member.getString("id");
+        String id = member.getString("id");
         String firstName = member.isNull("first_name")?"":member.getString("first_name");
         String lastName = member.isNull("last_name")?"":member.getString("last_name");
         String picture = member.getJSONObject("picture").getJSONObject("data").getString("url");
         
-        FacebookMember user = new FacebookMember(membetId,firstName,lastName, picture);
+        FacebookMember user = new FacebookMember(id,firstName,lastName, picture);
         em.merge(user); // crear o actualizar usuario 
-        
-        LOGGER.log(Level.INFO, "(MEMBER) membetId {0}", membetId);
-        LOGGER.log(Level.INFO, "(MEMBER) firstName {0}", firstName);
-        LOGGER.log(Level.INFO, "(MEMBER) lastName {0}", lastName);
-        LOGGER.log(Level.INFO, "(MEMBER) picture {0}", picture);
-        LOGGER.log(Level.INFO, "(MEMBER) groupId {0}", groupId);
+
+        LOGGER.log(Level.INFO, "(MEMBER) Id -> {0}", id);
+        LOGGER.log(Level.INFO, "(MEMBER) firstName -> {0}", firstName);
+        LOGGER.log(Level.INFO, "(MEMBER) lastName -> {0}", lastName);
+        LOGGER.log(Level.INFO, "(MEMBER) picture -> {0}", picture);
+        LOGGER.log(Level.INFO, "(MEMBER) groupId -> {0}", groupId);
     }
     
 }
