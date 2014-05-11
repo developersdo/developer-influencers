@@ -1,11 +1,8 @@
 package org.devdom.tracker.model.dto;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,8 +17,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class FacebookMember implements Serializable {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "uid")
     private String uid;
     
@@ -120,5 +115,4 @@ public class FacebookMember implements Serializable {
     public void setPic(String pic) {
         this.pic = pic;
     }
-
 }
