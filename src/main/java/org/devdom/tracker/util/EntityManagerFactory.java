@@ -9,7 +9,7 @@ import javax.persistence.Persistence;
  */
 public class EntityManagerFactory{
     
-    private final String PERSISTENCE_UNIT = "tracker_pu";
+    private final String PERSISTENCE_UNIT = "jpa";
     private final javax.persistence.EntityManagerFactory emf;
 
     public EntityManagerFactory(){
