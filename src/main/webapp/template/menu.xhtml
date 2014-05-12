@@ -5,23 +5,58 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <c:choose>
         <c:when test="#{fb.logged}">
-            <p:layoutUnit id="leftMenu" position="west" size="320" collapsed="false" collapsible="true">
+            <p:layoutUnit id="leftMenu" position="west" size="296" collapsed="false" collapsible="true">
                 <h:form id="leftForm">
                     <br/>
                     <div style="text-align:center">
+                        <div id="profile-position" class="textShadowGray">#12</div>
                         <img src="#{fb.profilePicture}" class="circularProfileImage glow"/>
-                        <div class="titleProfile">#{fb.loggedName}</div>
+                        <div class="titleProfile textShadow">#{fb.loggedName}</div>
                     </div>
                     <div id="devs-carrousel">
-                        <div class="dev-carrousel-button"> 
-                            <img class="circularProfileImage dev-carrousel-button" src="#{fb.profilePicture}"/> 
+                        <div> 
+                            <img class="circularProfileImage dev-carrousel-button" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn2/t1.0-1/c0.34.160.160/p160x160/1476199_10153602106355624_527592889_n.jpg"/> 
                         </div>
                         <div style="float: left;width:138px;"><br/></div>
                         <div>
-                            <img class="dev-carrousel-button circularProfileImage" src="#{fb.profilePicture}"/>
+                            <img class="dev-carrousel-button circularProfileImage left-carrousel-image" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/t1.0-1/c8.0.160.160/p160x160/1016978_10153958422330408_8876927104933404532_n.jpg"/>
                         </div>
                     </div>
-                    <br/><br/>
+                    
+                    <div id="gauges-scores">
+                        <div id="score">
+                            <div id="firstPlace">
+                                <input  class="knob" data-width="55" data-angleOffset="-100" data-readOnly="true" 
+                                data-angleArc="200" data-fgColor="#FF0000" data-rotation="anticlockwise" 
+                                value="2.2" data-displayPrevious="false" 
+                                data-step="0.5"
+                                data-min="0"
+                                data-max="10"/>
+                            </div>
+                            <div id="secondPlace">
+                                <input  class="knob" data-width="55" data-angleOffset="-100" data-readOnly="true" 
+                                data-angleArc="200" data-fgColor="#FF0000" data-rotation="anticlockwise" 
+                                value="1.1" data-displayPrevious="false" 
+                                data-step="0.5"
+                                data-min="0"
+                                data-max="10"/>
+                            </div>
+                            <div id="thirdPlace">
+                                <input  class="knob" data-width="55" data-angleOffset="-100" data-readOnly="true" 
+                                data-angleArc="200" data-fgColor="#FF0000" data-rotation="anticlockwise" 
+                                value="0.6" data-displayPrevious="false" 
+                                data-step="0.5"
+                                data-min="0"
+                                data-max="10"/>
+                            </div>
+                        </div>
+                        <div id="group">
+                            <div id="firstTitle" class="textShadow">Developers Dominicanos</div>
+                            <div id="secondTitle" class="textShadow">Developers X</div>
+                            <div id="thirdTitle" class="textShadow">#VivaPHP</div>     
+                        </div>
+                    </div>
+                    <br/><br/><br/><br/>
                     <p:menu>
                         <p:submenu label="Estadísticas">
                             <p:menuitem value="Top 10 más influyentes" outcome="influencers"/>
