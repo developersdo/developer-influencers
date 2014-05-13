@@ -21,10 +21,23 @@ public class InfluencersDao {
         return emf.createEntityManager(Configuration.JPAConfig());
     }
     
-    public List<Influencers> findTop10DevsInfluents(){
+    public List<Influencers> findTop20DevsInfluents() throws Exception{
         EntityManager em = getEntityManager();
         try{
             return em.createNamedQuery("Influencers.findTop10DevsInfluents").getResultList();
+        }finally{
+            if(em!=null|em.isOpen())
+                em.close();
+        }
+    }
+    
+    public List findPositionCarruselByUserIdAndGroupId(String fromId, String groupId) throws Exception{
+        EntityManager em = getEntityManager();
+        try{
+            return em.createNamedQuery("Influencers.findPositionCarruselByUserIdAndGroupId")
+                    .setParameter("from_id", fromId)
+                    .setParameter("group_id", groupId)
+                    .getResultList();
         }finally{
             if(em!=null|em.isOpen())
                 em.close();
