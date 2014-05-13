@@ -20,6 +20,7 @@ public class InfluencersController implements Serializable{
     
     private static final long serialVersionUID = 1L;
     InfluencersDao dao = new InfluencersDao();
+    List<Influencers> influencers = null;
     
     /**
      * Listado de los 20 developers más influyentes de todos los grupos
@@ -36,17 +37,49 @@ public class InfluencersController implements Serializable{
     /**
      * Utilizado para extraer tres developers ordenados por la posición y
      * teniendo como row central al developer que se pasa en el fromId
-     * @param fromId
-     * @param groupId
      * @return 
      */
-    public List getPositionCarruselByUserIdAndGroupId(String fromId, String groupId){
+    public List getPositionInformation(){
+        FacebookController facebook = new FacebookController();
+
+        final String FROM_ID = String.valueOf(facebook.getFacebookID());
+        final String GROUP_ID = "0"; //Hace referencia al score universal de todos los grupos
         try {
-            return dao.findPositionCarruselByUserIdAndGroupId(fromId, groupId);
+            return dao.findPositionCarruselByUserIdAndGroupId(FROM_ID, GROUP_ID);
         } catch (Exception ex) {
             Logger.getLogger(InfluencersController.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+    
+    public Influencers getFirstPosition(){
+        if(influencers==null)
+            influencers = (List<Influencers>) getPositionInformation();
+        
+        if(influencers.size()>0)
+            return influencers.get(0);
+        
+        return new Influencers(0,"","");
+    }
+    
+    public Influencers getSecondPosition(){
+        if(influencers==null)
+            influencers = (List<Influencers>) getPositionInformation();
+        
+        if(influencers.size()>=2)
+            return influencers.get(1);
+        
+        return new Influencers(0,"","");
+    }
+    
+    public Influencers getThirdPosition(){
+        if(influencers==null)
+            influencers = (List<Influencers>) getPositionInformation();
+        
+        if(influencers.size()>=3)
+            return influencers.get(2);
+        
+        return new Influencers(0,"","");
     }
     
 }
