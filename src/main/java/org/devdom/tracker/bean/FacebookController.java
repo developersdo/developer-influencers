@@ -1,13 +1,6 @@
 package org.devdom.tracker.bean;
 
-import facebook4j.Facebook;
-import facebook4j.FacebookException;
-import facebook4j.Post;
-import facebook4j.Reading;
-import facebook4j.ResponseList;
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -28,6 +21,11 @@ public class FacebookController implements Serializable{
     private FacesContext facesContext = FacesContext.getCurrentInstance();
     private HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
 
+    /**
+     * return la imagen guardada en session por el usuario que se encuentra logueado
+     * desde Facebook
+     * @return 
+     */
     public String getProfilePicture(){
         session = (HttpSession) facesContext.getExternalContext().getSession(true);
         FacebookProfile profile = (FacebookProfile) session.getAttribute("profile");
@@ -38,6 +36,10 @@ public class FacebookController implements Serializable{
         return profile.getPic_with_logo();
     }
     
+    /**
+     * Nombre completo de Facebook del usuario que se encuentro logueado
+     * @return 
+     */
     public String getLoggedName(){
         session = (HttpSession) facesContext.getExternalContext().getSession(true);
         FacebookProfile profile = (FacebookProfile) session.getAttribute("profile");
@@ -48,6 +50,10 @@ public class FacebookController implements Serializable{
         return profile.getFirstName() + " " + profile.getLastName();
     }
 
+    /**
+     * Retorna el Id de Facebook del usuario logueado, en caso de que sea necesario
+     * @return 
+     */
     public long getFacebookID(){
         session = (HttpSession) facesContext.getExternalContext().getSession(true);
         FacebookProfile profile = (FacebookProfile) session.getAttribute("profile");
@@ -55,35 +61,21 @@ public class FacebookController implements Serializable{
             return 0;
         return profile.getUid();
     }
-
-    public String getAllPost(){
-        try {
-            Facebook facebook = (Facebook) session.getAttribute("facebook");
-            Reading reading = new Reading();
-            reading.limit(200);
-            ResponseList<Post> post = facebook.getGroupFeed("201514949865358",reading);
-        } catch (FacebookException ex) {
-            Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "valor";
-    }
     
-    public Post getPostInformation(String postId){
-        Facebook facebook = (Facebook) session.getAttribute("facebook");
-        try {
-            return facebook.getPost(postId);
-        } catch (FacebookException ex) {
-            Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
+    /**
+     * Método utilizado para evaludar si existe una cuenta logueada
+     * @return 
+     */
     public boolean isLogged(){
         facesContext = FacesContext.getCurrentInstance();
         session = (HttpSession) facesContext.getExternalContext().getSession(true);
         return session.getAttribute("facebook") != null;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getLoginButton(){
         return "<br/><br/><center><a id=\"fbbutton\" href=\"signin\">Iniciar sesión con facebook</a> <br/></center>";
     }
