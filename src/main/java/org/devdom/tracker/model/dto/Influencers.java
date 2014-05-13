@@ -64,6 +64,12 @@ public class Influencers  implements Serializable {
     @Column(name = "picture")
     private String picture;
 
+    public Influencers(int position, String formId, String fullName){
+        setPosition(position);
+        setFromId(fromId);
+        setFullName(fullName);
+    }
+
     /**
      * @return the position
      */
