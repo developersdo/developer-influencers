@@ -60,6 +60,9 @@ public class Influencers  implements Serializable {
     
     @Column(name = "ratio")
     private double ratio;
+    
+    @Column(name = "picture")
+    private String picture;
 
     /**
      * @return the position
@@ -157,6 +160,20 @@ public class Influencers  implements Serializable {
      */
     public void setRatio(double ratio) {
         this.ratio = ratio;
+    }
+
+    /**
+     * @return the picture
+     */
+    public String getPicture() {
+        return picture;
+    }
+
+    /**
+     * @param picture the picture to set
+     */
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
 }
