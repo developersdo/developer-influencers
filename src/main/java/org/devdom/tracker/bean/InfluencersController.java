@@ -52,6 +52,10 @@ public class InfluencersController implements Serializable{
         }
     }
     
+    /**
+     * Retornar la primera posicion del listado de 3 influyentes
+     * @return 
+     */
     public Influencers getFirstPosition(){
         if(influencers==null)
             influencers = (List<Influencers>) getPositionInformation();
@@ -62,6 +66,10 @@ public class InfluencersController implements Serializable{
         return new Influencers(0,"","");
     }
     
+    /**
+     * Retornar la segunda posicion del listado de 3 influyentes
+     * @return 
+     */
     public Influencers getSecondPosition(){
         if(influencers==null)
             influencers = (List<Influencers>) getPositionInformation();
@@ -72,6 +80,10 @@ public class InfluencersController implements Serializable{
         return new Influencers(0,"","");
     }
     
+    /**
+     * Retornar la tercera posicion del listado de 3 influyentes
+     * @return 
+     */
     public Influencers getThirdPosition(){
         if(influencers==null)
             influencers = (List<Influencers>) getPositionInformation();
@@ -81,5 +93,5 @@ public class InfluencersController implements Serializable{
         
         return new Influencers(0,"","");
     }
-    
+
 }
