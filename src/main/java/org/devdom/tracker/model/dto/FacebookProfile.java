@@ -12,7 +12,7 @@ public class FacebookProfile implements Serializable {
     private long uid = 0;
     private String firstName;
     private String lastName;
-    private String birthday_date;
+    private String birthday;
     private String email;
     private String pic_with_logo;
     private String sex;
@@ -60,17 +60,17 @@ public class FacebookProfile implements Serializable {
     }
 
     /**
-     * @return the birthday_date
+     * @return the birthday
      */
-    public String getBirthday_date() {
-        return birthday_date;
+    public String getBirthday() {
+        return birthday;
     }
 
     /**
-     * @param birthday_date the birthday_date to set
+     * @param birthday the birthday to set
      */
-    public void setBirthday_date(String birthday_date) {
-        this.birthday_date = birthday_date;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     /**
