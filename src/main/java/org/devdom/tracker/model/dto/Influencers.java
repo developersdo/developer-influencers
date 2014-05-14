@@ -34,6 +34,15 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       name="group_id",
                                                                       direction=Direction.IN,
                                                                       type=Integer.class)}
+                                ),
+    @NamedStoredProcedureQuery( name="Influencers.findGroupsRatingByUserId",
+                                procedureName="findGroupsRatingByUserId",
+                                returnsResultSet=true,
+                                resultClass=Influencers.class,
+                                parameters={@StoredProcedureParameter(queryParameter="from_id",
+                                                                      name="from_id",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class)}
                                 )
 })
 public class Influencers  implements Serializable {
@@ -41,7 +50,7 @@ public class Influencers  implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Column(name = "position")
+    @Column(name = "position", unique = false)
     private int position;
     
     @Column(name = "from_id")

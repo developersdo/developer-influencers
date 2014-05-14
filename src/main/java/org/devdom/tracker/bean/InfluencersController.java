@@ -21,6 +21,7 @@ public class InfluencersController implements Serializable{
     private static final long serialVersionUID = 1L;
     InfluencersDao dao = new InfluencersDao();
     List<Influencers> influencers = null;
+    List<Influencers> gaugeRating = null;
     
     /**
      * Listado de los 20 developers más influyentes de todos los grupos
@@ -41,7 +42,7 @@ public class InfluencersController implements Serializable{
      */
     public List getPositionInformation(){
         FacebookController facebook = new FacebookController();
-        System.out.println("entrando en getPositionInformation");
+
         final String FROM_ID = String.valueOf(facebook.getFacebookID());
         final String GROUP_ID = "0"; //Hace referencia al score universal de todos los grupos
         try {
@@ -53,7 +54,75 @@ public class InfluencersController implements Serializable{
     }
     
     /**
+     * Obtener la lista de ratings que tiene un developer en los distintos grupos
+     * de desarrollo de aplicaciones
+     * @return 
+     */
+    public List getGroupsRating(){
+        FacebookController facebook = new FacebookController();
+        final String FROM_ID = String.valueOf(facebook.getFacebookID());
+        try{
+            return dao.findGroupsRatingByUserId(FROM_ID);
+        }catch(Exception ex){
+            Logger.getLogger(InfluencersController.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    /**
+     * Retorna el primer rating de la lista
+     * 
+     * @return 
+     */
+    public Influencers getFirstGaugeRating(){
+
+        if(getRatingList().size()>=1)
+            return gaugeRating.get(0);
+        
+        return empty();
+    }
+    
+    /**
+     * Retorna el segundo rating de la lista
+     * 
+     * @return 
+     */
+    public Influencers getSecondGaugeRating(){
+
+        if(getRatingList().size()>=2)
+            return gaugeRating.get(1);
+        
+        return empty();
+    }
+    
+    /**
+     * Retorna el tercer rating de la lista
+     * 
+     * @return 
+     */
+    public Influencers getThirdGaugeRating(){
+        
+        if(getRatingList().size()>=3)
+            return getRatingList().get(1);
+        
+        return empty();
+    }
+    
+    /**
+     * retorna la lista con todos los rating en los grupos para un developer
+     * 
+     * @return 
+     */
+    public List<Influencers> getRatingList(){
+        if(gaugeRating==null)
+            return (List<Influencers>) this.getGroupsRating();
+        else
+            return gaugeRating;
+    }
+    
+    /**
      * Retornar la primera posicion del listado de 3 influyentes
+     * 
      * @return 
      */
     public Influencers getFirstPosition(){
@@ -68,6 +137,7 @@ public class InfluencersController implements Serializable{
     
     /**
      * Retornar la segunda posicion del listado de 3 influyentes
+     * 
      * @return 
      */
     public Influencers getSecondPosition(){
@@ -82,6 +152,7 @@ public class InfluencersController implements Serializable{
     
     /**
      * Retornar la tercera posicion del listado de 3 influyentes
+     * 
      * @return 
      */
     public Influencers getThirdPosition(){

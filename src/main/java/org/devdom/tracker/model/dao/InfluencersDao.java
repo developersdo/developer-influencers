@@ -17,10 +17,20 @@ public class InfluencersDao {
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
     public InfluencersDao(){ }
     
+    /**
+     * 
+     * @return 
+     */
     public EntityManager getEntityManager(){
         return emf.createEntityManager(Configuration.JPAConfig());
     }
     
+    /**
+     * Top 20 de los developers más influyentes a nivel general
+     * 
+     * @return
+     * @throws Exception 
+     */
     public List<Influencers> findTop20DevsInfluents() throws Exception{
         EntityManager em = getEntityManager();
         try{
@@ -31,6 +41,15 @@ public class InfluencersDao {
         }
     }
     
+    /**
+     * Retorna un listado de 3 developers. En medio la cuenta actual con las 
+     * dos posiciones anteriores y siguientes a el
+     * 
+     * @param fromId
+     * @param groupId
+     * @return
+     * @throws Exception 
+     */
     public List findPositionCarruselByUserIdAndGroupId(String fromId, String groupId) throws Exception{
         EntityManager em = getEntityManager();
         try{
@@ -44,4 +63,22 @@ public class InfluencersDao {
         }
     }
 
+    /**
+     * Listado de grupos con el rating que tiene el developer en cada uno de ellos
+     * 
+     * @param fromId
+     * @return
+     * @throws Exception 
+     */
+    public List findGroupsRatingByUserId(String fromId)throws Exception{
+        EntityManager em = getEntityManager();
+        try{
+            return em.createNamedQuery("Influencers.findGroupsRatingByUserId")
+                    .setParameter("from_id", fromId)
+                    .getResultList();
+        }finally{
+            if(em!=null|em.isOpen())
+                em.close();
+        }
+    }
 }
