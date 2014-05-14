@@ -41,7 +41,7 @@ public class InfluencersController implements Serializable{
      */
     public List getPositionInformation(){
         FacebookController facebook = new FacebookController();
-
+        System.out.println("entrando en getPositionInformation");
         final String FROM_ID = String.valueOf(facebook.getFacebookID());
         final String GROUP_ID = "0"; //Hace referencia al score universal de todos los grupos
         try {
@@ -63,7 +63,7 @@ public class InfluencersController implements Serializable{
         if(influencers.size()>0)
             return influencers.get(0);
         
-        return new Influencers(0,"","");
+        return empty();
     }
     
     /**
@@ -77,7 +77,7 @@ public class InfluencersController implements Serializable{
         if(influencers.size()>=2)
             return influencers.get(1);
         
-        return new Influencers(0,"","");
+        return empty();
     }
     
     /**
@@ -91,7 +91,15 @@ public class InfluencersController implements Serializable{
         if(influencers.size()>=3)
             return influencers.get(2);
         
-        return new Influencers(0,"","");
+        return empty();
+    }
+    
+    private Influencers empty(){
+        Influencers emptyInfluencer = new Influencers();
+        emptyInfluencer.setFromId(0);
+        emptyInfluencer.setPosition(0);
+        emptyInfluencer.setFullName("");
+        return emptyInfluencer;
     }
 
 }
