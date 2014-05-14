@@ -1,10 +1,12 @@
 package org.devdom.tracker.model.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,7 +32,8 @@ public class FacebookMember implements Serializable {
     private String pic;
     
     @Column(name = "birthday_date")
-    private String birthdayDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date birthdayDate;
 
     public FacebookMember() {
     }
@@ -122,14 +125,14 @@ public class FacebookMember implements Serializable {
     /**
      * @return the birthdayDate
      */
-    public String getBirthdayDate() {
+    public Date getBirthdayDate() {
         return birthdayDate;
     }
 
     /**
      * @param birthdayDate the birthdayDate to set
      */
-    public void setBirthdayDate(String birthdayDate) {
+    public void setBirthdayDate(Date birthdayDate) {
         this.birthdayDate = birthdayDate;
     }
 }
