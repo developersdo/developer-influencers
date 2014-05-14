@@ -20,6 +20,7 @@ import org.devdom.tracker.bean.FacebookController;
 import org.devdom.tracker.model.dto.FacebookMember;
 import org.devdom.tracker.model.dto.FacebookProfile;
 import org.devdom.tracker.util.Configuration;
+import org.devdom.tracker.util.Utils;
 
 /**
  *
@@ -29,11 +30,8 @@ public class Callback extends HttpServlet{
     
     private static final long serialVersionUID = 6305643034487441839L;
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+
     
-    /**
-     * 
-     * @return
-     */
     public EntityManager getEntityManager(){
         return emf.createEntityManager(Configuration.JPAConfig());
     }
@@ -45,7 +43,7 @@ public class Callback extends HttpServlet{
         try {
             facebook.getOAuthAccessToken(oauthCode);
             setProfile(request,facebook);
-        } catch (FacebookException e) {
+        } catch (FacebookException e){ 
             throw new ServletException(e);
         }
         response.sendRedirect(request.getContextPath() + "/");
@@ -73,13 +71,13 @@ public class Callback extends HttpServlet{
                     Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
+
             try {
                 updateMember(profile);
             } catch (Exception ex) {
                 Logger.getLogger(Callback.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
         } catch (FacebookException ex) {
             Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -90,18 +88,23 @@ public class Callback extends HttpServlet{
      * @param profile 
      */
     private void updateMember(FacebookProfile profile) throws Exception{
-
+        
         EntityManager em = getEntityManager();
         try{
             em.getTransaction().begin();
             FacebookMember member = new FacebookMember();
             member.setUid(String.valueOf(profile.getUid()));
-            member.setBirthdayDate(profile.getBirthday());
+            member.setBirthdayDate(Utils.getDateFormatted(profile.getBirthday(),"MM/dd/yyyy"));
+            member.setFirstName(profile.getFirstName());
+            member.setLastName(profile.getLastName());
+            member.setPic(profile.getPic_with_logo());
             em.merge(member);
             em.getTransaction().commit();
         }finally{
             if(em!=null|em.isOpen())
                 em.close();
+            if(emf.isOpen())
+                emf.close();
         }
     }
 }
