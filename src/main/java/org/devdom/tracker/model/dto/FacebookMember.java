@@ -28,6 +28,9 @@ public class FacebookMember implements Serializable {
     
     @Column(name = "pic")
     private String pic;
+    
+    @Column(name = "birthday_date")
+    private String birthdayDate;
 
     public FacebookMember() {
     }
@@ -114,5 +117,19 @@ public class FacebookMember implements Serializable {
      */
     public void setPic(String pic) {
         this.pic = pic;
+    }
+
+    /**
+     * @return the birthdayDate
+     */
+    public String getBirthdayDate() {
+        return birthdayDate;
+    }
+
+    /**
+     * @param birthdayDate the birthdayDate to set
+     */
+    public void setBirthdayDate(String birthdayDate) {
+        this.birthdayDate = birthdayDate;
     }
 }
