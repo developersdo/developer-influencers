@@ -20,7 +20,17 @@ public class Utils {
      * @return 
      */
     public static Date getDateFormatted(String date){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        
+        return getDateFormatted(date, "yyyy-MM-dd'T'HH:mm:ss");
+    }
+    /**
+     * 
+     * @param date
+     * @param format
+     * @return 
+     */
+    public static Date getDateFormatted(String date, String format){
+        SimpleDateFormat formatter = new SimpleDateFormat(format);
         try {
             return formatter.parse(date);
         } catch (ParseException ex) {
@@ -28,5 +38,4 @@ public class Utils {
         }
         return new Date();
     }
-
 }

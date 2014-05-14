@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.eclipse.persistence.annotations.Direction;
 import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
@@ -63,12 +64,6 @@ public class Influencers  implements Serializable {
     
     @Column(name = "picture")
     private String picture;
-
-    public Influencers(int position, String formId, String fullName){
-        setPosition(position);
-        setFromId(fromId);
-        setFullName(fullName);
-    }
 
     /**
      * @return the position
