@@ -8,13 +8,18 @@ import facebook4j.internal.org.json.JSONObject;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.devdom.tracker.Worker;
 import org.devdom.tracker.bean.FacebookController;
+import org.devdom.tracker.model.dto.FacebookMember;
 import org.devdom.tracker.model.dto.FacebookProfile;
+import org.devdom.tracker.util.Configuration;
 
 /**
  *
@@ -23,6 +28,15 @@ import org.devdom.tracker.model.dto.FacebookProfile;
 public class Callback extends HttpServlet{
     
     private static final long serialVersionUID = 6305643034487441839L;
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+    
+    /**
+     * 
+     * @return
+     */
+    public EntityManager getEntityManager(){
+        return emf.createEntityManager(Configuration.JPAConfig());
+    }
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,19 +44,19 @@ public class Callback extends HttpServlet{
         String oauthCode = request.getParameter("code");
         try {
             facebook.getOAuthAccessToken(oauthCode);
-            setProfile(request,response,facebook);
+            setProfile(request,facebook);
         } catch (FacebookException e) {
             throw new ServletException(e);
         }
         response.sendRedirect(request.getContextPath() + "/");
     }
     
-    private void setProfile(HttpServletRequest request, HttpServletResponse response, Facebook facebook){
+    private void setProfile(HttpServletRequest request, Facebook facebook){
         FacebookProfile profile = new FacebookProfile();
         try {
             String query = "SELECT uid, first_name, last_name, name, birthday_date, email, pic_big, sex FROM user WHERE uid = me() ";
             JSONArray jsonArray = facebook.executeFQL(query);
-
+            
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject;
                 try {
@@ -51,7 +65,7 @@ public class Callback extends HttpServlet{
                     profile.setFirstName(jsonObject.getString("first_name"));
                     profile.setLastName(jsonObject.getString("last_name"));
                     profile.setEmail(jsonObject.getString("email"));
-                    profile.setBirthday_date(jsonObject.getString("birthday_date"));
+                    profile.setBirthday(jsonObject.getString("birthday_date"));
                     profile.setPic_with_logo(jsonObject.getString("pic_big"));
                     profile.setSex(jsonObject.getString("sex"));
                     request.getSession().setAttribute("profile", profile);
@@ -59,14 +73,35 @@ public class Callback extends HttpServlet{
                     Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
-            Runnable worker = new Worker();
-            Thread thread = new Thread(worker);
-            thread.setName("w");
-            thread.start();
+            
+            try {
+                updateMember(profile);
+            } catch (Exception ex) {
+                Logger.getLogger(Callback.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         } catch (FacebookException ex) {
             Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }   
+    }
+    
+    /**
+     * 
+     * @param profile 
+     */
+    private void updateMember(FacebookProfile profile) throws Exception{
+
+        EntityManager em = getEntityManager();
+        try{
+            em.getTransaction().begin();
+            FacebookMember member = new FacebookMember();
+            member.setUid(String.valueOf(profile.getUid()));
+            member.setBirthdayDate(profile.getBirthday());
+            em.merge(member);
+            em.getTransaction().commit();
+        }finally{
+            if(em!=null|em.isOpen())
+                em.close();
+        }
+    }
 }
