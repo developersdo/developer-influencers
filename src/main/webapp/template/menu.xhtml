@@ -5,30 +5,29 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <c:choose>
         <c:when test="#{fb.logged}">
-            <p:layoutUnit id="leftMenu" position="west" size="296" collapsed="false" collapsible="true">
+            <p:layoutUnit id="leftMenu" resizable="true" position="west" size="314" collapsed="false" collapsible="true">
                 <h:form id="leftForm">
-                    <br/>
-                    <div style="text-align:center">
-                        <div id="profile-position" class="textShadowGray">#12</div>
-                        <img src="#{fb.profilePicture}" class="circularProfileImage glow"/>
-                        <div class="titleProfile textShadow">#{fb.loggedName}</div>
-                    </div>
+                    <div style="text-align:center"> 
+                        <div id="profile-position" class="textShadowGray"># #{influencers.secondPosition.position}</div>
+                        <img src="#{influencers.secondPosition.picture}" class="circularProfileImage glow"/>
+                        <div class="titleProfile textShadow">#{influencers.secondPosition.fullName}</div>
+                    </div> 
                     <div id="devs-carrousel">
                         <div> 
-                            <img class="circularProfileImage dev-carrousel-button" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn2/t1.0-1/c0.34.160.160/p160x160/1476199_10153602106355624_527592889_n.jpg"/> 
+                            <img class="circularProfileImage dev-carrousel-button" src="#{influencers.firstPosition.picture}"/>
                         </div>
                         <div style="float: left;width:138px;"><br/></div>
                         <div>
-                            <img class="dev-carrousel-button circularProfileImage left-carrousel-image" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/t1.0-1/c8.0.160.160/p160x160/1016978_10153958422330408_8876927104933404532_n.jpg"/>
+                            <img class="dev-carrousel-button circularProfileImage left-carrousel-image" src="#{influencers.thirdPosition.picture}"/>
                         </div>
                     </div>
                     
                     <div id="gauges-scores">
-                        <div id="score">
+                        <div id="score"> 
                             <div id="firstPlace">
                                 <input  class="knob" data-width="55" data-angleOffset="-100" data-readOnly="true" 
                                 data-angleArc="200" data-fgColor="#FF0000" data-rotation="anticlockwise" 
-                                value="2.2" data-displayPrevious="false" 
+                                value="#{influencers.firstGaugeRating.ratio}" data-displayPrevious="false" 
                                 data-step="0.5"
                                 data-min="0"
                                 data-max="10"/>
@@ -36,7 +35,7 @@
                             <div id="secondPlace">
                                 <input  class="knob" data-width="55" data-angleOffset="-100" data-readOnly="true" 
                                 data-angleArc="200" data-fgColor="#FF0000" data-rotation="anticlockwise" 
-                                value="1.1" data-displayPrevious="false" 
+                                value="#{influencers.secondGaugeRating.ratio}" data-displayPrevious="false" 
                                 data-step="0.5"
                                 data-min="0"
                                 data-max="10"/>
@@ -44,24 +43,19 @@
                             <div id="thirdPlace">
                                 <input  class="knob" data-width="55" data-angleOffset="-100" data-readOnly="true" 
                                 data-angleArc="200" data-fgColor="#FF0000" data-rotation="anticlockwise" 
-                                value="0.6" data-displayPrevious="false" 
+                                value="#{influencers.thirdGaugeRating.ratio}" data-displayPrevious="false" 
                                 data-step="0.5"
                                 data-min="0"
                                 data-max="10"/>
                             </div>
                         </div>
                         <div id="group">
-                            <div id="firstTitle" class="textShadow">Developers Dominicanos</div>
-                            <div id="secondTitle" class="textShadow">Developers X</div>
-                            <div id="thirdTitle" class="textShadow">#VivaPHP</div>     
+                            <div id="firstTitle" class="textShadow"><a href="?from_id=dev1" style="text-decoration:underline;">#{influencers.firstGaugeRating.groupName}</a></div>
+                            <div id="secondTitle" class="textShadow"><a href="?from_id=dev1" style="text-decoration:underline;">#{influencers.secondGaugeRating.groupName}</a></div>
+                            <div id="thirdTitle" class="textShadow"><a href="?from_id=dev1" style="text-decoration:underline;">#{influencers.thirdGaugeRating.groupName}</a></div>     
                         </div>
                     </div>
-                    <br/><br/><br/><br/>
-                    <p:menu>
-                        <p:submenu label="Estadísticas">
-                            <p:menuitem value="Top 10 más influyentes" outcome="influencers"/>
-                        </p:submenu>
-                    </p:menu>
+                    <p:menu model="#{influencers.menuItems}" styleClass="groupList" style="width:95%;"/>
                 </h:form>
             </p:layoutUnit>
         </c:when>
