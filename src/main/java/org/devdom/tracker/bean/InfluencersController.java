@@ -6,8 +6,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import org.devdom.tracker.model.dao.GroupRatingDao;
 import org.devdom.tracker.model.dao.InfluencersDao;
+import org.devdom.tracker.model.dto.GroupRating;
 import org.devdom.tracker.model.dto.Influencers;
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.DefaultSubMenu;
+import org.primefaces.model.menu.MenuModel;
 
 /**
  *
@@ -19,9 +25,10 @@ import org.devdom.tracker.model.dto.Influencers;
 public class InfluencersController implements Serializable{
     
     private static final long serialVersionUID = 1L;
-    InfluencersDao dao = new InfluencersDao();
-    List<Influencers> influencers = null;
-    List<Influencers> gaugeRating = null;
+    private final InfluencersDao dao = new InfluencersDao();
+    private List<Influencers> influencers = null;
+    private final List<GroupRating> gaugeRating = null;
+    private MenuModel menu = new DefaultMenuModel();
     
     /**
      * Listado de los 20 developers más influyentes de todos los grupos
@@ -40,13 +47,13 @@ public class InfluencersController implements Serializable{
      * teniendo como row central al developer que se pasa en el fromId
      * @return 
      */
-    public List getPositionInformation(){
+    public List<Influencers> getPositionInformation(){
         FacebookController facebook = new FacebookController();
 
         final String FROM_ID = String.valueOf(facebook.getFacebookID());
-        final String GROUP_ID = "0"; //Hace referencia al score universal de todos los grupos
+        final String GROUP_ID = "1"; //Hace referencia al score universal de todos los grupos
         try {
-            return dao.findPositionCarruselByUserIdAndGroupId(FROM_ID, GROUP_ID);
+            return (List<Influencers>)dao.findPositionCarruselByUserIdAndGroupId(FROM_ID, GROUP_ID);
         } catch (Exception ex) {
             Logger.getLogger(InfluencersController.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -58,11 +65,13 @@ public class InfluencersController implements Serializable{
      * de desarrollo de aplicaciones
      * @return 
      */
-    public List getGroupsRating(){
+    public List<GroupRating> getGroupsRating(){
         FacebookController facebook = new FacebookController();
         final String FROM_ID = String.valueOf(facebook.getFacebookID());
+        
+        GroupRatingDao daoGroup = new GroupRatingDao();
         try{
-            return dao.findGroupsRatingByUserId(FROM_ID);
+            return (List<GroupRating>) daoGroup.findGroupsRatingByUserId(FROM_ID);
         }catch(Exception ex){
             Logger.getLogger(InfluencersController.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -74,12 +83,12 @@ public class InfluencersController implements Serializable{
      * 
      * @return 
      */
-    public Influencers getFirstGaugeRating(){
+    public GroupRating getFirstGaugeRating(){
 
         if(getRatingList().size()>=1)
             return gaugeRating.get(0);
         
-        return empty();
+        return emptyGroupRow();
     }
     
     /**
@@ -87,12 +96,12 @@ public class InfluencersController implements Serializable{
      * 
      * @return 
      */
-    public Influencers getSecondGaugeRating(){
+    public GroupRating getSecondGaugeRating(){
 
         if(getRatingList().size()>=2)
             return gaugeRating.get(1);
         
-        return empty();
+        return emptyGroupRow();
     }
     
     /**
@@ -100,12 +109,12 @@ public class InfluencersController implements Serializable{
      * 
      * @return 
      */
-    public Influencers getThirdGaugeRating(){
+    public GroupRating getThirdGaugeRating(){
         
         if(getRatingList().size()>=3)
             return getRatingList().get(1);
         
-        return empty();
+        return emptyGroupRow();
     }
     
     /**
@@ -113,9 +122,9 @@ public class InfluencersController implements Serializable{
      * 
      * @return 
      */
-    public List<Influencers> getRatingList(){
+    public List<GroupRating> getRatingList(){
         if(gaugeRating==null)
-            return (List<Influencers>) this.getGroupsRating();
+            return (List<GroupRating>) getGroupsRating();
         else
             return gaugeRating;
     }
@@ -165,12 +174,45 @@ public class InfluencersController implements Serializable{
         return empty();
     }
     
+    private GroupRating emptyGroupRow(){
+        GroupRating empty = new GroupRating();
+        empty.setFromId(0);
+        empty.setGroupId("0");
+        empty.setGroupName("");
+        empty.setPosition(0);
+        return empty;
+    }
+    
     private Influencers empty(){
         Influencers emptyInfluencer = new Influencers();
         emptyInfluencer.setFromId(0);
         emptyInfluencer.setPosition(0);
-        emptyInfluencer.setFullName("");
+        emptyInfluencer.setFullName("empty");
         return emptyInfluencer;
+    }
+    
+    public MenuModel getMenuItems(){
+        MenuModel model = new DefaultMenuModel();
+        DefaultSubMenu submenu = new DefaultSubMenu();
+        submenu.setLabel("Grupos");
+        submenu.setId("influencersMenu");
+
+        List<GroupRating> groups = getRatingList();
+
+        groups.stream().forEach((group) -> {
+            String displayValue = group.getGroupName() + " ("+group.getRatio()+")";
+            
+            DefaultMenuItem item = new DefaultMenuItem();
+            item.setValue(displayValue);
+            item.setId(group.getGroupId());
+            item.setUrl("groupstats.xhtml");
+            item.setStyle("font-size:12px;");
+            submenu.addElement(item);
+        });
+
+        model.addElement(submenu);
+
+        return model;
     }
 
 }

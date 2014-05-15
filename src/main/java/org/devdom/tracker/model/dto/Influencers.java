@@ -4,7 +4,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.eclipse.persistence.annotations.Direction;
 import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
@@ -34,20 +33,9 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       name="group_id",
                                                                       direction=Direction.IN,
                                                                       type=Integer.class)}
-                                ),
-    @NamedStoredProcedureQuery( name="Influencers.findGroupsRatingByUserId",
-                                procedureName="findGroupsRatingByUserId",
-                                returnsResultSet=true,
-                                resultClass=Influencers.class,
-                                parameters={@StoredProcedureParameter(queryParameter="from_id",
-                                                                      name="from_id",
-                                                                      direction=Direction.IN,
-                                                                      type=Integer.class)}
                                 )
 })
-public class Influencers  implements Serializable {
-    
-    private static final long serialVersionUID = 1L;
+public class Influencers  implements Serializable {    
     
     @Id
     @Column(name = "position", unique = false)

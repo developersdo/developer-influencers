@@ -50,10 +50,10 @@ public class InfluencersDao {
      * @return
      * @throws Exception 
      */
-    public List findPositionCarruselByUserIdAndGroupId(String fromId, String groupId) throws Exception{
+    public List<Influencers> findPositionCarruselByUserIdAndGroupId(String fromId, String groupId) throws Exception{
         EntityManager em = getEntityManager();
         try{
-            return em.createNamedQuery("Influencers.findPositionCarruselByUserIdAndGroupId")
+            return (List<Influencers>)em.createNamedQuery("Influencers.findPositionCarruselByUserIdAndGroupId")
                     .setParameter("from_id", fromId)
                     .setParameter("group_id", groupId)
                     .getResultList();
@@ -63,22 +63,4 @@ public class InfluencersDao {
         }
     }
 
-    /**
-     * Listado de grupos con el rating que tiene el developer en cada uno de ellos
-     * 
-     * @param fromId
-     * @return
-     * @throws Exception 
-     */
-    public List findGroupsRatingByUserId(String fromId)throws Exception{
-        EntityManager em = getEntityManager();
-        try{
-            return em.createNamedQuery("Influencers.findGroupsRatingByUserId")
-                    .setParameter("from_id", fromId)
-                    .getResultList();
-        }finally{
-            if(em!=null|em.isOpen())
-                em.close();
-        }
-    }
 }
