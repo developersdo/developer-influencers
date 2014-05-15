@@ -73,6 +73,12 @@ public class Influencers  implements Serializable {
     
     @Column(name = "picture")
     private String picture;
+    
+    @Column(name = "group_id")
+    private String groupId;
+    
+    @Column(name = "group_name")
+    private String groupName;
 
     /**
      * @return the position
@@ -184,6 +190,34 @@ public class Influencers  implements Serializable {
      */
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    /**
+     * @return the groupId
+     */
+    public String getGroupId() {
+        return groupId;
+    }
+
+    /**
+     * @param groupId the groupId to set
+     */
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    /**
+     * @return the groupName
+     */
+    public String getGroupName() {
+        return groupName;
+    }
+
+    /**
+     * @param groupName the groupName to set
+     */
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
 }
