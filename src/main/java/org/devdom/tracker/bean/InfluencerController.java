@@ -6,9 +6,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import org.devdom.tracker.model.dto.TopThreeInformation;
 import org.devdom.tracker.model.dao.GroupRatingDao;
 import org.devdom.tracker.model.dao.InfluencerDao;
 import org.devdom.tracker.model.dto.GroupRating;
@@ -21,62 +22,33 @@ import org.primefaces.model.menu.MenuModel;
 /**
  *
  * @author Carlos Vásquez Polanco
- */
-
-@ManagedBean
-@SessionScoped
+ */ 
+@RequestScoped
 public class InfluencerController implements Serializable{
-    
-    private static final long serialVersionUID = 1L;
+
     private final InfluencerDao dao = new InfluencerDao();
-    private List<Influencer> influencers = null;
+    private final List<TopThreeInformation> positionInformation = (List<TopThreeInformation>) getPositionInformation();
     private List<GroupRating> gaugeRating = null;
-    private MenuModel menu = new DefaultMenuModel();
-    private FacesContext facesContext = null;
     
-    /**
-     * Listado de los 20 developers más influyentes de todos los grupos
-     * @return 
-     */
-    public List<Influencer> getTopInfluencers(){
-        try {
-            return dao.findTop20DevsInfluents();
-        } catch (Exception ex) {
-            Logger.getLogger(InfluencerController.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
     /**
      * Utilizado para extraer tres developers ordenados por la posición y
      * teniendo como row central al developer que se pasa en el fromId
      * @return 
      */
-    public List<Influencer> getPositionInformation(){
+    public List<TopThreeInformation> getPositionInformation(){
         FacebookController facebook = new FacebookController();
 
         final String FROM_ID = String.valueOf(facebook.getFacebookID());
         final String GROUP_ID = "1"; //Hace referencia al score universal de todos los grupos
+
         try {
-            return (List<Influencer>)dao.findPositionCarruselByUserIdAndGroupId(FROM_ID, GROUP_ID);
+            return (List<TopThreeInformation>) dao.findPositionCarruselByUserIdAndGroupId(FROM_ID, GROUP_ID);
         } catch (Exception ex) {
             Logger.getLogger(InfluencerController.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
-    
-    public List<Influencer> getTop20(){
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String,String> request = ec.getRequestParameterMap();
-        
-        String groupId = request.get("g");
-        try {
-            return dao.findTop20DevsInfluents();
-        } catch (Exception ex) {
-            Logger.getLogger(InfluencerController.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-    
+
     /**
      * Obtener la lista de ratings que tiene un developer en los distintos grupos
      * de desarrollo de aplicaciones
@@ -151,12 +123,13 @@ public class InfluencerController implements Serializable{
      * 
      * @return 
      */
-    public Influencer getFirstPosition(){
-        if(influencers==null)
-            influencers = (List<Influencer>) getPositionInformation();
-        
-        if(influencers.size()>0)
-            return influencers.get(0);
+    public TopThreeInformation getFirstPosition(){
+        //if(influencers==null)
+        //    influencers = (List<Influencer>) getPositionInformation();
+
+        //positionInformation
+        if(positionInformation.size()>0)
+            return positionInformation.get(0);
         
         return empty();
     }
@@ -166,12 +139,10 @@ public class InfluencerController implements Serializable{
      * 
      * @return 
      */
-    public Influencer getSecondPosition(){
-        if(influencers==null)
-            influencers = (List<Influencer>) getPositionInformation();
+    public TopThreeInformation getSecondPosition(){
         
-        if(influencers.size()>=2)
-            return influencers.get(1);
+        if(positionInformation.size()>=2)
+            return positionInformation.get(1);
         
         return empty();
     }
@@ -181,12 +152,10 @@ public class InfluencerController implements Serializable{
      * 
      * @return 
      */
-    public Influencer getThirdPosition(){
-        if(influencers==null)
-            influencers = (List<Influencer>) getPositionInformation();
+    public TopThreeInformation getThirdPosition(){
         
-        if(influencers.size()>=3)
-            return influencers.get(2);
+        if(positionInformation.size()>=3)
+            return positionInformation.get(2);
         
         return empty();
     }
@@ -200,9 +169,9 @@ public class InfluencerController implements Serializable{
         return empty;
     }
     
-    private Influencer empty(){
-        Influencer emptyInfluencer = new Influencer();
-        emptyInfluencer.setFromId(0);
+    private TopThreeInformation empty(){
+        TopThreeInformation emptyInfluencer = new TopThreeInformation();
+        emptyInfluencer.setFromId("0");
         emptyInfluencer.setPosition(0);
         emptyInfluencer.setFullName("empty");
         return emptyInfluencer;
@@ -231,6 +200,25 @@ public class InfluencerController implements Serializable{
         model.addElement(submenu);
 
         return model;
+    }
+    
+    /**
+     * Listado de los 20 developers más influyentes de todos los grupos
+     * @return 
+     */
+    public List<Influencer> getTop20(){
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String,String> request = externalContext.getRequestParameterMap();
+        
+        String groupId = request.get("g");
+        System.out.println("groupId:"+groupId);
+        try {
+            InfluencerDao dao = new InfluencerDao();
+            return dao.findTop20DevsInfluents(groupId);
+        } catch (Exception ex) {
+            Logger.getLogger(InfluencerController.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
 }

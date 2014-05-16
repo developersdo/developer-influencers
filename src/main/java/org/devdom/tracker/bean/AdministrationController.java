@@ -11,7 +11,6 @@ import org.primefaces.util.Constants;
  */
 
 @ManagedBean
-@SessionScoped
 public class AdministrationController {
     
     private static final long serialVersionUID = 1L;

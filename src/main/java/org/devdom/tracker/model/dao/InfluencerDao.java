@@ -5,6 +5,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import org.devdom.tracker.model.dto.Influencer;
+import org.devdom.tracker.model.dto.TopThreeInformation;
 import org.devdom.tracker.util.Configuration;
 
 /**
@@ -28,13 +29,16 @@ public class InfluencerDao {
     /**
      * Top 20 de los developers más influyentes a nivel general
      * 
+     * @param groupId
      * @return
      * @throws Exception 
      */
-    public List<Influencer> findTop20DevsInfluents() throws Exception{
+    public List<Influencer> findTop20DevsInfluents(String groupId) throws Exception{
         EntityManager em = getEntityManager();
         try{
-            return em.createNamedQuery("Influencers.findTop10DevsInfluents").getResultList();
+            return (List<Influencer>) em.createNamedQuery("Influencers.findTop20DevsInfluents")
+                    .setParameter("group_id", groupId)
+                    .getResultList();
         }finally{
             if(em!=null|em.isOpen())
                 em.close();
@@ -50,10 +54,13 @@ public class InfluencerDao {
      * @return
      * @throws Exception 
      */
-    public List<Influencer> findPositionCarruselByUserIdAndGroupId(String fromId, String groupId) throws Exception{
+    public List<TopThreeInformation> findPositionCarruselByUserIdAndGroupId(String fromId, String groupId) throws Exception{
         EntityManager em = getEntityManager();
         try{
-            return (List<Influencer>)em.createNamedQuery("Influencers.findPositionCarruselByUserIdAndGroupId")
+            
+            System.out.println("FROMID -------> "+fromId);
+            System.out.println("GROUPID -------> "+groupId);
+            return (List<TopThreeInformation>)em.createNamedQuery("TopThreeInformation.findPositionCarruselByUserIdAndGroupId")
                     .setParameter("from_id", fromId)
                     .setParameter("group_id", groupId)
                     .getResultList();

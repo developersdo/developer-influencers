@@ -21,19 +21,6 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                 procedureName="findTop10DevsInfluents",
                                 returnsResultSet=true,
                                 resultClass=Influencer.class),
-    @NamedStoredProcedureQuery( name="Influencers.findPositionCarruselByUserIdAndGroupId",
-                                procedureName="findPositionCarruselByUserIdAndGroupId",
-                                returnsResultSet=true,
-                                resultClass=Influencer.class,
-                                parameters={@StoredProcedureParameter(queryParameter="from_id",
-                                                                      name="from_id",
-                                                                      direction=Direction.IN,
-                                                                      type=Integer.class),
-                                            @StoredProcedureParameter(queryParameter="group_id",
-                                                                      name="group_id",
-                                                                      direction=Direction.IN,
-                                                                      type=Integer.class)}
-                                ),
     @NamedStoredProcedureQuery( name="Influencers.findTop20DevsInfluents",
                                 procedureName="findTop20DevsInfluents",
                                 returnsResultSet=true,
@@ -47,7 +34,7 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
 public class Influencer  implements Serializable {    
     
     @Id
-    @Column(name = "position", unique = false)
+    @Column(name = "position")
     private int position;
     
     @Column(name = "from_id")
@@ -59,8 +46,11 @@ public class Influencer  implements Serializable {
     @Column(name = "likes_count")
     private int likesCount;
     
-    @Column(name = "messages_count")
+    @Column(name = "comments_count")
     private int messagesCount;
+    
+    @Column(name = "mentions_count")
+    private int mentionsCount;
     
     @Column(name = "posts_count")
     private int postsCount;
@@ -215,6 +205,20 @@ public class Influencer  implements Serializable {
      */
     public void setGroupName(String groupName) {
         this.groupName = groupName;
+    }
+
+    /**
+     * @return the mentionsCount
+     */
+    public int getMentionsCount() {
+        return mentionsCount;
+    }
+
+    /**
+     * @param mentionsCount the mentionsCount to set
+     */
+    public void setMentionsCount(int mentionsCount) {
+        this.mentionsCount = mentionsCount;
     }
 
 }

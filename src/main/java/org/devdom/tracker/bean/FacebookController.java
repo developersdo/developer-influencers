@@ -13,7 +13,6 @@ import org.devdom.tracker.model.dto.FacebookProfile;
  */
 
 @ManagedBean
-@SessionScoped
 public class FacebookController implements Serializable{
     
     private static final long serialVersionUID = 1L;
