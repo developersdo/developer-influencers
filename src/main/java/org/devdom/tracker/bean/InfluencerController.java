@@ -2,14 +2,17 @@ package org.devdom.tracker.bean;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import org.devdom.tracker.model.dao.GroupRatingDao;
-import org.devdom.tracker.model.dao.InfluencersDao;
+import org.devdom.tracker.model.dao.InfluencerDao;
 import org.devdom.tracker.model.dto.GroupRating;
-import org.devdom.tracker.model.dto.Influencers;
+import org.devdom.tracker.model.dto.Influencer;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -22,23 +25,24 @@ import org.primefaces.model.menu.MenuModel;
 
 @ManagedBean
 @SessionScoped
-public class InfluencersController implements Serializable{
+public class InfluencerController implements Serializable{
     
     private static final long serialVersionUID = 1L;
-    private final InfluencersDao dao = new InfluencersDao();
-    private List<Influencers> influencers = null;
-    private final List<GroupRating> gaugeRating = null;
+    private final InfluencerDao dao = new InfluencerDao();
+    private List<Influencer> influencers = null;
+    private List<GroupRating> gaugeRating = null;
     private MenuModel menu = new DefaultMenuModel();
+    private FacesContext facesContext = null;
     
     /**
      * Listado de los 20 developers más influyentes de todos los grupos
      * @return 
      */
-    public List<Influencers> getTopInfluencers(){
+    public List<Influencer> getTopInfluencers(){
         try {
             return dao.findTop20DevsInfluents();
         } catch (Exception ex) {
-            Logger.getLogger(InfluencersController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InfluencerController.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -47,15 +51,28 @@ public class InfluencersController implements Serializable{
      * teniendo como row central al developer que se pasa en el fromId
      * @return 
      */
-    public List<Influencers> getPositionInformation(){
+    public List<Influencer> getPositionInformation(){
         FacebookController facebook = new FacebookController();
 
         final String FROM_ID = String.valueOf(facebook.getFacebookID());
         final String GROUP_ID = "1"; //Hace referencia al score universal de todos los grupos
         try {
-            return (List<Influencers>)dao.findPositionCarruselByUserIdAndGroupId(FROM_ID, GROUP_ID);
+            return (List<Influencer>)dao.findPositionCarruselByUserIdAndGroupId(FROM_ID, GROUP_ID);
         } catch (Exception ex) {
-            Logger.getLogger(InfluencersController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InfluencerController.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public List<Influencer> getTop20(){
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String,String> request = ec.getRequestParameterMap();
+        
+        String groupId = request.get("g");
+        try {
+            return dao.findTop20DevsInfluents();
+        } catch (Exception ex) {
+            Logger.getLogger(InfluencerController.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -73,7 +90,7 @@ public class InfluencersController implements Serializable{
         try{
             return (List<GroupRating>) daoGroup.findGroupsRatingByUserId(FROM_ID);
         }catch(Exception ex){
-            Logger.getLogger(InfluencersController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InfluencerController.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -112,7 +129,7 @@ public class InfluencersController implements Serializable{
     public GroupRating getThirdGaugeRating(){
         
         if(getRatingList().size()>=3)
-            return getRatingList().get(1);
+            return getRatingList().get(2);
         
         return emptyGroupRow();
     }
@@ -124,9 +141,9 @@ public class InfluencersController implements Serializable{
      */
     public List<GroupRating> getRatingList(){
         if(gaugeRating==null)
-            return (List<GroupRating>) getGroupsRating();
-        else
-            return gaugeRating;
+            gaugeRating = getGroupsRating();
+
+        return gaugeRating;
     }
     
     /**
@@ -134,9 +151,9 @@ public class InfluencersController implements Serializable{
      * 
      * @return 
      */
-    public Influencers getFirstPosition(){
+    public Influencer getFirstPosition(){
         if(influencers==null)
-            influencers = (List<Influencers>) getPositionInformation();
+            influencers = (List<Influencer>) getPositionInformation();
         
         if(influencers.size()>0)
             return influencers.get(0);
@@ -149,9 +166,9 @@ public class InfluencersController implements Serializable{
      * 
      * @return 
      */
-    public Influencers getSecondPosition(){
+    public Influencer getSecondPosition(){
         if(influencers==null)
-            influencers = (List<Influencers>) getPositionInformation();
+            influencers = (List<Influencer>) getPositionInformation();
         
         if(influencers.size()>=2)
             return influencers.get(1);
@@ -164,9 +181,9 @@ public class InfluencersController implements Serializable{
      * 
      * @return 
      */
-    public Influencers getThirdPosition(){
+    public Influencer getThirdPosition(){
         if(influencers==null)
-            influencers = (List<Influencers>) getPositionInformation();
+            influencers = (List<Influencer>) getPositionInformation();
         
         if(influencers.size()>=3)
             return influencers.get(2);
@@ -183,8 +200,8 @@ public class InfluencersController implements Serializable{
         return empty;
     }
     
-    private Influencers empty(){
-        Influencers emptyInfluencer = new Influencers();
+    private Influencer empty(){
+        Influencer emptyInfluencer = new Influencer();
         emptyInfluencer.setFromId(0);
         emptyInfluencer.setPosition(0);
         emptyInfluencer.setFullName("empty");
@@ -194,10 +211,11 @@ public class InfluencersController implements Serializable{
     public MenuModel getMenuItems(){
         MenuModel model = new DefaultMenuModel();
         DefaultSubMenu submenu = new DefaultSubMenu();
-        submenu.setLabel("Grupos");
         submenu.setId("influencersMenu");
 
-        List<GroupRating> groups = getRatingList();
+        List<GroupRating> groups = getGroupsRating();
+        
+        groups = groups.subList(3, groups.size());
 
         groups.stream().forEach((group) -> {
             String displayValue = group.getGroupName() + " ("+group.getRatio()+")";
@@ -205,7 +223,7 @@ public class InfluencersController implements Serializable{
             DefaultMenuItem item = new DefaultMenuItem();
             item.setValue(displayValue);
             item.setId(group.getGroupId());
-            item.setUrl("groupstats.xhtml");
+            item.setUrl("/group.xhtml?g="+ group.getGroupId());
             item.setStyle("font-size:12px;");
             submenu.addElement(item);
         });
