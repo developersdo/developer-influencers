@@ -51,7 +51,7 @@ public class Influencer  implements Serializable {
     
     @Column(name = "mentions_count")
     private int mentionsCount;
-    
+
     @Column(name = "posts_count")
     private int postsCount;
     
