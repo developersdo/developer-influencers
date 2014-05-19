@@ -35,6 +35,25 @@ public class GraphDao {
         }
     }
     
+    /**
+     * 
+     * @param month
+     * @param year
+     * @return 
+     */
+    public List<GraphStats> findPostsStatsByMonthAndYear(int month, int year){
+        EntityManager em = getEntityManager();
+        try{
+            return (List<GraphStats>) em.createNamedQuery("Graph.findPostsStatsByMonthAndYear")
+                    .setParameter("month", month)
+                    .setParameter("year", year)
+                    .getResultList();
+        }finally{
+            if(em.isOpen())
+                em.close();
+        }
+    }
+    
     public List<GraphStats> findCommentsStats(){
         EntityManager em = getEntityManager();
         try{
