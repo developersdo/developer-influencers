@@ -1,5 +1,7 @@
 package org.devdom.tracker.bean;
 
+import java.io.Serializable;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -11,7 +13,8 @@ import org.primefaces.util.Constants;
  */
 
 @ManagedBean
-public class AdministrationController {
+@ApplicationScoped
+public class AdministrationController implements Serializable {
     
     private static final long serialVersionUID = 1L;
 
