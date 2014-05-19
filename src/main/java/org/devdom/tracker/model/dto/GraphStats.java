@@ -5,8 +5,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Direction;
 import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
 import org.eclipse.persistence.annotations.NamedStoredProcedureQuery;
+import org.eclipse.persistence.annotations.StoredProcedureParameter;
 
 /**
  *
@@ -22,7 +24,20 @@ import org.eclipse.persistence.annotations.NamedStoredProcedureQuery;
     @NamedStoredProcedureQuery( name="Graph.findCommentsStats", 
                                 procedureName="findCommentsStats",
                                 returnsResultSet=true,
-                                resultClass=GraphStats.class)
+                                resultClass=GraphStats.class),
+    @NamedStoredProcedureQuery( name="Graph.findPostsStatsByMonthAndYear", 
+                                procedureName="findPostsStatsByMonthAndYear",
+                                returnsResultSet=true,
+                                resultClass=GraphStats.class,
+                                parameters={@StoredProcedureParameter(queryParameter="month",
+                                                                      name="month",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class),
+                                            @StoredProcedureParameter(queryParameter="year",
+                                                                      name="year",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class)
+                                            })
 })
 public class GraphStats implements Serializable{
     
