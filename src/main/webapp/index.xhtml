@@ -9,7 +9,13 @@
                 <h:form style="padding:0px;border:solid 0px #fff;">
                     <c:choose>                        
                         <c:when test="#{fb.logged}">
-                            Bienvenido!
+                            <!-- amCharts javascript code -->
+                            <br/>
+                            <h:outputText escape="false" value="#{graph.postsGraph}"/>
+                            <div id="chartPosts" style="width: 100%; height: 400px; background-color: #FFFFFF;" ></div>
+                            <br/>
+                            <h:outputText escape="false" value="#{graph.commentsGraph}"/>
+                            <div id="chartComments" style="width: 100%; height: 400px; background-color: #FFFFFF;" ></div>
                         </c:when>
                         <c:otherwise>
                             <h:outputText value="#{fb.loginButton}" escape="false" />
