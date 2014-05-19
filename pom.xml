@@ -4,7 +4,7 @@
 
     <groupId>org.devdom</groupId>
     <artifactId>tracker-comment</artifactId>
-    <version>0.1</version>
+    <version>0.9</version>
     <packaging>war</packaging>
     <name>tracker-comment</name>
     <organization>
