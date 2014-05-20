@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.devdom</groupId>
-    <artifactId>tracker-comment</artifactId>
+    <artifactId>developer-influencers</artifactId>
     <version>0.9</version>
-    <packaging>war</packaging>
-    <name>tracker-comment</name>
+    <name>developer-influencers</name>
     <organization>
         <name>Developers Dominicanos</name>
         <url>http://developers.do</url>
@@ -17,9 +15,23 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jetty-version>9.1.5.v20140505</jetty-version>
+        <jsf-version>2.1.26</jsf-version>
     </properties>
     
     <dependencies>
+        <!-- Jetty -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>${jetty-version}</version>
+        </dependency>        
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+            <version>${jetty-version}</version>
+        </dependency>
+        <!-- Primefaces -->
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
@@ -30,6 +42,44 @@
             <artifactId>bootstrap</artifactId>
             <version>1.0.10</version>
         </dependency>
+        <!-- JSF -->
+        <dependency>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>${jsf-version}</version>
+	</dependency>
+	<dependency>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-impl</artifactId>
+            <version>${jsf-version}</version>
+	</dependency>
+        <!-- Servlet -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+	</dependency>
+	<dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+	</dependency>
+	<dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.2</version>
+	</dependency>
+        
+        
+        
+            
+            
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>el-impl</artifactId>
+            <version>2.2</version>
+	</dependency>
+        
         <dependency>
             <groupId>org.facebook4j</groupId>
             <artifactId>facebook4j-core</artifactId>
@@ -39,13 +89,11 @@
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
             <version>2.5.1</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
             <version>2.5.1</version>
-            <scope>provided</scope>
         </dependency>        
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
@@ -62,12 +110,14 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.30</version>
         </dependency>
+        <!--
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        -->
     </dependencies>
 
     <build>
@@ -117,7 +167,44 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.26</version>
+                <configuration>
+                    <webapp>${basedir}/target/developer-influencers.war</webapp>
+                </configuration>
+             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <!-- M2Eclipse Compatibility -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-dependency-plugin</artifactId>
+                                        <versionRange>[2.4,)</versionRange>
+                                        <goals>
+                                            <goal>copy-dependencies</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <repositories>
@@ -138,6 +225,11 @@
             <name>jvnet-nexus-releases</name>
             <url>https://maven.java.net/content/repositories/releases/</url>
         </repository>
+        <repository>
+            <id>jetty-releases</id>
+            <name>Jetty Releases</name>
+            <url>https://oss.sonatype.org/content/repositories/jetty-releases</url>
+        </repository> 
     </repositories>
-    
+    <packaging>war</packaging>
 </project>
