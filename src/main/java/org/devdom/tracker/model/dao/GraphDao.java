@@ -2,10 +2,9 @@ package org.devdom.tracker.model.dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import org.devdom.tracker.model.dto.GraphStats;
-import org.devdom.tracker.util.Configuration;
+import org.devdom.tracker.model.dto.GraphCommentsStat;
+import org.devdom.tracker.model.dto.GraphPostsStat;
+import org.devdom.tracker.util.EntityManagerFactory;
 
 /**
  *
@@ -13,22 +12,13 @@ import org.devdom.tracker.util.Configuration;
  */
 public class GraphDao {
     
-    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
-    
-    /**
-     * 
-     * 
-     * @return
-     */
-    public EntityManager getEntityManager(){
-        return emf.createEntityManager(Configuration.JPAConfig());
-    }
-    
-    public List<GraphStats> findPostsStats(){
+    private final EntityManagerFactory emf = new EntityManagerFactory();
+
+    public List<GraphPostsStat> findPostsStats(){
         
-        EntityManager em = getEntityManager();
+        EntityManager em = emf.getEntityManager();
         try{
-            return (List<GraphStats>) em.createNamedQuery("Graph.findPostsStats").getResultList();
+            return (List<GraphPostsStat>) em.createNamedQuery("Graph.findPostsStats").getResultList();
         }finally{
             if(em.isOpen())
                 em.close();
@@ -41,10 +31,10 @@ public class GraphDao {
      * @param year
      * @return 
      */
-    public List<GraphStats> findPostsStatsByMonthAndYear(int month, int year){
-        EntityManager em = getEntityManager();
+    public List<GraphPostsStat> findPostsStatsByMonthAndYear(int month, int year){
+        EntityManager em = emf.getEntityManager();
         try{
-            return (List<GraphStats>) em.createNamedQuery("Graph.findPostsStatsByMonthAndYear")
+            return (List<GraphPostsStat>) em.createNamedQuery("Graph.findPostsStatsByMonthAndYear")
                     .setParameter("month", month)
                     .setParameter("year", year)
                     .getResultList();
@@ -53,11 +43,11 @@ public class GraphDao {
                 em.close();
         }
     }
-    
-    public List<GraphStats> findCommentsStats(){
-        EntityManager em = getEntityManager();
+
+    public List<GraphCommentsStat> findCommentsStats(){
+        EntityManager em = emf.getEntityManager();
         try{
-            return (List<GraphStats>) em.createNamedQuery("Graph.findCommentsStats").getResultList();
+            return (List<GraphCommentsStat>) em.createNamedQuery("Graph.findCommentsStats").getResultList();
         }finally{
             if(em.isOpen())
                 em.close();
