@@ -29,7 +29,7 @@ public class TopController {
         String groupId = request.get("g");
         try {
             InfluencerDao daoInf = new InfluencerDao();
-            return daoInf.findTop20DevsInfluents(groupId);
+            return daoInf.findTop20DevsInfluencer(groupId);
         } catch (Exception ex) {
             Logger.getLogger(InfluencerController.class.getName()).log(Level.SEVERE, null, ex);
             return null;

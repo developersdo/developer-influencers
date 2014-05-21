@@ -2,11 +2,9 @@ package org.devdom.tracker.model.dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import org.devdom.tracker.util.EntityManagerFactory;
 import org.devdom.tracker.model.dto.GroupInformation;
 import org.devdom.tracker.model.dto.GroupRating;
-import org.devdom.tracker.util.Configuration;
 
 /**
  *
@@ -14,18 +12,10 @@ import org.devdom.tracker.util.Configuration;
  */
 public class GroupRatingDao {
     
-    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+    private final EntityManagerFactory emf = new EntityManagerFactory();
     
     public GroupRatingDao(){
         
-    }
-    
-    /**
-     * 
-     * @return 
-     */
-    public EntityManager getEntityManager(){
-        return emf.createEntityManager(Configuration.JPAConfig());
     }
 
     /**
@@ -36,7 +26,7 @@ public class GroupRatingDao {
      * @throws Exception 
      */
     public List<GroupRating> findGroupsRatingByUserId(String fromId)throws Exception{
-        EntityManager em = getEntityManager();
+        EntityManager em = emf.getEntityManager();
         try{
             return (List<GroupRating>) em.createNamedQuery("GroupRating.findGroupsRatingByUserId")
                     .setParameter("from_id", fromId)
@@ -48,7 +38,7 @@ public class GroupRatingDao {
     }
     
     public GroupInformation findGroupInformationById(String groupId)throws Exception{
-        EntityManager em = getEntityManager();
+        EntityManager em = emf.getEntityManager();
         try{
             return (GroupInformation) em.createNamedQuery("GroupInformation.findByGroupId")
                     .setParameter("group_id", groupId)

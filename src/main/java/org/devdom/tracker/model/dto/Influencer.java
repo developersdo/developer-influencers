@@ -17,11 +17,11 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
 @Entity
 @XmlRootElement
 @NamedStoredProcedureQueries({
-    @NamedStoredProcedureQuery( name="Influencers.findTop10DevsInfluents", 
+    @NamedStoredProcedureQuery( name="Influencer.findTop10DevsInfluents", 
                                 procedureName="findTop10DevsInfluents",
                                 returnsResultSet=true,
                                 resultClass=Influencer.class),
-    @NamedStoredProcedureQuery( name="Influencers.findTop20DevsInfluents",
+    @NamedStoredProcedureQuery( name="Influencer.findTop20DevsInfluents",
                                 procedureName="findTop20DevsInfluents",
                                 returnsResultSet=true,
                                 resultClass=Influencer.class,

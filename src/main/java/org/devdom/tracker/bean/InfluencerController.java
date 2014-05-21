@@ -23,6 +23,7 @@ import org.primefaces.model.menu.MenuModel;
  *
  * @author Carlos Vásquez Polanco
  */ 
+@ManagedBean
 @RequestScoped
 public class InfluencerController implements Serializable{
 
@@ -214,7 +215,7 @@ public class InfluencerController implements Serializable{
         System.out.println("groupId:"+groupId);
         try {
             InfluencerDao dao = new InfluencerDao();
-            return dao.findTop20DevsInfluents(groupId);
+            return dao.findTop20DevsInfluencer(groupId);
         } catch (Exception ex) {
             Logger.getLogger(InfluencerController.class.getName()).log(Level.SEVERE, null, ex);
             return null;
