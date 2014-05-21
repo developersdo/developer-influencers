@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
   <persistence-unit name="jpa" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <non-jta-data-source>influencers</non-jta-data-source>
     <class>org.devdom.tracker.model.dto.FacebookPost</class>
     <class>org.devdom.tracker.model.dto.FacebookComment</class>
     <class>org.devdom.tracker.model.dto.FacebookMember</class>
@@ -10,10 +9,11 @@
     <class>org.devdom.tracker.model.dto.Influencer</class>
     <class>org.devdom.tracker.model.dto.GroupRating</class>
     <class>org.devdom.tracker.model.dto.TopThreeInformation</class>
-    <class>org.devdom.tracker.model.dto.GraphStats</class>
     <class>org.devdom.tracker.model.dto.GroupInformation</class>
+    <class>org.devdom.tracker.model.dto.GraphPostsStat</class>
+    <class>org.devdom.tracker.model.dto.GraphCommentsStat</class>
+    <class>org.devdom.tracker.model.dto.GraphResult</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
-    <shared-cache-mode>NONE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
     <properties>
       <property name="eclipselink.jpa.uppercase-column-names" value="true"/>
