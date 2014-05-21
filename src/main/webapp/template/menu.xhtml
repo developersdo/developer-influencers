@@ -8,17 +8,17 @@
             <p:layoutUnit id="leftMenu" resizable="true" position="west" size="314" collapsed="false" collapsible="true">
                 <h:form id="leftForm">
                     <div style="text-align:center"> 
-                        <div id="profile-position" class="textShadowGray"># #{influencers.secondPosition.position}</div>
-                        <img src="#{influencers.secondPosition.picture}" class="circularProfileImage glow"/>
-                        <div class="titleProfile textShadow">#{influencers.secondPosition.fullName}</div>
+                        <div id="profile-position" class="textShadowGray"># #{influencer.secondPosition.position}</div>
+                        <img src="#{influencer.secondPosition.picture}" class="circularProfileImage glow"/>
+                        <div class="titleProfile textShadow">#{influencer.secondPosition.fullName}</div>
                     </div> 
                     <div id="devs-carrousel">
                         <div> 
-                            <img class="circularProfileImage dev-carrousel-button" src="#{influencers.firstPosition.picture}"/>
+                            <img class="circularProfileImage dev-carrousel-button" src="#{influencer.firstPosition.picture}"/>
                         </div>
                         <div style="float: left;width:138px;"><br/></div>
                         <div>
-                            <img class="dev-carrousel-button circularProfileImage left-carrousel-image" src="#{influencers.thirdPosition.picture}"/>
+                            <img class="dev-carrousel-button circularProfileImage left-carrousel-image" src="#{influencer.thirdPosition.picture}"/>
                         </div>
                     </div>
                     
@@ -27,7 +27,7 @@
                             <div id="firstPlace">
                                 <input  class="knob" data-width="55" data-angleOffset="-100" data-readOnly="true" 
                                 data-angleArc="200" data-fgColor="#FF0000" data-rotation="anticlockwise" 
-                                value="#{influencers.firstGaugeRating.ratio}" data-displayPrevious="false" 
+                                value="#{influencer.firstGaugeRating.ratio}" data-displayPrevious="false" 
                                 data-step="0.5"
                                 data-min="0"
                                 data-max="10"/>
@@ -35,7 +35,7 @@
                             <div id="secondPlace">
                                 <input  class="knob" data-width="55" data-angleOffset="-100" data-readOnly="true" 
                                 data-angleArc="200" data-fgColor="#FF0000" data-rotation="anticlockwise" 
-                                value="#{influencers.secondGaugeRating.ratio}" data-displayPrevious="false" 
+                                value="#{influencer.secondGaugeRating.ratio}" data-displayPrevious="false" 
                                 data-step="0.5"
                                 data-min="0"
                                 data-max="10"/>
@@ -43,19 +43,19 @@
                             <div id="thirdPlace">
                                 <input  class="knob" data-width="55" data-angleOffset="-100" data-readOnly="true" 
                                 data-angleArc="200" data-fgColor="#FF0000" data-rotation="anticlockwise" 
-                                value="#{influencers.thirdGaugeRating.ratio}" data-displayPrevious="false" 
+                                value="#{influencer.thirdGaugeRating.ratio}" data-displayPrevious="false" 
                                 data-step="0.5"
                                 data-min="0"
                                 data-max="10"/>
                             </div>
                         </div>
                         <div id="group">
-                            <div id="firstTitle" class="textShadow"><a href="?from_id=dev1" style="text-decoration:underline;">#{influencers.firstGaugeRating.groupName}</a></div>
-                            <div id="secondTitle" class="textShadow"><a href="?from_id=dev1" style="text-decoration:underline;">#{influencers.secondGaugeRating.groupName}</a></div>
-                            <div id="thirdTitle" class="textShadow"><a href="?from_id=dev1" style="text-decoration:underline;">#{influencers.thirdGaugeRating.groupName}</a></div>     
+                            <div id="firstTitle" class="textShadow"><a href="group.xhtml?g=#{influencer.firstGaugeRating.groupId}" style="text-decoration:underline;">#{influencer.firstGaugeRating.groupName}</a></div>
+                            <div id="secondTitle" class="textShadow"><a href="group.xhtml?g=#{influencer.secondGaugeRating.groupId}" style="text-decoration:underline;">#{influencer.secondGaugeRating.groupName}</a></div>
+                            <div id="thirdTitle" class="textShadow"><a href="group.xhtml?g=#{influencer.thirdGaugeRating.groupId}" style="text-decoration:underline;">#{influencer.thirdGaugeRating.groupName}</a></div>     
                         </div>
                     </div>
-                    <p:menu model="#{influencers.menuItems}" styleClass="groupList" style="width:95%;"/>
+                    <p:menu model="#{influencer.menuItems}" styleClass="groupList" style="width:95%;"/>
                 </h:form>
             </p:layoutUnit>
         </c:when>
