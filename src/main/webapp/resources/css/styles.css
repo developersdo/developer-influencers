@@ -75,7 +75,7 @@
     background-position:right;
     background-repeat: repeat-y;
     height:100%;
-    overflow-y:auto;
+    overflow-y:hidden; 
     overflow-x:hidden;
 }
 
@@ -184,7 +184,6 @@ div.demo > p{
 #firstTitle, #secondTitle, #thirdTitle{
     float:left;
     width:80px;
-    
     position:relative;
 }
 
@@ -219,5 +218,5 @@ div.demo > p{
 .groupList{
     float:left;
     top:-60px;
-    left:5px;
+    left:6px;
 }
