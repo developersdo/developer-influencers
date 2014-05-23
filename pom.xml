@@ -2,9 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.devdom</groupId>
-    <artifactId>developer-influencers</artifactId>
+    <artifactId>developer-influencer</artifactId>
     <version>0.9</version>
-    <name>developer-influencers</name>
+    <packaging>war</packaging>
+    <name>developer-influencer</name>
     <organization>
         <name>Developers Dominicanos</name>
         <url>http://developers.do</url>
@@ -35,7 +36,7 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>4.0</version>
+            <version>5.0</version>
         </dependency>
         <dependency>
             <groupId>org.primefaces.themes</groupId>
@@ -46,12 +47,12 @@
         <dependency>
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-api</artifactId>
-            <version>${jsf-version}</version>
-	</dependency>
+            <version>2.2.6</version>
+        </dependency>
 	<dependency>
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-impl</artifactId>
-            <version>${jsf-version}</version>
+            <version>2.2.6</version>
 	</dependency>
         <!-- Servlet -->
         <dependency>
@@ -63,28 +64,32 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
+            <scope>provided</scope>
 	</dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
 	<dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>jsp-api</artifactId>
             <version>2.2</version>
 	</dependency>
-        
-        
-        
-            
-            
+        <!--
         <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>el-impl</artifactId>
             <version>2.2</version>
 	</dependency>
-        
+        -->
         <dependency>
             <groupId>org.facebook4j</groupId>
             <artifactId>facebook4j-core</artifactId>
             <version>2.1.0</version>
         </dependency>
+        <!--JPA  -->        
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
@@ -110,16 +115,14 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.30</version>
         </dependency>
-        <!--
+        <!-- EL 2 -->
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
-            <version>7.0</version>
+            <groupId>javax.el</groupId>
+            <artifactId>el-api</artifactId>
+            <version>2.2</version>
             <scope>provided</scope>
         </dependency>
-        -->
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -172,7 +175,7 @@
                 <artifactId>maven-jetty-plugin</artifactId>
                 <version>6.1.26</version>
                 <configuration>
-                    <webapp>${basedir}/target/developer-influencers.war</webapp>
+                    <webapp>${basedir}/target/developer-influencer.war</webapp>
                 </configuration>
              </plugin>
         </plugins>
@@ -231,5 +234,4 @@
             <url>https://oss.sonatype.org/content/repositories/jetty-releases</url>
         </repository> 
     </repositories>
-    <packaging>war</packaging>
 </project>
