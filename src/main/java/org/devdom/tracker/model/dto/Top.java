@@ -5,8 +5,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Direction;
 import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
 import org.eclipse.persistence.annotations.NamedStoredProcedureQuery;
+import org.eclipse.persistence.annotations.StoredProcedureParameter;
 
 /**
  *
@@ -15,12 +17,21 @@ import org.eclipse.persistence.annotations.NamedStoredProcedureQuery;
 @Entity
 @XmlRootElement
 @NamedStoredProcedureQueries({
-    @NamedStoredProcedureQuery( name="Influencer.findTop10DevsInfluents", 
+    @NamedStoredProcedureQuery( name="Top.findTop10DevsInfluents", 
                                 procedureName="findTop10DevsInfluents",
                                 returnsResultSet=true,
-                                resultClass=Influencer.class)
+                                resultClass=Top.class),
+    @NamedStoredProcedureQuery( name="Top.findTop20DevsInfluents",
+                                procedureName="findTop20DevsInfluents",
+                                returnsResultSet=true,
+                                resultClass=Top.class,
+                                parameters={@StoredProcedureParameter(queryParameter="group_id",
+                                                                      name="group_id",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class)}
+                                )
 })
-public class Influencer  implements Serializable {    
+public class Top  implements Serializable {    
     
     @Id
     @Column(name = "position")
