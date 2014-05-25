@@ -29,11 +29,12 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
 @NamedStoredProcedureQueries({
     @NamedStoredProcedureQuery( name="GroupInformation.updTopInfluencers",
                                 procedureName="updTopInfluencers",
-                                returnsResultSet=false,
+                                returnsResultSet=true,
+                                resultClass=GroupInformation.class,
                                 parameters={@StoredProcedureParameter(queryParameter="group_id",
                                                                       name="group_id",
                                                                       direction=Direction.IN,
-                                                                      type=Integer.class),
+                                                                      type=String.class),
                                             @StoredProcedureParameter(queryParameter="min_interaction",
                                                                       name="min_interaction",
                                                                       direction=Direction.IN,
@@ -41,7 +42,8 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                 ),
     @NamedStoredProcedureQuery( name="GroupInformation.updTablesInformationYear",
                                 procedureName="updTablesInformationYear",
-                                returnsResultSet=false
+                                returnsResultSet=true,
+                                resultClass=GroupInformation.class
                                )
 })
 public class GroupInformation implements Serializable {
@@ -64,6 +66,21 @@ public class GroupInformation implements Serializable {
     
     @Column(name = "min_interactions")
     private int minInteractions;
+    
+    @Column(name = "active_members_in_year")
+    private int activeMembersInYear;
+    
+    @Column(name = "post_per_day")
+    private int postPerDay;
+    
+    @Column(name = "comments_per_day")
+    private int commentsPerDay;
+    
+    @Column(name = "created_time_from")
+    private String createdTimeFrom;
+    
+    @Column(name = "created_time_to")
+    private String createdTimeTo; 
 
     /**
      * @return the groupId
@@ -140,6 +157,76 @@ public class GroupInformation implements Serializable {
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     * @return the activeMembersInYear
+     */
+    public int getActiveMembersInYear() {
+        return activeMembersInYear;
+    }
+
+    /**
+     * @param activeMembersInYear the activeMembersInYear to set
+     */
+    public void setActiveMembersInYear(int activeMembersInYear) {
+        this.activeMembersInYear = activeMembersInYear;
+    }
+
+    /**
+     * @return the postPerDay
+     */
+    public int getPostPerDay() {
+        return postPerDay;
+    }
+
+    /**
+     * @param postPerDay the postPerDay to set
+     */
+    public void setPostPerDay(int postPerDay) {
+        this.postPerDay = postPerDay;
+    }
+
+    /**
+     * @return the commentsPerDay
+     */
+    public int getCommentsPerDay() {
+        return commentsPerDay;
+    }
+
+    /**
+     * @param commentsPerDay the commentsPerDay to set
+     */
+    public void setCommentsPerDay(int commentsPerDay) {
+        this.commentsPerDay = commentsPerDay;
+    }
+
+    /**
+     * @return the createdTimeFrom
+     */
+    public String getCreatedTimeFrom() {
+        return createdTimeFrom;
+    }
+
+    /**
+     * @param createdTimeFrom the createdTimeFrom to set
+     */
+    public void setCreatedTimeFrom(String createdTimeFrom) {
+        this.createdTimeFrom = createdTimeFrom;
+    }
+
+    /**
+     * @return the createdTimeTo
+     */
+    public String getCreatedTimeTo() {
+        return createdTimeTo;
+    }
+
+    /**
+     * @param createdTimeTo the createdTimeTo to set
+     */
+    public void setCreatedTimeTo(String createdTimeTo) {
+        this.createdTimeTo = createdTimeTo;
     }
 
 }
