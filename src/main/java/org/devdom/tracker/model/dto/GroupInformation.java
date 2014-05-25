@@ -8,6 +8,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Direction;
+import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
+import org.eclipse.persistence.annotations.NamedStoredProcedureQuery;
+import org.eclipse.persistence.annotations.StoredProcedureParameter;
 
 /**
  *
@@ -21,6 +25,24 @@ import javax.xml.bind.annotation.XmlRootElement;
                 query = "SELECT g FROM GroupInformation g"),
     @NamedQuery(name = "GroupInformation.findByGroupId", 
                 query = "SELECT g FROM GroupInformation g WHERE g.groupId = :group_id")
+})
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery( name="GroupInformation.updTopInfluencers",
+                                procedureName="updTopInfluencers",
+                                returnsResultSet=false,
+                                parameters={@StoredProcedureParameter(queryParameter="group_id",
+                                                                      name="group_id",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class),
+                                            @StoredProcedureParameter(queryParameter="min_interaction",
+                                                                      name="min_interaction",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class)}
+                                ),
+    @NamedStoredProcedureQuery( name="GroupInformation.updTablesInformationYear",
+                                procedureName="updTablesInformationYear",
+                                returnsResultSet=false
+                               )
 })
 public class GroupInformation implements Serializable {
 
