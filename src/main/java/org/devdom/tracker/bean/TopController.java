@@ -1,38 +1,41 @@
 package org.devdom.tracker.bean;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import org.devdom.tracker.model.dao.InfluencerDao;
-import org.devdom.tracker.model.dto.Influencer;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import org.devdom.tracker.model.dto.Top;
+import org.devdom.tracker.model.dao.TopDao;
 
 /**
  *
  * @author Carlos Vásquez Polanco
- */ 
+ */
 @ManagedBean
-public class TopController {
+@RequestScoped
+public class TopController implements Serializable{
 
+    List<Top> top20;
     /**
      * Listado de los 20 developers más influyentes de todos los grupos
      * @return 
-     */
-    public List<Influencer> getTop20(){
+     */ 
+    public List<Top> getTop20Devs(){
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String,String> request = externalContext.getRequestParameterMap();
         
         String groupId = request.get("g");
         try {
-            InfluencerDao daoInf = new InfluencerDao();
-            return daoInf.findTop20DevsInfluencer(groupId);
+            TopDao topdao = new TopDao();
+            top20 = topdao.findTop20Devs(groupId);
         } catch (Exception ex) {
-            Logger.getLogger(InfluencerController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
             return null;
         }
+        return top20;
     }
+    
 }
