@@ -2,7 +2,8 @@ package org.devdom.tracker.model.dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
-import org.devdom.tracker.util.EntityManagerFactory;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import org.devdom.tracker.model.dto.Influencer;
 import org.devdom.tracker.model.dto.TopThreeInformation;
 
@@ -13,7 +14,7 @@ import org.devdom.tracker.model.dto.TopThreeInformation;
 public class InfluencerDao {
     
     private static final long serialVersionUID = 1L;
-    private final EntityManagerFactory emf = new EntityManagerFactory();
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
 
     /**
      * Top 20 de los developers más influyentes a nivel general
@@ -23,7 +24,7 @@ public class InfluencerDao {
      * @throws Exception 
      */
     public List<Influencer> findTop20DevsInfluencer(String groupId) throws Exception{
-        EntityManager em = emf.getEntityManager();
+        EntityManager em = emf.createEntityManager();
         try{
             return (List<Influencer>) em.createNamedQuery("Influencer.findTop20DevsInfluents")
                     .setParameter("group_id", groupId)
@@ -44,7 +45,7 @@ public class InfluencerDao {
      * @throws Exception 
      */
     public List<TopThreeInformation> findPositionCarruselByUserIdAndGroupId(String fromId, String groupId) throws Exception{
-        EntityManager em = emf.getEntityManager();
+        EntityManager em = emf.createEntityManager();
         try{
             return (List<TopThreeInformation>)em.createNamedQuery("TopThreeInformation.findPositionCarruselByUserIdAndGroupId")
                     .setParameter("from_id", fromId)

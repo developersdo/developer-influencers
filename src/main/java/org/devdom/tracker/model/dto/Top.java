@@ -46,14 +46,29 @@ public class Top  implements Serializable {
     @Column(name = "likes_count")
     private int likesCount;
     
+    @Column(name = "posts_likes_count")
+    private int postsLikesCount;
+    
+    @Column(name = "comments_likes_count")
+    private int commentsLikesCount;
+    
+    @Column(name = "interactions_count")
+    private int interactionsCount;
+    
     @Column(name = "comments_count")
     private int messagesCount;
     
-    @Column(name = "mentions_count")
-    private int mentionsCount;
-
     @Column(name = "posts_count")
     private int postsCount;
+
+    @Column(name = "mentions_count")
+    private int mentionsCount;
+    
+    @Column(name = "mentions_posts_count")
+    private int mentionsPostsCount;
+    
+    @Column(name = "mentions_comments_count")
+    private int mentionsCommentsCount;
     
     @Column(name = "ratio")
     private double ratio;
@@ -66,7 +81,7 @@ public class Top  implements Serializable {
     
     @Column(name = "group_name")
     private String groupName;
-
+    
     /**
      * @return the position
      */
@@ -219,6 +234,76 @@ public class Top  implements Serializable {
      */
     public void setMentionsCount(int mentionsCount) {
         this.mentionsCount = mentionsCount;
+    }
+
+    /**
+     * @return the postsLikesCount
+     */
+    public int getPostsLikesCount() {
+        return postsLikesCount;
+    }
+
+    /**
+     * @param postsLikesCount the postsLikesCount to set
+     */
+    public void setPostsLikesCount(int postsLikesCount) {
+        this.postsLikesCount = postsLikesCount;
+    }
+
+    /**
+     * @return the commentsLikesCount
+     */
+    public int getCommentsLikesCount() {
+        return commentsLikesCount;
+    }
+
+    /**
+     * @param commentsLikesCount the commentsLikesCount to set
+     */
+    public void setCommentsLikesCount(int commentsLikesCount) {
+        this.commentsLikesCount = commentsLikesCount;
+    }
+
+    /**
+     * @return the interactionsCount
+     */
+    public int getInteractionsCount() {
+        return interactionsCount;
+    }
+
+    /**
+     * @param interactionsCount the interactionsCount to set
+     */
+    public void setInteractionsCount(int interactionsCount) {
+        this.interactionsCount = interactionsCount;
+    }
+
+    /**
+     * @return the mentionsPostsCount
+     */
+    public int getMentionsPostsCount() {
+        return mentionsPostsCount;
+    }
+
+    /**
+     * @param mentionsPostsCount the mentionsPostsCount to set
+     */
+    public void setMentionsPostsCount(int mentionsPostsCount) {
+        this.mentionsPostsCount = mentionsPostsCount;
+    }
+
+    /**
+     * @return the mentionsCommentsCount
+     */
+    public int getMentionsCommentsCount() {
+        return mentionsCommentsCount;
+    }
+
+    /**
+     * @param mentionsCommentsCount the mentionsCommentsCount to set
+     */
+    public void setMentionsCommentsCount(int mentionsCommentsCount) {
+        this.mentionsCommentsCount = mentionsCommentsCount;
     }
 
 }

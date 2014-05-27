@@ -44,7 +44,17 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                 procedureName="updTablesInformationYear",
                                 returnsResultSet=true,
                                 resultClass=GroupInformation.class
-                               )
+                               ),
+    @NamedStoredProcedureQuery( name="GroupInformation.findGroupActivityByGroupId",
+                                procedureName="findGroupActivityByGroupId",
+                                returnsResultSet=true,
+                                resultClass=GroupInformation.class,
+                                parameters={@StoredProcedureParameter(queryParameter="group_id",
+                                                                      name="group_id",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class
+                                                                      )}
+                                )
 })
 public class GroupInformation implements Serializable {
 

@@ -9,11 +9,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import org.devdom.tracker.model.dto.TopThreeInformation;
 import org.devdom.tracker.model.dao.GroupRatingDao;
 import org.devdom.tracker.model.dao.InfluencerDao;
 import org.devdom.tracker.model.dto.GroupRating;
-import org.devdom.tracker.model.dto.Influencer;
+import org.devdom.tracker.model.dto.TopThreeInformation;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -22,7 +21,7 @@ import org.primefaces.model.menu.MenuModel;
 /**
  *
  * @author Carlos Vásquez Polanco
- */ 
+ */
 @ManagedBean
 @RequestScoped
 public class InfluencerController implements Serializable{
@@ -125,10 +124,7 @@ public class InfluencerController implements Serializable{
      * @return 
      */
     public TopThreeInformation getFirstPosition(){
-        //if(influencers==null)
-        //    influencers = (List<Influencer>) getPositionInformation();
-
-        //positionInformation
+        
         if(positionInformation.size()>0)
             return positionInformation.get(0);
         
@@ -161,6 +157,10 @@ public class InfluencerController implements Serializable{
         return empty();
     }
     
+    /**
+     * 
+     * @return 
+     */
     private GroupRating emptyGroupRow(){
         GroupRating empty = new GroupRating();
         empty.setFromId(0);
@@ -170,6 +170,10 @@ public class InfluencerController implements Serializable{
         return empty;
     }
     
+    /**
+     * 
+     * @return 
+     */
     private TopThreeInformation empty(){
         TopThreeInformation emptyInfluencer = new TopThreeInformation();
         emptyInfluencer.setFromId("0");
@@ -178,7 +182,17 @@ public class InfluencerController implements Serializable{
         return emptyInfluencer;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public MenuModel getMenuItems(){
+        
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String,String> request = externalContext.getRequestParameterMap();
+        
+        String groupId = request.get("g");
+
         MenuModel model = new DefaultMenuModel();
         DefaultSubMenu submenu = new DefaultSubMenu();
         submenu.setId("influencersMenu");
@@ -193,8 +207,10 @@ public class InfluencerController implements Serializable{
             DefaultMenuItem item = new DefaultMenuItem();
             item.setValue(displayValue);
             item.setId(group.getGroupId());
-            item.setUrl("/group.xhtml?g="+ group.getGroupId());
+            item.setUrl("/groupTop20.xhtml?g="+ group.getGroupId());
             item.setStyle("font-size:12px;");
+            if(group.getGroupId().equals(groupId))
+                item.setStyle("color:red");
             submenu.addElement(item);
         });
 
@@ -203,23 +219,4 @@ public class InfluencerController implements Serializable{
         return model;
     }
     
-    /**
-     * Listado de los 20 developers más influyentes de todos los grupos
-     * @return 
-     */
-    public List<Influencer> getTop20(){
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String,String> request = externalContext.getRequestParameterMap();
-        
-        String groupId = request.get("g");
-        System.out.println("groupId:"+groupId);
-        try {
-            InfluencerDao dao = new InfluencerDao();
-            return dao.findTop20DevsInfluencer(groupId);
-        } catch (Exception ex) {
-            Logger.getLogger(InfluencerController.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-
 }

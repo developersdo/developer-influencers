@@ -2,7 +2,8 @@ package org.devdom.tracker.model.dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
-import org.devdom.tracker.util.EntityManagerFactory;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import org.devdom.tracker.model.dto.GroupInformation;
 import org.devdom.tracker.model.dto.GroupRating;
 
@@ -11,11 +12,10 @@ import org.devdom.tracker.model.dto.GroupRating;
  * @author Carlos Vásquez Polanco
  */
 public class GroupRatingDao {
-    
-    private final EntityManagerFactory emf = new EntityManagerFactory();
-    
+
+    private final EntityManagerFactory emf;
     public GroupRatingDao(){
-        
+        emf = Persistence.createEntityManagerFactory("jpa");
     }
 
     /**
@@ -26,7 +26,8 @@ public class GroupRatingDao {
      * @throws Exception 
      */
     public List<GroupRating> findGroupsRatingByUserId(String fromId)throws Exception{
-        EntityManager em = emf.getEntityManager();
+
+        EntityManager em = emf.createEntityManager();
         try{
             return (List<GroupRating>) em.createNamedQuery("GroupRating.findGroupsRatingByUserId")
                     .setParameter("from_id", fromId)
@@ -37,10 +38,80 @@ public class GroupRatingDao {
         }
     }
     
+    /**
+     * General el top de los developers de un grupo determinado según el ID
+     * @param groupId
+     * @return
+     * @throws Exception 
+     */
     public GroupInformation findGroupInformationById(String groupId)throws Exception{
-        EntityManager em = emf.getEntityManager();
+
+        EntityManager em = emf.createEntityManager();
         try{
             return (GroupInformation) em.createNamedQuery("GroupInformation.findByGroupId")
+                    .setParameter("group_id", groupId)
+                    .getSingleResult();
+        }finally{
+            if(em!=null|em.isOpen())
+                em.close();
+        }
+    }
+    
+    /**
+     * General el top de los developers de un grupo determinado según el ID
+     * @param groupId
+     * @param minInteraction
+     * @return 
+     * @throws Exception 
+     */
+    public GroupInformation updGroupInformationByGroupById(String groupId, int minInteraction)throws Exception{
+        EntityManager em = emf.createEntityManager();
+        try{
+            return (GroupInformation) em.createNamedQuery("GroupInformation.updTopInfluencers")
+                    .setParameter("group_id", groupId)
+                     .setParameter("min_interaction", minInteraction)
+                    .getSingleResult();
+        }finally{
+            if(em!=null|em.isOpen())
+                em.close();
+        }
+    }
+    
+    /**
+     * Actualiza la información en los grupos referente a un año
+     * @return 
+     * @throws Exception 
+     */
+    public GroupInformation updTablesInformationYear()throws Exception{
+        EntityManager em = emf.createEntityManager();
+        try{
+            return (GroupInformation) em.createNamedQuery("GroupInformation.updTablesInformationYear")
+                    .getSingleResult();
+        }finally{
+            if(em!=null|em.isOpen())
+                em.close();
+        }
+    }
+    /**
+     * Traer todos los datos informativos de los grupos
+     * @return
+     * @throws Exception 
+     */
+    public List<GroupInformation> findAllGroups() throws Exception{
+        EntityManager em = emf.createEntityManager();
+        try{
+            return (List<GroupInformation>) em.createNamedQuery("GroupInformation.findAll")
+                    .getResultList();
+        }finally{
+            if(em!=null|em.isOpen())
+                em.close();
+        }
+    }
+    
+    public GroupInformation findGroupActivityByGroupId(String groupId) throws Exception{
+        EntityManager em = emf.createEntityManager();
+        try{
+            return (GroupInformation) em.createNamedQuery("GroupInformation.findGroupActivityByGroupId")
                     .setParameter("group_id", groupId)
                     .getSingleResult();
         }finally{

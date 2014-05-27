@@ -2,7 +2,7 @@ package org.devdom.tracker.bean;
 
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.devdom.tracker.model.dto.FacebookProfile;
@@ -12,7 +12,7 @@ import org.devdom.tracker.model.dto.FacebookProfile;
  * @author Carlos Vasquez
  */
 @ManagedBean
-@SessionScoped
+@RequestScoped
 public class FacebookController implements Serializable{
     
     private static final long serialVersionUID = 1L;
