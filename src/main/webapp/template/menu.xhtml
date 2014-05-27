@@ -5,10 +5,10 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <c:choose>
         <c:when test="#{fb.logged}">
-            <p:layoutUnit id="leftMenu" resizable="true" position="west" size="314" collapsed="false" collapsible="true">
+            <p:layoutUnit id="leftMenu" position="west" size="314" collapsed="false">
                 <h:form id="leftForm">
                     <div style="text-align:center"> 
-                        <div id="profile-position" class="textShadowGray"># #{influencer.secondPosition.position}</div>
+                        <div id="profile-position" class="textShadowGray" title="Posición en el ranking global"># #{influencer.secondPosition.position}</div>
                         <img src="#{influencer.secondPosition.picture}" class="circularProfileImage glow"/>
                         <div class="titleProfile textShadow">#{influencer.secondPosition.fullName}</div>
                     </div> 
@@ -50,9 +50,9 @@
                             </div>
                         </div>
                         <div id="group">
-                            <div id="firstTitle" class="textShadow"><a href="group.xhtml?g=#{influencer.firstGaugeRating.groupId}" style="text-decoration:underline;">#{influencer.firstGaugeRating.groupName}</a></div>
-                            <div id="secondTitle" class="textShadow"><a href="group.xhtml?g=#{influencer.secondGaugeRating.groupId}" style="text-decoration:underline;">#{influencer.secondGaugeRating.groupName}</a></div>
-                            <div id="thirdTitle" class="textShadow"><a href="group.xhtml?g=#{influencer.thirdGaugeRating.groupId}" style="text-decoration:underline;">#{influencer.thirdGaugeRating.groupName}</a></div>     
+                            <div id="firstTitle" class="textShadow"><a href="groupTop20.xhtml?g=#{influencer.firstGaugeRating.groupId}" style="text-decoration:underline;">#{influencer.firstGaugeRating.groupName}</a></div>
+                            <div id="secondTitle" class="textShadow"><a href="groupTop20.xhtml?g=#{influencer.secondGaugeRating.groupId}" style="text-decoration:underline;">#{influencer.secondGaugeRating.groupName}</a></div>
+                            <div id="thirdTitle" class="textShadow"><a href="groupTop20.xhtml?g=#{influencer.thirdGaugeRating.groupId}" style="text-decoration:underline;">#{influencer.thirdGaugeRating.groupName}</a></div>     
                         </div>
                     </div>
                     <p:menu model="#{influencer.menuItems}" styleClass="groupList" style="width:95%;"/>

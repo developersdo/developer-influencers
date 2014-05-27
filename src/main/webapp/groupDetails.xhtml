@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+        <ui:composition template="template/layout.xhtml">
+            <ui:define name="content">
+                <h:form style="padding:0px;border:solid 0px #fff;">
+                    <c:choose>                        
+                        <c:when test="#{fb.logged}">
+                            
+                            <ui:include src="template/groupMenu.xhtml"/>
+                            
+                            <div style="font-size:12px;">
+                                <c:choose>
+                                    <c:when test="#{group.groupInformation.groupId == 1}">
+                                        Detalles estadísticos de todos los grupos de desarrollo de aplicaciones de la República Dominicana
+                                    </c:when>
+                                    <c:otherwise>
+                                        Detalles estadísticos del grupo <b style="color:red">#{group.groupActivityByGroupId.groupName}</b>
+                                    </c:otherwise>
+                                </c:choose>
+                                <br/>
+                                <b style="color:red">#{group.groupActivityByGroupId.activeMembersInYear}</b> miembros activos entre el #{group.groupActivityByGroupId.createdTimeFrom} y el #{group.groupActivityByGroupId.createdTimeTo}
+                                <br/><br/>
+                                <p:panel header="Informacion del grupo #{group.groupActivityByGroupId.groupName}"> 
+                                    <h:panelGrid columns="5" cellpadding="5" width="810"> 
+                                        <p:outputLabel value="publicaciones" />
+                                        <p:outputLabel value="comentarios" />
+                                        <p:outputLabel value="Interaccions mínimas para entrar en top 20" />
+                                        <p:outputLabel value="Prom. de publicaciones por día" />
+                                        <p:outputLabel value="Prom. de comentarios por día" /> 
+
+                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.postAmount}" escape="false"/>
+                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.commentsAmount}" escape="false"/>
+                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.minInteractions}" escape="false"/>
+                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.postPerDay}" escape="false"/>
+                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.commentsPerDay}" escape="false"/>
+                                    </h:panelGrid>
+                                </p:panel>
+
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <h:outputText value="#{fb.loginButton}" escape="false" />
+                        </c:otherwise>
+                    </c:choose>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </html>      

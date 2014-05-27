@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <p:tabMenu activeIndex="#{admin.activeIndex}" style="font-size:13px;">
+        <p:menuitem value="Top 20" url="groupTop20.xhtml?g=#{admin.activeGroupId}"/>
+        <p:menuitem value="Detalle" url="groupDetails.xhtml?g=#{admin.activeGroupId}"/>
+        <p:menuitem value="Más influyentes el día de ayer" disabled="true" url="none.xhtml"/>
+        <p:menuitem value="Más influyentes el mes pasado" disabled="true" url="none.xhtml"/>
+    </p:tabMenu>
+
+</ui:composition>
