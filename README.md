@@ -66,13 +66,13 @@ El algoritmo utilizado para determinar el rating es el siguiente:
 >       Cast((((cl*2) + pl + ((mpc+mmc) *2))  / (cc+pc)) AS DECIMAL(5, 1)))  
 ```
  
-pc= Cantidad de publicaciones realizadas
-cc= Cantidad de comentarios realizadas
-mini= Mínimo de interacciones permitido por el grupo
-cl=Likes en comentarios obtenidos
-pl=Likes en publicaciones obtenidos
-mpc=Cantidad de menciones en publicaciones obtenidas
-mmc=Cantidad de menciones en comentarios obtenidas
+* pc= Cantidad de publicaciones realizadas
+* cc= Cantidad de comentarios realizadas
+* mini= Mínimo de interacciones permitido por el grupo
+* cl=Likes en comentarios obtenidos
+* pl=Likes en publicaciones obtenidos
+* mpc=Cantidad de menciones en publicaciones obtenidas
+* mmc=Cantidad de menciones en comentarios obtenidas
 
 ##Mínimo de interacciones en grupo 
 La cantidad mínima de interacciones es calculada individualmente por grupo y es la determinante para considerar si un developer puede ser incluido dentro de su top 20.  
@@ -82,7 +82,7 @@ El algoritmo para determinar la cantidad mínima de interacciones es el siguient
 > ROUND(( pcg + ccg )*0.4/100) 
 ```
 
-pcg=Cantidad de publicaciones del grupo
-ccg=Cantidad de comentarios del grupo
+* pcg=Cantidad de publicaciones del grupo
+* ccg=Cantidad de comentarios del grupo
 
 Expresa que grupos con mucha actividad tendrán una cantidad mínima de interacción mayor a la de por ejemplo un focus group. De este modo se tiene una cuota mínima justa que dependerá siempre del grupo y de la actividad dentro de el.                                                                                           
