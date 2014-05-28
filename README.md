@@ -61,8 +61,8 @@ Es el prorrateo que mide la aceptación de las interacciones del developer con e
 
 El algoritmo utilizado para determinar el rating es el siguiente: 
  
-IF( (pc + cc ) < mini, 0,  
-       Cast((((cl*2) + pl + ((mpc+mmc) *2))  / (cc+pc)) AS DECIMAL(5, 1)))  
+> IF( (pc + cc ) < mini, 0,  
+>       Cast((((cl*2) + pl + ((mpc+mmc) *2))  / (cc+pc)) AS DECIMAL(5, 1)))  
  
 pc= Cantidad de publicaciones realizadas 
 cc= Cantidad de comentarios realizadas 
@@ -77,7 +77,7 @@ La cantidad mínima de interacciones es calculada individualmente por grupo y es
  
 El algoritmo para determinar la cantidad mínima de interacciones es el siguiente: 
  
-ROUND(( pcg + ccg )*0.4/100) 
+> ROUND(( pcg + ccg )*0.4/100) 
 
 pcg=Cantidad de publicaciones del grupo 
 ccg=Cantidad de comentarios del grupo 
