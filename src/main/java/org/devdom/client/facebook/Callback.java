@@ -19,8 +19,8 @@ import org.devdom.tracker.Worker;
 import org.devdom.tracker.bean.FacebookController;
 import org.devdom.tracker.model.dto.FacebookMember;
 import org.devdom.tracker.model.dto.FacebookProfile;
-import org.devdom.tracker.util.Configuration;
 import org.devdom.tracker.util.Utils;
+
 
 /**
  *
@@ -31,11 +31,6 @@ public class Callback extends HttpServlet{
     private static final long serialVersionUID = 6305643034487441839L;
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
 
-    
-    public EntityManager getEntityManager(){
-        return emf.createEntityManager(Configuration.JPAConfig());
-    }
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Facebook facebook = (Facebook) request.getSession().getAttribute("facebook");
@@ -59,7 +54,7 @@ public class Callback extends HttpServlet{
                 JSONObject jsonObject;
                 try {
                     jsonObject = jsonArray.getJSONObject(i);
-                    profile.setUid(jsonObject.getLong("uid"));
+                    profile.setUid(jsonObject.getString("uid"));
                     profile.setFirstName(jsonObject.getString("first_name"));
                     profile.setLastName(jsonObject.getString("last_name"));
                     profile.setEmail(jsonObject.getString("email"));
@@ -71,13 +66,18 @@ public class Callback extends HttpServlet{
                     Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
+            
             try {
                 updateMember(profile);
             } catch (Exception ex) {
                 Logger.getLogger(Callback.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+            /*
+            Runnable worker = new Worker();
+            Thread thread = new Thread(worker);
+            thread.setName("w");
+            thread.start();
+            */
         } catch (FacebookException ex) {
             Logger.getLogger(FacebookController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -88,12 +88,12 @@ public class Callback extends HttpServlet{
      * @param profile 
      */
     private void updateMember(FacebookProfile profile) throws Exception{
-        
-        EntityManager em = getEntityManager();
-        try{
+
+        EntityManager em = emf.createEntityManager();
+        try{ 
             em.getTransaction().begin();
             FacebookMember member = new FacebookMember();
-            member.setUid(String.valueOf(profile.getUid()));
+            member.setUid(profile.getUid());
             member.setBirthdayDate(Utils.getDateFormatted(profile.getBirthday(),"MM/dd/yyyy"));
             member.setFirstName(profile.getFirstName());
             member.setLastName(profile.getLastName());
@@ -103,8 +103,6 @@ public class Callback extends HttpServlet{
         }finally{
             if(em!=null|em.isOpen())
                 em.close();
-            if(emf.isOpen())
-                emf.close();
         }
     }
 }

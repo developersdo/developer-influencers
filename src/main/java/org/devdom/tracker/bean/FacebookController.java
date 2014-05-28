@@ -53,11 +53,11 @@ public class FacebookController implements Serializable{
      * Retorna el Id de Facebook del usuario logueado, en caso de que sea necesario
      * @return 
      */
-    public long getFacebookID(){
+    public String getFacebookID(){
         session = (HttpSession) facesContext.getExternalContext().getSession(true);
         FacebookProfile profile = (FacebookProfile) session.getAttribute("profile");
         if(profile==null)
-            return 0;
+            return "";
         return profile.getUid();
     }
     

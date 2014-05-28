@@ -35,7 +35,6 @@ import org.devdom.tracker.util.Configuration;
  */
 public class FacebookDao {
 
-    private static final long serialVersionUID = 1L;
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
     private static final ConfigurationBuilder cb = Configuration.getFacebookConfig();
     Facebook facebook = new FacebookFactory(cb.build()).getInstance();
