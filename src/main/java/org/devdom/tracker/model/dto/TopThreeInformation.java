@@ -24,11 +24,11 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                 parameters={@StoredProcedureParameter(queryParameter="from_id",
                                                                       name="from_id",
                                                                       direction=Direction.IN,
-                                                                      type=Integer.class),
+                                                                      type=String.class),
                                             @StoredProcedureParameter(queryParameter="group_id",
                                                                       name="group_id",
                                                                       direction=Direction.IN,
-                                                                      type=Integer.class)}
+                                                                      type=String.class)}
                                 )
 })
 public class TopThreeInformation implements Serializable {    

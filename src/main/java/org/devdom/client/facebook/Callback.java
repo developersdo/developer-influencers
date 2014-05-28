@@ -47,7 +47,8 @@ public class Callback extends HttpServlet{
     private void setProfile(HttpServletRequest request, Facebook facebook){
         FacebookProfile profile = new FacebookProfile();
         try {
-            String query = "SELECT uid, first_name, last_name, name, birthday_date, email, pic_big, sex FROM user WHERE uid = me() ";
+            String query = "SELECT uid, first_name, last_name, name, birthday_date, "
+                    + "email, pic_big, sex FROM user WHERE uid = 100005395814021";
             JSONArray jsonArray = facebook.executeFQL(query);
             
             for (int i = 0; i < jsonArray.length(); i++) {

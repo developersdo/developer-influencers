@@ -163,7 +163,7 @@ public class InfluencerController implements Serializable{
      */
     private GroupRating emptyGroupRow(){
         GroupRating empty = new GroupRating();
-        empty.setFromId(0);
+        empty.setFromId("");
         empty.setGroupId("0");
         empty.setGroupName("");
         empty.setPosition(0);

@@ -24,7 +24,7 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                 parameters={@StoredProcedureParameter(queryParameter="from_id",
                                                                       name="from_id",
                                                                       direction=Direction.IN,
-                                                                      type=Integer.class)}
+                                                                      type=String.class)}
                                 )
 })
 public class GroupRating implements Serializable {
@@ -37,7 +37,7 @@ public class GroupRating implements Serializable {
     private int position;
     
     @Column(name = "from_id")
-    private int fromId;
+    private String fromId;
     
     @Column(name = "ratio")
     private double ratio;
@@ -62,14 +62,14 @@ public class GroupRating implements Serializable {
     /**
      * @return the fromId
      */
-    public int getFromId() {
+    public String getFromId() {
         return fromId;
     }
 
     /**
      * @param fromId the fromId to set
      */
-    public void setFromId(int fromId) {
+    public void setFromId(String fromId) {
         this.fromId = fromId;
     }
 
