@@ -199,23 +199,24 @@ public class InfluencerController implements Serializable{
 
         List<GroupRating> groups = getGroupsRating();
         
-        groups = groups.subList(3, groups.size());
+        if(groups.size()>0){
+            groups = groups.subList(3, groups.size());
+            groups.stream().forEach((group) -> {
+                String displayValue = group.getGroupName() + " ("+group.getRatio()+")";
 
-        groups.stream().forEach((group) -> {
-            String displayValue = group.getGroupName() + " ("+group.getRatio()+")";
-            
-            DefaultMenuItem item = new DefaultMenuItem();
-            item.setValue(displayValue);
-            item.setId(group.getGroupId());
-            item.setUrl("/groupTop20.xhtml?g="+ group.getGroupId());
-            item.setStyle("font-size:12px;");
-            if(group.getGroupId().equals(groupId))
-                item.setStyle("color:red");
-            submenu.addElement(item);
-        });
-
-        model.addElement(submenu);
-
+                DefaultMenuItem item = new DefaultMenuItem();
+                item.setValue(displayValue);
+                item.setId(group.getGroupId());
+                item.setUrl("/groupTop20.xhtml?g="+ group.getGroupId());
+                item.setStyle("font-size:12px;");
+                if(group.getGroupId().equals(groupId)){
+                    item.setStyle("color:red");
+                    item.setStyle("font-size:12px;");
+                }
+                submenu.addElement(item);
+            });
+            model.addElement(submenu);
+        }
         return model;
     }
     
