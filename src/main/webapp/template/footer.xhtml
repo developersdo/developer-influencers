@@ -6,8 +6,11 @@
       xmlns:p="http://primefaces.org/ui">
     <h:body>
         <ui:composition>
-            <p:layoutUnit position="south" size="20" closable="true" collapsible="true" style="padding:0px;border:solid 0px #fff;font-size: 12px;">
-                &nbsp;&nbsp;&nbsp;influence.developers.do - Running #{admin.primefacesVersion} on #{admin.mojarraVersion}
+            <p:layoutUnit styleClass="footer-borders" position="south" size="27" closable="true" collapsible="true" style="background-color:#DCDEE2;padding:0px;font-size: 12px;">
+                &nbsp;&nbsp;&nbsp;Running #{admin.primefacesVersion} on #{admin.mojarraVersion} | 
+                <a class="footer-link" href="https://github.com/developersdo/developer-influencers">ver proyecto en github</a> | 
+                <a class="footer-link" href="https://github.com/developersdo/developer-influencers/issues">create issue</a> | 
+                <a class="footer-link" href="https://github.com/developersdo/developer-influencers/fork">Fork application</a> 
             </p:layoutUnit>
         </ui:composition>
     </h:body>

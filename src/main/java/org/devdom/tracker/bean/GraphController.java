@@ -46,7 +46,7 @@ public class GraphController  implements Serializable{
 "                                                    \"type\": \"serial\",\n" +
 "                                                    \"pathToImages\": \"http://cdn.amcharts.com/lib/3/images/\",\n" +
 "                                                    \"categoryField\": \"category\",\n" +
-"                                                    \"startDuration\": 1,\n" +
+"                                                     \"sequencedAnimation\": false,\n"+
 "                                                    \"categoryAxis\": {\n" +
 "                                                            \"gridPosition\": \"start\"\n" +
 "                                                    },\n" +
@@ -200,7 +200,7 @@ public class GraphController  implements Serializable{
 "                                                    \"type\": \"serial\",\n" +
 "                                                    \"pathToImages\": \"http://cdn.amcharts.com/lib/3/images/\",\n" +
 "                                                    \"categoryField\": \"category\",\n" +
-"                                                    \"startDuration\": 1,\n" +
+"                                                     \"sequencedAnimation\": false,\n"+
 "                                                    \"categoryAxis\": {\n" +
 "                                                            \"gridPosition\": \"start\"\n" +
 "                                                    },\n" +
