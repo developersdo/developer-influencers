@@ -220,3 +220,15 @@ div.demo > p{
     top:-60px;
     left:6px;
 }
+
+.footer-link{
+    color:white;
+    font-size:12px;
+    font-family: arial;
+    text-decoration:none;
+}
+
+.footer-borders{
+    border-top:1px solid #6A7180;
+    border-bottom: solid 3px #6A7180;
+}
