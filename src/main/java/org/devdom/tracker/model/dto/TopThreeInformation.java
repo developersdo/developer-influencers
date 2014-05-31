@@ -115,7 +115,7 @@ public class TopThreeInformation implements Serializable {
      * @return the picture
      */
     public String getPicture() {
-        return picture;
+        return "https://graph.facebook.com/"+this.fromId+"/picture?height=130&width=140";
     }
 
     /**
