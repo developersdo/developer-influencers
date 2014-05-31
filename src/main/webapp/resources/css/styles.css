@@ -103,7 +103,7 @@
     top:-1px;
     float:left;
     left:4px;
-    overflow:scroll;
+    /*overflow:scroll;*/
 }
 
 .dev-carrousel-button{
@@ -141,11 +141,11 @@
     position: relative;
     top: 5px;
 }
-
+/*
 .ui-layout-unit-content .ui-widget-content{
     overflow:hidden;
 }
-
+*/
 p{
     font-size: 30px; line-height: 30px
 }
