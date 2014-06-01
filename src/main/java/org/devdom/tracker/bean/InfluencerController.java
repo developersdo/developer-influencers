@@ -210,8 +210,7 @@ public class InfluencerController implements Serializable{
                 item.setUrl("/groupTop20.xhtml?g="+ group.getGroupId());
                 item.setStyle("font-size:12px;");
                 if(group.getGroupId().equals(groupId)){
-                    item.setStyle("color:red");
-                    item.setStyle("font-size:12px;");
+                    item.setStyle("color:red;font-size:12px;");
                 }
                 submenu.addElement(item);
             });
