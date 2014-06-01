@@ -198,7 +198,7 @@ public class InfluencerController implements Serializable{
         submenu.setId("influencersMenu");
 
         List<GroupRating> groups = getGroupsRating();
-        
+
         if(groups.size()>0){
             groups = groups.subList(3, groups.size());
             groups.stream().forEach((group) -> {

@@ -37,7 +37,7 @@
 
                                 <p:panel header="##{dev.position} #{dev.fullName}" style="font-size:12px;text-align:center;width:90%;">
                                     <h:panelGrid columns="1" style="width:130px;text-align: left;">
-                                        <p:graphicImage value="#{dev.picture}" height="80"/>
+                                        <p:graphicImage value="#{dev.picture}"/>
                                         <b>Rating:</b> #{dev.ratio}<br/>
                                         <b>Posts:</b> #{dev.postsCount}<br/>
                                         <b>Comments:</b> #{dev.messagesCount}<br/>
@@ -45,7 +45,7 @@
                                         <b>Mentions:</b> #{dev.mentionsCount}<br/>
                                     </h:panelGrid>
                                 </p:panel>
-                            </p:dataGrid> 
+                            </p:dataGrid>
                         </c:when>
                         <c:otherwise>
                             <h:outputText value="#{fb.loginButton}" escape="false" />
