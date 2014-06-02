@@ -36,5 +36,29 @@ public class TopDao {
         }
         return list;
     }
+    
+    /**
+     * Top 300 de los developers más influyentes según su trayectoría
+     * 
+     * @param groupId
+     * @return
+     * @throws Exception 
+     */
+    public List<Top> findTop300Devs(String groupId) throws Exception{
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
+        EntityManager em = emf.createEntityManager();
+        List<Top> list;
+        try{
+            list = (List<Top>) em.createNamedQuery("Top.findTop300DevsInfluents")
+                    .getResultList();
+        }finally{
+            if(em!=null|em.isOpen())
+                em.close();
+            
+            if(emf.isOpen())
+                emf.close();
+        }
+        return list;
+    }
 
 }

@@ -18,7 +18,7 @@ import org.devdom.tracker.model.dao.TopDao;
 @RequestScoped
 public class TopController implements Serializable{
 
-    List<Top> top20;
+    List<Top> top;
     /**
      * Listado de los 20 developers más influyentes de todos los grupos
      * @return 
@@ -30,12 +30,27 @@ public class TopController implements Serializable{
         String groupId = request.get("g");
         try {
             TopDao topdao = new TopDao();
-            top20 = topdao.findTop20Devs(groupId);
+            top = topdao.findTop20Devs(groupId);
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
-        return top20;
+        return top;
+    }
+    
+    public List<Top> getTop300Devs(){
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String,String> request = externalContext.getRequestParameterMap();
+        
+        String groupId = request.get("g");
+        try {
+            TopDao topdao = new TopDao();
+            top = topdao.findTop300Devs(groupId);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return top;
     }
     
 }

@@ -29,10 +29,15 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       name="group_id",
                                                                       direction=Direction.IN,
                                                                       type=String.class)}
+                                ),
+    @NamedStoredProcedureQuery( name="Top.findTop300DevsInfluents",
+                                procedureName="findTop300DevsInfluents",
+                                returnsResultSet=true,
+                                resultClass=Top.class
                                 )
 })
 public class Top  implements Serializable {    
-    
+
     @Id
     @Column(name = "position")
     private int position;
@@ -184,7 +189,7 @@ public class Top  implements Serializable {
      * @return the picture
      */
     public String getPicture() {
-        return picture;
+        return "https://graph.facebook.com/"+this.fromId+"/picture?height=80&width=80";
     }
 
     /**

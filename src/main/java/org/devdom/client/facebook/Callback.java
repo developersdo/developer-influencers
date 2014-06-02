@@ -38,8 +38,9 @@ public class Callback extends HttpServlet{
         try {
             facebook.getOAuthAccessToken(oauthCode);
             setProfile(request,facebook);
-        } catch (FacebookException e){ 
-            throw new ServletException(e);
+        } catch (FacebookException e){
+            request.getSession().invalidate();
+            response.sendRedirect("index.xhtml");
         }
         response.sendRedirect(request.getContextPath() + "/");
     }
