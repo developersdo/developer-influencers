@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+        <ui:composition template="template/layout.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <c:choose>                        
+                        <c:when test="#{fb.logged}">
+                            
+                            <div class="stats_bar">
+				<div data-intro="&lt;strong&gt;Beautiful Elements&lt;/strong&gt; &lt;br/&gt; If you are looking for a different UI, this is for you!." data-step="2" class="butpro butstyle">
+					<div class="sub"><h2>Diarias</h2><span id="total_clientes">170</span></div>
+					<div class="stat"><span class="spk1"><canvas style="display: inline-block; width: 74px; height: 16px; vertical-align: top;" width="74" height="16"></canvas></span></div>
+				</div>
+				<div class="butpro butstyle">
+					<div class="sub"><h2>Semanal</h2><span>$951,611</span></div>
+					<div class="stat"><span class="up"> 13,5%</span></div>
+				</div>
+			</div>
+                            
+                            
+                            
+                            
+                            
+                            
+                            $("#sparkline").sparkline([5,6,7,8,4,6,7,4], {
+    type: 'bar',
+    height: '30'});
+                            
+                        </c:when>
+                        <c:otherwise>
+                            <h:outputText value="#{fb.loginButton}" escape="false" />
+                        </c:otherwise>
+                    </c:choose>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </html>
