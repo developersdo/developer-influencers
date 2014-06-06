@@ -768,3 +768,9 @@ div.demo > p{
     line-height: 26px;
     text-align: center;
 }
+
+.butpro .stat .equal {
+    background: url("../images/stat-same.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    font-size: 12px;
+    padding: 0 0 0 19px;
+}
