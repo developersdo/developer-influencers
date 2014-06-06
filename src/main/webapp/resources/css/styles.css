@@ -747,3 +747,24 @@ div.demo > p{
     text-align: center;
     text-transform: uppercase;
 }
+
+.butpro .stat .up {
+    background: url("../images/stat-up.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    font-size: 12px;
+    padding: 0 0 0 19px;
+}
+
+.butpro .stat .down {
+    background: url("../images/stat-down.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    font-size: 12px;
+    padding: 0 0 0 19px;
+}
+
+.butpro .sub span {
+    color: #434D55;
+    display: block;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 26px;
+    text-align: center;
+}
