@@ -51,15 +51,15 @@ public class Worker implements Runnable{
     public void run() {
         facebook = new FacebookFactory(cb.build()).getInstance();
 
-        
-
         List<GroupInformation> groups = getGroupList();
         if(groups!=null){
 
             for(GroupInformation group : groups){
                 try{
-                    LOGGER.log(Level.INFO, "GROUP {0}", group.getGroupId());
+                    LOGGER.log(Level.INFO, "Buscando miembros el grupo {0}", group.getGroupName());
                     //getRawMembersInGroup(group.getGroupId()); // Actualizar miembros en grupo
+                    Thread.sleep(1000);
+                    LOGGER.log(Level.INFO, "Buscando post y comentarios del grupo {0}", group.getGroupName());
                     getRawPostsInGroup(group.getGroupId()); // Actualizar interacciones de los miembros de los distintos grupos
                 }catch(FacebookException | JSONException ex){
                     Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
@@ -101,8 +101,8 @@ public class Worker implements Runnable{
         int countCommit = 0;
         try{
             String relURL = groupId + "/feed?fields=id,message,message_tags,name,created_time,from,likes.limit(1000).fields(id),"
-                                    + "comments.limit(1000).fields(id,comment_count,message_tags,message,created_time,user_likes,"
-                                    + "from,like_count,comments,likes.limit(1000).fields(id,name,pic_crop,picture)),picture,with_tags&limit=100";
+                + "comments.limit(1000).fields(id,comment_count,message_tags,message,created_time,user_likes,"
+                + "from,like_count,comments,likes.limit(1000).fields(id,name,pic_crop,picture)),picture,with_tags&limit=150";
             for(int p=0;p<2;p++){
                 RawAPIResponse response = facebook.callGetAPI(relURL);
                 JSONObject json = response.asJSONObject();
@@ -122,13 +122,13 @@ public class Worker implements Runnable{
                     }
                     JSONObject post = posts.getJSONObject(i);
                     syncRawPost(groupId,post,em);
-                    /*
+
                     LOGGER.log(Level.INFO, "POST GROUP ID  => {0}", groupId);
                     LOGGER.log(Level.INFO, "POST ID  => {0}", post.getString("id"));
                     LOGGER.log(Level.INFO, "PAGE -> {0} + row -> {1}", new Object[]{p, i});
                     LOGGER.log(Level.INFO, "Posts ===> {0}", len);
-                    */
-                    if(countCommit>=150){
+
+                    if(countCommit>=99){
                         LOGGER.info("guardando informacion...");
                         em.getTransaction().commit();
                         countCommit=-1;
@@ -140,8 +140,8 @@ public class Worker implements Runnable{
 
                 LOGGER.log(Level.INFO, "NEXT===> {0}", relURL);
             }
-        //} //catch (InterruptedException ex) {
-            //Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (InterruptedException ex) {
+            Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             if(em.getTransaction().isActive()){
                 LOGGER.info("guardando informacion...");
@@ -186,14 +186,14 @@ public class Worker implements Runnable{
         newPost.setMessage(message);
         newPost.setGroupId(groupId);
         em.merge(newPost); // crear o actualizar un post existente 
-        /*
+
         LOGGER.log(Level.INFO, "(POST) postId {0}", postId);
         LOGGER.log(Level.INFO, "(POST) fromId {0}", fromId);
         LOGGER.log(Level.INFO, "(POST) createdTime {0}", createdTime);
         LOGGER.log(Level.INFO, "(POST) likes {0}", likes);
         LOGGER.log(Level.INFO, "(POST) message {0}", message);
         LOGGER.log(Level.INFO, "(POST) groupId {0}", groupId);
-        */
+
         if(hasMessages)
             syncRawMessages(groupId, postId, json.getJSONObject("comments").getJSONArray("data"), em);
 
@@ -240,7 +240,7 @@ public class Worker implements Runnable{
                 String fromId = message.getJSONObject("from").getString("id");
                 String comment = message.isNull("message")?"":message.getString("message");
                 String messageId = message.getString("id");
-                /*
+
                 LOGGER.log(Level.INFO, "(Message) createTime {0}", createTime);
                 LOGGER.log(Level.INFO, "(Message) likes {0}", likes);
                 LOGGER.log(Level.INFO, "(Message) fromId {0}", fromId);
@@ -248,7 +248,7 @@ public class Worker implements Runnable{
                 LOGGER.log(Level.INFO, "(Message) messageId {0}", messageId);
                 LOGGER.log(Level.INFO, "(Message) postId {0}", postId);
                 LOGGER.log(Level.INFO, "(Message) groupId {0}", groupId);
-                */
+
                 newComment.setCreateTime(createTime);
                 newComment.setLikeCount(likes);
                 newComment.setFromId(fromId);
@@ -285,13 +285,13 @@ public class Worker implements Runnable{
             FacebookMentions newMention = new FacebookMentions();
             JSONObject mention = mentions.getJSONObject(i);
             String toId = mention.getString("id");
-            /*
+
             LOGGER.log(Level.INFO, "(MENTION) ({0}) objectId {1}", new Object[]{type, objectId});
             LOGGER.log(Level.INFO, "(MENTION) ({0}) fromId {1}", new Object[]{type, fromId});
             LOGGER.log(Level.INFO, "(MENTION) ({0}) toId {1}", new Object[]{type, toId});
             LOGGER.log(Level.INFO, "(MENTION) ({0}) type {1}", new Object[]{type, type});
             LOGGER.log(Level.INFO, "(MENTION) ({0}) group id {1}", new Object[]{type, groupId});
-            */
+
             newMention.setFromId(fromId);
             newMention.setObjectId(objectId);
             newMention.setToId(toId);
@@ -304,7 +304,7 @@ public class Worker implements Runnable{
 
     /**
      * 
-     * Método para extraer información de los miembros de un grupo
+     * Metodo para extraer informacion de los miembros de un grupo
      * @param groupId
      * @throws FacebookException
      * @throws JSONException 
@@ -320,22 +320,22 @@ public class Worker implements Runnable{
 
                 JSONArray members = json.getJSONArray("data");
                 String nextPage = json.getJSONObject("paging").getString("next");
-                //LOGGER.log(Level.INFO, "(nextPage)===> {0}", nextPage);
+                LOGGER.log(Level.INFO, "(nextPage)===> {0}", nextPage);
 
                 int len = members.length();
                 int startLength = nextPage.indexOf(groupId);
                 relURL = nextPage.substring(startLength,nextPage.length());
-                //LOGGER.log(Level.INFO, "(nextPage)===> {0}", relURL);
+                LOGGER.log(Level.INFO, "(nextPage)===> {0}", relURL);
 
                 if(!em.getTransaction().isActive()){
                     em.getTransaction().begin();
                 }
                 for(int i=0;i<len;i++){
                     JSONObject member = members.getJSONObject(i);
-                    //LOGGER.log(Level.INFO, "PAGE -> {0}, member row -> {1}", new Object[]{p, i});
+                    LOGGER.log(Level.INFO, "PAGE -> {0}, member row -> {1}", new Object[]{p, i});
                     syncRawMember(groupId,member,em);
-                    //LOGGER.log(Level.INFO, "Members {0}  ===> ", len);
-                    if(counterCommit>=300){
+                    LOGGER.log(Level.INFO, "Members {0}  ===> ", len);
+                    if(counterCommit>=99){
                         if(!em.getTransaction().isActive())
                             em.getTransaction().begin();
 

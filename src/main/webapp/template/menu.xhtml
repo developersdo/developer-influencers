@@ -9,7 +9,9 @@
                 <h:form id="leftForm">
                     <div style="text-align:center"> 
                         <div id="profile-position" class="textShadowGray" title="Posición en el ranking global"># #{influencer.secondPosition.position}</div>
-                        <img src="#{influencer.secondPosition.picture}" class="circularProfileImage glow"/>
+                        <a href="profile.xhtml">
+                            <img src="#{influencer.secondPosition.picture}" class="circularProfileImage glow"/>
+                        </a>
                         <div class="titleProfile textShadow">#{influencer.secondPosition.fullName}</div>
                     </div> 
                     <div id="devs-carrousel">
