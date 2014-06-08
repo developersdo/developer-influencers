@@ -63,6 +63,8 @@ public class Worker implements Runnable{
                     getRawPostsInGroup(group.getGroupId()); // Actualizar interacciones de los miembros de los distintos grupos
                 }catch(FacebookException | JSONException ex){
                     Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
@@ -74,7 +76,7 @@ public class Worker implements Runnable{
                 Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            for(GroupInformation group : groups){
+            groups.stream().forEach((group) -> {
                 try{
                     updateGroupsInformation(group.getGroupId(),group.getGroupName(),group.getMinInteractions());
                 }catch(Exception ex){
@@ -107,8 +109,7 @@ public class Worker implements Runnable{
 
         EntityManager em = emf.createEntityManager();
         int countCommit = 0;
-        try{
-            String relURL = groupId + "/feed?fields=id,message,message_tags,name,created_time,from,likes.limit(1000).fields(id),"
+        String relURL = groupId + "/feed?fields=id,message,message_tags,name,created_time,from,likes.limit(1000).fields(id),"
                 + "comments.limit(1000).fields(id,comment_count,message_tags,message,created_time,user_likes,"
                 + "from,like_count,comments,likes.limit(1000).fields(id,name,pic_crop,picture)),picture,with_tags&limit=150";
         for(int p=0;p<2;p++){
