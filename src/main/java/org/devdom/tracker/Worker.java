@@ -80,7 +80,15 @@ public class Worker implements Runnable{
                 }catch(Exception ex){
                     Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
+            });
+            
+            groups.stream().forEach((group) -> {
+                try{
+                    updateGroupMonthStat(group.getGroupId(), group.getGroupName());
+                }catch(Exception ex){
+                    Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
             LOGGER.info("Finalizacion de actualizacion");
         }
     }
@@ -103,52 +111,42 @@ public class Worker implements Runnable{
             String relURL = groupId + "/feed?fields=id,message,message_tags,name,created_time,from,likes.limit(1000).fields(id),"
                 + "comments.limit(1000).fields(id,comment_count,message_tags,message,created_time,user_likes,"
                 + "from,like_count,comments,likes.limit(1000).fields(id,name,pic_crop,picture)),picture,with_tags&limit=150";
-            for(int p=0;p<2;p++){
-                RawAPIResponse response = facebook.callGetAPI(relURL);
-                JSONObject json = response.asJSONObject();
-
-                JSONArray posts = json.getJSONArray("data");
-                String nextPage = json.getJSONObject("paging").getString("next");
-                LOGGER.log(Level.INFO, "(nextPage)===> {0}", nextPage);
-
-                int len = posts.length();
-                int startLength = nextPage.indexOf(groupId);
-                relURL = nextPage.substring(startLength,nextPage.length());
-                LOGGER.log(Level.INFO, "(nextPage)===> {0}", relURL);
-
-                for(int i=0;i<len;i++){
-                    if(!em.getTransaction().isActive()){
-                        em.getTransaction().begin();
-                    }
-                    JSONObject post = posts.getJSONObject(i);
-                    syncRawPost(groupId,post,em);
-
-                    LOGGER.log(Level.INFO, "POST GROUP ID  => {0}", groupId);
-                    LOGGER.log(Level.INFO, "POST ID  => {0}", post.getString("id"));
-                    LOGGER.log(Level.INFO, "PAGE -> {0} + row -> {1}", new Object[]{p, i});
-                    LOGGER.log(Level.INFO, "Posts ===> {0}", len);
-
-                    if(countCommit>=99){
-                        LOGGER.info("guardando informacion...");
-                        em.getTransaction().commit();
-                        countCommit=-1;
-                    }
-                    countCommit++;
-                }
-                if(!em.getTransaction().isActive())
+        for(int p=0;p<2;p++){
+            RawAPIResponse response = facebook.callGetAPI(relURL);
+            JSONObject json = response.asJSONObject();
+            
+            JSONArray posts = json.getJSONArray("data");
+            String nextPage = json.getJSONObject("paging").getString("next");
+            LOGGER.log(Level.INFO, "(nextPage)===> {0}", nextPage);
+            
+            int len = posts.length();
+            int startLength = nextPage.indexOf(groupId);
+            relURL = nextPage.substring(startLength,nextPage.length());
+            LOGGER.log(Level.INFO, "(nextPage)===> {0}", relURL);
+            
+            for(int i=0;i<len;i++){
+                if(!em.getTransaction().isActive()){
                     em.getTransaction().begin();
-
-                LOGGER.log(Level.INFO, "NEXT===> {0}", relURL);
+                }
+                JSONObject post = posts.getJSONObject(i);
+                syncRawPost(groupId,post,em);
+                
+                LOGGER.log(Level.INFO, "POST GROUP ID  => {0}", groupId);
+                LOGGER.log(Level.INFO, "POST ID  => {0}", post.getString("id"));
+                LOGGER.log(Level.INFO, "PAGE -> {0} + row -> {1}", new Object[]{p, i});
+                LOGGER.log(Level.INFO, "Posts ===> {0}", len);
+                
+                if(countCommit>=99){
+                    LOGGER.info("guardando informacion...");
+                    em.getTransaction().commit();
+                    countCommit=-1;
+                }
+                countCommit++;
             }
-        }catch (InterruptedException ex) {
-            Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            if(em.getTransaction().isActive()){
-                LOGGER.info("guardando informacion...");
-                em.getTransaction().commit();
-            }
-            if(em.isOpen())
-                em.close();
+            if(!em.getTransaction().isActive())
+                em.getTransaction().begin();
+            
+            LOGGER.log(Level.INFO, "NEXT===> {0}", relURL);
         }
     }
 
@@ -380,13 +378,12 @@ public class Worker implements Runnable{
         
         FacebookMember user = new FacebookMember(id,firstName,lastName, picture);
         em.merge(user); // crear o actualizar usuario 
-        /*
+
         LOGGER.log(Level.INFO, "(MEMBER) Id -> {0}", id);
         LOGGER.log(Level.INFO, "(MEMBER) firstName -> {0}", firstName);
         LOGGER.log(Level.INFO, "(MEMBER) lastName -> {0}", lastName);
         LOGGER.log(Level.INFO, "(MEMBER) picture -> {0}", picture);
         LOGGER.log(Level.INFO, "(MEMBER) groupId -> {0}", groupId);
-        */
     }
 
     private void updateGroupsInformation(String groupId, String groupName, int minInteractions) throws Exception {
@@ -402,6 +399,11 @@ public class Worker implements Runnable{
             Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    private void updateGroupMonthStat(String groupId, String groupName) throws Exception {
+        LOGGER.log(Level.INFO, "Actualizando Top Mensual del grupo {0}", groupName);
+        groupDao.updTopInfluencersMonthlyByGroupId(groupId);
     }
     
 }
