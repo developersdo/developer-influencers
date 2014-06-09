@@ -13,7 +13,13 @@ import org.eclipse.jetty.webapp.WebAppContext;
 public class Main {
 
     public static void main(String[] args) throws Exception{
-
+        
+        Runnable worker = new Worker();
+        Thread thread = new Thread(worker);
+        thread.setName("w");
+        thread.start();
+            
+        /*
         String webappDirLocation = "src/main/webapp/";
         
         ErrorHandler errorHandler = new ErrorHandler();
@@ -56,5 +62,6 @@ public class Main {
 
         server.start();
         server.join();
+        */
     }
 }

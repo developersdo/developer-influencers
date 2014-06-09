@@ -119,4 +119,22 @@ public class GroupRatingDao {
                 em.close();
         }
     }
+    
+    /**
+     * 
+     * @param groupId
+     * @return
+     * @throws Exception 
+     */
+    public GroupInformation updTopInfluencersMonthlyByGroupId(String groupId) throws Exception{
+        EntityManager em = emf.createEntityManager();
+        try{
+            return (GroupInformation) em.createNamedQuery("GroupInformation.updTopInfluencers_monthBatch")
+                    .setParameter("group_id", groupId)
+                    .getSingleResult();
+        }finally{
+            if(em!=null|em.isOpen())
+                em.close();
+        }
+    }
 }
