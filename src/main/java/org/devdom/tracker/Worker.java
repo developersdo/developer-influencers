@@ -54,7 +54,7 @@ public class Worker implements Runnable{
         List<GroupInformation> groups = getGroupList();
         if(groups!=null){
 
-            for(GroupInformation group : groups){
+            groups.stream().forEach((group) -> {
                 try{
                     LOGGER.log(Level.INFO, "Buscando miembros el grupo {0}", group.getGroupName());
                     //getRawMembersInGroup(group.getGroupId()); // Actualizar miembros en grupo
@@ -66,8 +66,8 @@ public class Worker implements Runnable{
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-
+            });
+            
             try {
                 Thread.sleep(500);
                 LOGGER.info("Sincronizando data anual de los grupos");
@@ -75,15 +75,18 @@ public class Worker implements Runnable{
             } catch (Exception ex) {
                 Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             groups.stream().forEach((group) -> {
                 try{
-                    updateGroupsInformation(group.getGroupId(),group.getGroupName(),group.getMinInteractions());
+                    LOGGER.log(Level.INFO, "Intervalo 0 para grupo {0}", group.getGroupName());
+                    updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),0);
+                    LOGGER.log(Level.INFO, "Intervalo -1 para grupo {0}", group.getGroupName());
+                    updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),0);
                 }catch(Exception ex){
                     Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
-            
+
             groups.stream().forEach((group) -> {
                 try{
                     updateGroupMonthStat(group.getGroupId(), group.getGroupName());
@@ -91,6 +94,7 @@ public class Worker implements Runnable{
                     Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
+
             LOGGER.info("Finalizacion de actualizacion");
         }
     }
@@ -385,6 +389,12 @@ public class Worker implements Runnable{
         LOGGER.log(Level.INFO, "(MEMBER) lastName -> {0}", lastName);
         LOGGER.log(Level.INFO, "(MEMBER) picture -> {0}", picture);
         LOGGER.log(Level.INFO, "(MEMBER) groupId -> {0}", groupId);
+    }
+
+    private void updateGroupsInformationWithInterval(String groupId, String groupName, int min, int interval) throws Exception{
+
+        LOGGER.log(Level.INFO, "Actualizando grupo {0}", groupName);
+        groupDao.updGroupInformationYearByIntervalAndId(groupId, min, interval);
     }
 
     private void updateGroupsInformation(String groupId, String groupName, int minInteractions) throws Exception {
