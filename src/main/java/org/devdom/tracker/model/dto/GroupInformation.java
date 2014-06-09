@@ -54,6 +54,16 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       direction=Direction.IN,
                                                                       type=String.class
                                                                       )}
+                                ),
+    @NamedStoredProcedureQuery( name="GroupInformation.updTopInfluencers_monthBatch",
+                                procedureName="updTopInfluencers_monthBatch",
+                                returnsResultSet=true,
+                                resultClass=GroupInformation.class,
+                                parameters={@StoredProcedureParameter(queryParameter="group_id",
+                                                                      name="group_id",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class
+                                                                      )}
                                 )
 })
 public class GroupInformation implements Serializable {
