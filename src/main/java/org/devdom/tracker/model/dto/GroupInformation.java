@@ -64,9 +64,28 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       direction=Direction.IN,
                                                                       type=String.class
                                                                       )}
+                                ),
+    @NamedStoredProcedureQuery( name="GroupInformation.updTopInfluencers_year",
+                                procedureName="updTopInfluencers_year",
+                                returnsResultSet=true,
+                                resultClass=GroupInformation.class,
+                                parameters={@StoredProcedureParameter(queryParameter="in_group_id",
+                                                                      name="in_group_id",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class
+                                                                      ),
+                                            @StoredProcedureParameter(queryParameter="in_min_interactions",
+                                                                      name="in_min_interactions",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class),
+                                            @StoredProcedureParameter(queryParameter="in_interval_day",
+                                                                      name="in_interval_day",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class)
+                                }
                                 )
 })
-public class GroupInformation implements Serializable {
+public class GroupInformation implements Serializable { 
 
     @Id
     @Column(name = "id")

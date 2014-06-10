@@ -53,7 +53,7 @@ public class Worker implements Runnable{
 
         List<GroupInformation> groups = getGroupList();
         if(groups!=null){
-
+            
             groups.stream().forEach((group) -> {
                 try{
                     LOGGER.log(Level.INFO, "Buscando miembros el grupo {0}", group.getGroupName());
@@ -78,10 +78,10 @@ public class Worker implements Runnable{
 
             groups.stream().forEach((group) -> {
                 try{
-                    LOGGER.log(Level.INFO, "Intervalo 0 para grupo {0}", group.getGroupName());
+                    LOGGER.log(Level.INFO, "Intervalo 0 para grupo ({0})", group.getGroupName());
                     updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),0);
-                    LOGGER.log(Level.INFO, "Intervalo -1 para grupo {0}", group.getGroupName());
-                    updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),0);
+                    LOGGER.log(Level.INFO, "Intervalo -1 para grupo ({0})", group.getGroupName());
+                    updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),-1);
                 }catch(Exception ex){
                     Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -94,7 +94,6 @@ public class Worker implements Runnable{
                     Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
-
             LOGGER.info("Finalizacion de actualizacion");
         }
     }
@@ -115,7 +114,7 @@ public class Worker implements Runnable{
         int countCommit = 0;
         String relURL = groupId + "/feed?fields=id,message,message_tags,name,created_time,from,likes.limit(1000).fields(id),"
                 + "comments.limit(1000).fields(id,comment_count,message_tags,message,created_time,user_likes,"
-                + "from,like_count,comments,likes.limit(1000).fields(id,name,pic_crop,picture)),picture,with_tags&limit=150";
+                + "from,like_count,comments,likes.limit(1000).fields(id,name,pic_crop,picture)),picture,with_tags&limit=20";
         for(int p=0;p<2;p++){
             RawAPIResponse response = facebook.callGetAPI(relURL);
             JSONObject json = response.asJSONObject();
@@ -392,17 +391,15 @@ public class Worker implements Runnable{
     }
 
     private void updateGroupsInformationWithInterval(String groupId, String groupName, int min, int interval) throws Exception{
-
-        LOGGER.log(Level.INFO, "Actualizando grupo {0}", groupName);
         groupDao.updGroupInformationYearByIntervalAndId(groupId, min, interval);
     }
-
+    /*
     private void updateGroupsInformation(String groupId, String groupName, int minInteractions) throws Exception {
 
         LOGGER.log(Level.INFO, "Actualizando grupo {0}", groupName);
         groupDao.updGroupInformationByGroupById(groupId, minInteractions);
     }
-
+    */
     private List<GroupInformation> getGroupList() {
         try{
             return groupDao.findAllGroups();

@@ -90,9 +90,9 @@ public class GroupRatingDao {
         EntityManager em = emf.createEntityManager();
         try{
             return (GroupInformation) em.createNamedQuery("GroupInformation.updTopInfluencers_year")
-                    .setParameter("group_id", groupId)
-                    .setParameter("min_interaction", min)
-                    .setParameter("interval_day",interval)
+                    .setParameter("in_group_id", groupId)
+                    .setParameter("in_min_interactions", min)
+                    .setParameter("in_interval_day",interval)
                     .getSingleResult();
         }finally{
             if(em!=null|em.isOpen())
