@@ -58,7 +58,7 @@ public class GroupRatingDao {
     }
     
     /**
-     * General el top de los developers de un grupo determinado según el ID
+     * Genera el top de los developers de un grupo determinado según el ID
      * @param groupId
      * @param minInteraction
      * @return 
@@ -70,6 +70,29 @@ public class GroupRatingDao {
             return (GroupInformation) em.createNamedQuery("GroupInformation.updTopInfluencers")
                     .setParameter("group_id", groupId)
                      .setParameter("min_interaction", minInteraction)
+                    .getSingleResult();
+        }finally{
+            if(em!=null|em.isOpen())
+                em.close();
+        }
+    }
+    
+    /**
+     * Genera el top de los developers de un grupo derterminado según el ID y el intervalo especificado
+     * 
+     * @param groupId
+     * @param min
+     * @param interval
+     * @return
+     * @throws Exception 
+     */
+    public GroupInformation updGroupInformationYearByIntervalAndId(String groupId, int min, int interval)throws Exception{
+        EntityManager em = emf.createEntityManager();
+        try{
+            return (GroupInformation) em.createNamedQuery("GroupInformation.updTopInfluencers_year")
+                    .setParameter("group_id", groupId)
+                    .setParameter("min_interaction", min)
+                    .setParameter("interval_day",interval)
                     .getSingleResult();
         }finally{
             if(em!=null|em.isOpen())
