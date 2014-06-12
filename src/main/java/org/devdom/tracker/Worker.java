@@ -8,8 +8,6 @@ import facebook4j.conf.ConfigurationBuilder;
 import facebook4j.internal.org.json.JSONArray;
 import facebook4j.internal.org.json.JSONException;
 import facebook4j.internal.org.json.JSONObject;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -17,7 +15,6 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import org.devdom.tracker.model.dao.FacebookDao;
 import org.devdom.tracker.model.dao.GroupRatingDao;
 import org.devdom.tracker.model.dto.FacebookComment;
 import org.devdom.tracker.model.dto.FacebookMember;
@@ -80,8 +77,8 @@ public class Worker implements Runnable{
                 try{
                     LOGGER.log(Level.INFO, "Intervalo 0 para grupo ({0})", group.getGroupName());
                     updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),0);
-                    LOGGER.log(Level.INFO, "Intervalo -1 para grupo ({0})", group.getGroupName());
-                    updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),-1);
+                    LOGGER.log(Level.INFO, "Intervalo 1 para grupo ({0})", group.getGroupName());
+                    updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),1);
                 }catch(Exception ex){
                     Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -114,8 +111,8 @@ public class Worker implements Runnable{
         int countCommit = 0;
         String relURL = groupId + "/feed?fields=id,message,message_tags,name,created_time,from,likes.limit(1000).fields(id),"
                 + "comments.limit(1000).fields(id,comment_count,message_tags,message,created_time,user_likes,"
-                + "from,like_count,comments,likes.limit(1000).fields(id,name,pic_crop,picture)),picture,with_tags&limit=20";
-        for(int p=0;p<2;p++){
+                + "from,like_count,comments,likes.limit(1000).fields(id,name,pic_crop,picture)),picture,with_tags&limit=150";
+        for(int p=0;p<10;p++){
             RawAPIResponse response = facebook.callGetAPI(relURL);
             JSONObject json = response.asJSONObject();
             
