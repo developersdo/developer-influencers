@@ -17,7 +17,7 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
 @Entity
 @XmlRootElement
 @NamedStoredProcedureQueries({
-    @NamedStoredProcedureQuery( name="stat.findMonthsStat", 
+    @NamedStoredProcedureQuery( name="MonthStat.findMonthsStat", 
                                 procedureName="findMonthsStat",
                                 returnsResultSet=true,
                                 resultClass=MonthStat.class,
@@ -37,6 +37,15 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       name="from_id",
                                                                       direction=Direction.IN,
                                                                       type=String.class)}
+                                ),
+    @NamedStoredProcedureQuery( name="MonthStat.findTopPositionsInTop", 
+                                procedureName="findTopPositionsInTop",
+                                returnsResultSet=true,
+                                resultClass=MonthStat.class,
+                                parameters={@StoredProcedureParameter(queryParameter="from_id",
+                                                                      name="from_id",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class)}
                                 )
 })
 public class MonthStat implements Serializable {
@@ -44,26 +53,18 @@ public class MonthStat implements Serializable {
     @Id
     @Column(name = "from_id")    
     private String fromId;
-    @Column(name = "current_rating")
-    private String currentRating;
-    @Column(name = "current_position")
-    private int currentPosition;
-    @Column(name = "current_month")
-    private int currentMonth;
-    @Column(name = "current_interactions")
-    private int currentInteractions;
-    @Column(name = "current_reactions")
-    private int currentReactions;
-    @Column(name = "previous_rating")
-    private String previousRating;
-    @Column(name = "previous_position")
-    private int previousPosition;
-    @Column(name = "previous_month")
-    private int previousMonth;
-    @Column(name = "previous_interactions")
-    private int previousInteractions;
-    @Column(name = "previous_reactions")
-    private int previousReactions;
+    @Column(name = "rating")
+    private String rating;
+    @Column(name = "reactions")
+    private int reactions;
+    @Column(name = "interactions")
+    private int interactions;
+    @Column(name = "position")
+    private int position;
+    @Column(name = "part")
+    private int part;
+    @Column(name = "group_id")
+    private String group_id;
 
     public String getFromId() {
         return fromId;
@@ -73,89 +74,57 @@ public class MonthStat implements Serializable {
         this.fromId = fromId;
     }
 
-    public String getCurrentRating() {
-        return currentRating;
+    public String getRating() {
+        return rating;
     }
 
-    public void setCurrentRating(String currentRating) {
-        this.currentRating = currentRating;
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
-    public int getCurrentPosition() {
-        return currentPosition;
+    public int getReactions() {
+        return reactions;
     }
 
-    public void setCurrentPosition(int currentPosition) {
-        this.currentPosition = currentPosition;
+    public void setReactions(int reactions) {
+        this.reactions = reactions;
     }
 
-    public int getCurrentMonth() {
-        return currentMonth;
+    public int getInteractions() {
+        return interactions;
     }
 
-    public void setCurrentMonth(int currentMonth) {
-        this.currentMonth = currentMonth;
+    public void setInteractions(int interactions) {
+        this.interactions = interactions;
     }
 
-    public int getCurrentInteractions() {
-        return currentInteractions;
+    public int getPosition() {
+        return position;
     }
 
-    public void setCurrentInteractions(int currentInteractions) {
-        this.currentInteractions = currentInteractions;
+    public void setPosition(int position) {
+        this.position = position;
     }
 
-    public int getCurrentReactions() {
-        return currentReactions;
+    public int getPart() {
+        return part;
     }
 
-    public void setCurrentReactions(int currentReactions) {
-        this.currentReactions = currentReactions;
+    public void setPart(int part) {
+        this.part = part;
     }
 
-    public String getPreviousRating() {
-        return previousRating;
+    public String getGroup_id() {
+        return group_id;
     }
 
-    public void setPreviousRating(String previousRating) {
-        this.previousRating = previousRating;
-    }
-
-    public int getPreviousPosition() {
-        return previousPosition;
-    }
-
-    public void setPreviousPosition(int previousPosition) {
-        this.previousPosition = previousPosition;
-    }
-
-    public int getPreviousMonth() {
-        return previousMonth;
-    }
-
-    public void setPreviousMonth(int previousMonth) {
-        this.previousMonth = previousMonth;
-    }
-
-    public int getPreviousInteractions() {
-        return previousInteractions;
-    }
-
-    public void setPreviousInteractions(int previousInteractions) {
-        this.previousInteractions = previousInteractions;
-    }
-
-    public int getPreviousReactions() {
-        return previousReactions;
-    }
-
-    public void setPreviousReactions(int previousReactions) {
-        this.previousReactions = previousReactions;
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
     }
 
     @Override
     public String toString() {
-        return "MonthStat{" + "fromId=" + fromId + ", currentRating=" + currentRating + ", currentPosition=" + currentPosition + ", currentMonth=" + currentMonth + ", currentInteractions=" + currentInteractions + ", currentReactions=" + currentReactions + ", previousRating=" + previousRating + ", previousPosition=" + previousPosition + ", previousMonth=" + previousMonth + ", previousInteractions=" + previousInteractions + ", previousReactions=" + previousReactions + '}';
+        return "MonthStat{" + "fromId=" + fromId + ", rating=" + rating + ", reactions=" + reactions + ", interactions=" + interactions + ", position=" + position + ", part=" + part + ", group_id=" + group_id + '}';
     }
 
 }

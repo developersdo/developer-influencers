@@ -38,4 +38,21 @@ public class MonthStatDao {
                 em.close();
         }
     }
+    
+    /**
+     * 
+     * @param fromId
+     * @return 
+     */
+    public List<MonthStat> findTopPositionsInTop(String fromId){
+        EntityManager em = emf.createEntityManager();
+        try{
+            return (List<MonthStat>) em.createNamedQuery("MonthStat.findTopPositionsInTop")
+                    .setParameter("from_id", fromId)
+                    .getResultList();
+        }finally{
+            if(em!=null|em.isOpen())
+                em.close();
+        }
+    }
 }
