@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.devdom.tracker.model.dao.MonthStatDao;
 import org.devdom.tracker.model.dao.TopDao;
 import org.devdom.tracker.model.dto.FacebookProfile;
-import org.devdom.tracker.model.dto.MonthStat;
+import org.devdom.tracker.model.dto.YearStat;
 import org.devdom.tracker.model.dto.Top;
 
 /**
@@ -61,7 +61,7 @@ public class TopController implements Serializable{
         return top;
     }
     
-    public List<MonthStat> getTopPositionsInTop(){
+    public List<YearStat> getPositionsInTop(){
         String uid = (profile!=null)?profile.getUid():"";
         MonthStatDao dao = new MonthStatDao();
         return dao.findTopPositionsInTop(uid);

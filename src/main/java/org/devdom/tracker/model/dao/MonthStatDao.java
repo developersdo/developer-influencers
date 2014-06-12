@@ -4,7 +4,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import org.devdom.tracker.model.dto.MonthStat;
+import org.devdom.tracker.model.dto.YearStat;
 
 /**
  *
@@ -24,10 +24,10 @@ public class MonthStatDao {
      * @param fromId
      * @return 
      */
-    public List<MonthStat> findMonthsStat(int month, int year, String groupId, String fromId){
+    public List<YearStat> findMonthsStat(int month, int year, String groupId, String fromId){
         EntityManager em = emf.createEntityManager();
         try{
-            return (List<MonthStat>) em.createNamedQuery("stat.findMonthsStat")
+            return (List<YearStat>) em.createNamedQuery("stat.findMonthsStat")
                     .setParameter("month", month)
                     .setParameter("year", year)
                     .setParameter("group_id", groupId)
@@ -44,10 +44,10 @@ public class MonthStatDao {
      * @param fromId
      * @return 
      */
-    public List<MonthStat> findTopPositionsInTop(String fromId){
+    public List<YearStat> findTopPositionsInTop(String fromId){
         EntityManager em = emf.createEntityManager();
         try{
-            return (List<MonthStat>) em.createNamedQuery("MonthStat.findTopPositionsInTop")
+            return (List<YearStat>) em.createNamedQuery("YearStat.findTopPositionsInTop")
                     .setParameter("from_id", fromId)
                     .getResultList();
         }finally{
