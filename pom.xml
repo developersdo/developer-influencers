@@ -3,13 +3,25 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.devdom</groupId>
     <artifactId>developer-influencer</artifactId>
-    <version>1.1</version>
+    <version>1.1.3</version>
     <packaging>war</packaging>
     <name>developer-influencer</name>
     <organization>
         <name>Developers Dominicanos</name>
         <url>http://developers.do</url>
     </organization>
+    <developers>
+        <developer>
+            <name>Carlos Vásquez Polanco</name>
+            <email>carlosslim@gmail.com</email>
+            <url>http://www.linkedin.com/in/carlosvasquez</url>
+            <organization>Developers Dominicanos</organization>
+            <organizationUrl>http://developers.do</organizationUrl>
+            <properties>
+                <project>Developers Influyentes</project>
+            </properties>
+        </developer>
+    </developers>
     <scm>
         <url>https://github.com/developersdo/developer-influencers</url>
     </scm>
