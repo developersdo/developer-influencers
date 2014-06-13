@@ -58,7 +58,7 @@ public class YearStat implements Serializable {
     @Column(name = "current_rating")
     private String currentRating;
     @Column(name = "previous_rating")
-    private int previousRating;
+    private String previousRating;
     @Column(name = "current_likes_count")
     private int currentLikesCount;
     @Column(name = "current_posts_likes_count")
@@ -66,9 +66,9 @@ public class YearStat implements Serializable {
     @Column(name = "previous_posts_likes_count")
     private int previousPostsLikesCount;
     @Column(name = "current_comments_likes_count")
-    private String currentCommentsLikesCount;
+    private int currentCommentsLikesCount;
     @Column(name = "previous_comments_likes_count")
-    private String previousCommentsLikesCount;
+    private int previousCommentsLikesCount;
     @Column(name = "current_interactions_count")
     private int currentInteractionsCount;
     @Column(name = "previous_interactions_count")
@@ -104,6 +104,8 @@ public class YearStat implements Serializable {
     private String groupId;
     @Column(name = "group_name")
     private String groupName;
+    @Column(name = "rank_indicator")
+    private String rankIndicator;
     
     public String getFromId() {
         return fromId;
@@ -121,11 +123,11 @@ public class YearStat implements Serializable {
         this.currentRating = currentRating;
     }
 
-    public int getPreviousRating() {
+    public String getPreviousRating() {
         return previousRating;
     }
 
-    public void setPreviousRating(int previousRating) {
+    public void setPreviousRating(String previousRating) {
         this.previousRating = previousRating;
     }
 
@@ -153,19 +155,19 @@ public class YearStat implements Serializable {
         this.previousPostsLikesCount = previousPostsLikesCount;
     }
 
-    public String getCurrentCommentsLikesCount() {
+    public int getCurrentCommentsLikesCount() {
         return currentCommentsLikesCount;
     }
 
-    public void setCurrentCommentsLikesCount(String currentCommentsLikesCount) {
+    public void setCurrentCommentsLikesCount(int currentCommentsLikesCount) {
         this.currentCommentsLikesCount = currentCommentsLikesCount;
     }
 
-    public String getPreviousCommentsLikesCount() {
+    public int getPreviousCommentsLikesCount() {
         return previousCommentsLikesCount;
     }
 
-    public void setPreviousCommentsLikesCount(String previousCommentsLikesCount) {
+    public void setPreviousCommentsLikesCount(int previousCommentsLikesCount) {
         this.previousCommentsLikesCount = previousCommentsLikesCount;
     }
 
@@ -305,9 +307,17 @@ public class YearStat implements Serializable {
         this.groupName = groupName;
     }
 
+    public String getRankIndicator() {
+        return rankIndicator;
+    }
+
+    public void setRankIndicator(String rankIndicator) {
+        this.rankIndicator = rankIndicator;
+    }
+
     @Override
     public String toString() {
-        return "YearStat{" + "fromId=" + fromId + ", currentRating=" + currentRating + ", previousRating=" + previousRating + ", currentLikesCount=" + currentLikesCount + ", currentPostsLikesCount=" + currentPostsLikesCount + ", previousPostsLikesCount=" + previousPostsLikesCount + ", currentCommentsLikesCount=" + currentCommentsLikesCount + ", previousCommentsLikesCount=" + previousCommentsLikesCount + ", currentInteractionsCount=" + currentInteractionsCount + ", previousInteractionsCount=" + previousInteractionsCount + ", currentPostsCount=" + currentPostsCount + ", previousPostsCount=" + previousPostsCount + ", current_comments_count=" + current_comments_count + ", previousCommentsCount=" + previousCommentsCount + ", currentMentionsCount=" + currentMentionsCount + ", previousMentionsCount=" + previousMentionsCount + ", currentMentionsPostsCount=" + currentMentionsPostsCount + ", previousMentionsPostsCount=" + previousMentionsPostsCount + ", currentMentionsCommentsCount=" + currentMentionsCommentsCount + ", previousMentionsCommentsCount=" + previousMentionsCommentsCount + ", currentPosition=" + currentPosition + ", previousPosition=" + previousPosition + ", createdTime=" + createdTime + ", groupId=" + groupId + ", groupName=" + groupName + '}';
+        return "YearStat{" + "fromId=" + fromId + ", currentRating=" + currentRating + ", previousRating=" + previousRating + ", currentLikesCount=" + currentLikesCount + ", currentPostsLikesCount=" + currentPostsLikesCount + ", previousPostsLikesCount=" + previousPostsLikesCount + ", currentCommentsLikesCount=" + currentCommentsLikesCount + ", previousCommentsLikesCount=" + previousCommentsLikesCount + ", currentInteractionsCount=" + currentInteractionsCount + ", previousInteractionsCount=" + previousInteractionsCount + ", currentPostsCount=" + currentPostsCount + ", previousPostsCount=" + previousPostsCount + ", current_comments_count=" + current_comments_count + ", previousCommentsCount=" + previousCommentsCount + ", currentMentionsCount=" + currentMentionsCount + ", previousMentionsCount=" + previousMentionsCount + ", currentMentionsPostsCount=" + currentMentionsPostsCount + ", previousMentionsPostsCount=" + previousMentionsPostsCount + ", currentMentionsCommentsCount=" + currentMentionsCommentsCount + ", previousMentionsCommentsCount=" + previousMentionsCommentsCount + ", currentPosition=" + currentPosition + ", previousPosition=" + previousPosition + ", createdTime=" + createdTime + ", groupId=" + groupId + ", groupName=" + groupName + ", rankIndicator=" + rankIndicator + '}';
     }
 
 }
