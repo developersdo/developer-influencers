@@ -92,7 +92,7 @@ public class GroupRatingDao {
             return (GroupInformation) em.createNamedQuery("GroupInformation.updTopInfluencers_year")
                     .setParameter("in_group_id", groupId)
                     .setParameter("in_min_interactions", min)
-                    .setParameter("in_interval_day",interval)
+                    .setParameter("in_interval_month",interval)
                     .getSingleResult();
         }finally{
             if(em!=null|em.isOpen())

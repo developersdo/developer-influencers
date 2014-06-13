@@ -78,8 +78,8 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       name="in_min_interactions",
                                                                       direction=Direction.IN,
                                                                       type=Integer.class),
-                                            @StoredProcedureParameter(queryParameter="in_interval_day",
-                                                                      name="in_interval_day",
+                                            @StoredProcedureParameter(queryParameter="in_interval_month",
+                                                                      name="in_interval_month",
                                                                       direction=Direction.IN,
                                                                       type=Integer.class)
                                 }
