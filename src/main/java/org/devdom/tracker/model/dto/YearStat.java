@@ -16,8 +16,6 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
  *
  * @author Carlos Vásquez Polanco
  */
-@Entity
-@XmlRootElement
 @NamedStoredProcedureQueries({
     @NamedStoredProcedureQuery( name="YearStat.findMonthsStat", 
                                 procedureName="findMonthsStat",
@@ -50,9 +48,15 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       type=String.class)}
                                 )
 })
+@Entity
+@XmlRootElement
 public class YearStat implements Serializable {
     
     @Id
+    @Column(name = "group_id")
+    private String groupId;
+    @Column(name = "group_name")
+    private String groupName;
     @Column(name = "from_id")    
     private String fromId;
     @Column(name = "current_rating")
@@ -100,10 +104,6 @@ public class YearStat implements Serializable {
     @Column(name = "created_time")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdTime;
-    @Column(name = "group_id")
-    private String groupId;
-    @Column(name = "group_name")
-    private String groupName;
     @Column(name = "rank_indicator")
     private String rankIndicator;
     

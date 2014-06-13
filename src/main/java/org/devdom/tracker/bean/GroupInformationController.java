@@ -1,5 +1,6 @@
 package org.devdom.tracker.bean;
 
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -7,8 +8,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.devdom.tracker.model.dao.GroupRatingDao;
+import org.devdom.tracker.model.dao.StatDao;
+import org.devdom.tracker.model.dto.FacebookProfile;
 import org.devdom.tracker.model.dto.GroupInformation;
+import org.devdom.tracker.model.dto.YearStat;
 
 /**
  *
@@ -50,4 +55,5 @@ public class GroupInformationController {
             return null;
         }
     }
+
 }

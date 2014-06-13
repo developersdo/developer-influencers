@@ -10,7 +10,7 @@ import org.devdom.tracker.model.dto.YearStat;
  *
  * @author Carlos Vásquez Polanco
  */
-public class MonthStatDao {
+public class StatDao {
     
     private static final long serialVersionUID = 1L;
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");

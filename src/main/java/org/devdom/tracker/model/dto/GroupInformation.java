@@ -4,6 +4,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -20,6 +22,7 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
 @Entity
 @Table(name = "fb_groups")
 @XmlRootElement
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @NamedQueries({
     @NamedQuery(name = "GroupInformation.findAll", 
                 query = "SELECT g FROM GroupInformation g"),

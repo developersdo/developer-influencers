@@ -7,28 +7,20 @@
         <ui:composition template="template/layout.xhtml">
             <ui:define name="content">
                 <h:form>
-                    <c:choose>                        
+                    <ui:param name="index" value="0" />
+                    <c:choose>
                         <c:when test="#{fb.logged}">
-                            
                             <div class="stats_bar">
-				<div data-intro="&lt;strong&gt;Beautiful Elements&lt;/strong&gt; &lt;br/&gt; If you are looking for a different UI, this is for you!." data-step="2" class="butpro butstyle">
-					<div class="sub"><h2>Diarias</h2><span id="total_clientes">170</span></div>
-					<div class="stat"><span class="spk1"><canvas style="display: inline-block; width: 74px; height: 16px; vertical-align: top;" width="74" height="16"></canvas></span></div>
-				</div>
-				<div class="butpro butstyle">
-					<div class="sub"><h2>Semanal</h2><span>$951,611</span></div>
-					<div class="stat"><span class="up"> 13,5%</span></div>
-				</div>
-			</div>
-                            
-                            
-                            
-                            
-                            
-                            
-                            $("#sparkline").sparkline([5,6,7,8,4,6,7,4], {
+                                <c:forEach var="widget" items="${stats.positionsInTop}">
+                                    <div class="butpro butstyle">
+                                        <div class="sub"><span>${widget.groupName}</span>${widget.currentInteractionsCount} interacciones <br/> ${widget.currentLikesCount + widget.currentMentionsCount} reacciones</div>
+                                        <div class="stat"><span class="${widget.rankIndicator}">${widget.currentPosition}</span></div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                            <!-- $("#sparkline").sparkline([5,6,7,8,4,6,7,4], {
     type: 'bar',
-    height: '30'});
+    height: '30'});-->
                             
                         </c:when>
                         <c:otherwise>
