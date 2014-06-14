@@ -53,6 +53,8 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
 public class YearStat implements Serializable {
     
     @Id
+    @Column(name = "id")
+    private int id;
     @Column(name = "group_id")
     private String groupId;
     @Column(name = "group_name")
@@ -106,7 +108,15 @@ public class YearStat implements Serializable {
     private Date createdTime;
     @Column(name = "rank_indicator")
     private String rankIndicator;
-    
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getFromId() {
         return fromId;
     }
@@ -317,7 +327,7 @@ public class YearStat implements Serializable {
 
     @Override
     public String toString() {
-        return "YearStat{" + "fromId=" + fromId + ", currentRating=" + currentRating + ", previousRating=" + previousRating + ", currentLikesCount=" + currentLikesCount + ", currentPostsLikesCount=" + currentPostsLikesCount + ", previousPostsLikesCount=" + previousPostsLikesCount + ", currentCommentsLikesCount=" + currentCommentsLikesCount + ", previousCommentsLikesCount=" + previousCommentsLikesCount + ", currentInteractionsCount=" + currentInteractionsCount + ", previousInteractionsCount=" + previousInteractionsCount + ", currentPostsCount=" + currentPostsCount + ", previousPostsCount=" + previousPostsCount + ", current_comments_count=" + current_comments_count + ", previousCommentsCount=" + previousCommentsCount + ", currentMentionsCount=" + currentMentionsCount + ", previousMentionsCount=" + previousMentionsCount + ", currentMentionsPostsCount=" + currentMentionsPostsCount + ", previousMentionsPostsCount=" + previousMentionsPostsCount + ", currentMentionsCommentsCount=" + currentMentionsCommentsCount + ", previousMentionsCommentsCount=" + previousMentionsCommentsCount + ", currentPosition=" + currentPosition + ", previousPosition=" + previousPosition + ", createdTime=" + createdTime + ", groupId=" + groupId + ", groupName=" + groupName + ", rankIndicator=" + rankIndicator + '}';
+        return "YearStat{" + "id=" + id + ", groupId=" + groupId + ", groupName=" + groupName + ", fromId=" + fromId + ", currentRating=" + currentRating + ", previousRating=" + previousRating + ", currentLikesCount=" + currentLikesCount + ", currentPostsLikesCount=" + currentPostsLikesCount + ", previousPostsLikesCount=" + previousPostsLikesCount + ", currentCommentsLikesCount=" + currentCommentsLikesCount + ", previousCommentsLikesCount=" + previousCommentsLikesCount + ", currentInteractionsCount=" + currentInteractionsCount + ", previousInteractionsCount=" + previousInteractionsCount + ", currentPostsCount=" + currentPostsCount + ", previousPostsCount=" + previousPostsCount + ", current_comments_count=" + current_comments_count + ", previousCommentsCount=" + previousCommentsCount + ", currentMentionsCount=" + currentMentionsCount + ", previousMentionsCount=" + previousMentionsCount + ", currentMentionsPostsCount=" + currentMentionsPostsCount + ", previousMentionsPostsCount=" + previousMentionsPostsCount + ", currentMentionsCommentsCount=" + currentMentionsCommentsCount + ", previousMentionsCommentsCount=" + previousMentionsCommentsCount + ", currentPosition=" + currentPosition + ", previousPosition=" + previousPosition + ", createdTime=" + createdTime + ", rankIndicator=" + rankIndicator + '}';
     }
 
 }

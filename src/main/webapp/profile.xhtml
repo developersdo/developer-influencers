@@ -12,10 +12,13 @@
                         <c:when test="#{fb.logged}">
                             <div class="stats_bar">
                                 <c:forEach var="widget" items="${stats.positionsInTop}">
-                                    <div class="butpro butstyle">
+                                    <div class="butpro butstyle" onclick="document.href='groupTop20.xhtml?g=${widget.groupId}';">
                                         <div class="sub"><span>${widget.groupName}</span>${widget.currentInteractionsCount} interacciones <br/> ${widget.currentLikesCount + widget.currentMentionsCount} reacciones</div>
                                         <div class="stat"><span class="${widget.rankIndicator}">${widget.currentPosition}</span></div>
                                     </div>
+                                    <c:if test="${(widget.id%2)==0}">
+                                        <br/>
+                                    </c:if>
                                 </c:forEach>
                             </div>
                             <!-- $("#sparkline").sparkline([5,6,7,8,4,6,7,4], {

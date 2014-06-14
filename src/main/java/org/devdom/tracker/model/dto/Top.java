@@ -189,7 +189,7 @@ public class Top  implements Serializable {
      * @return the picture
      */
     public String getPicture() {
-        return "https://graph.facebook.com/"+this.fromId+"/picture?height=80&width=80";
+        return "https://graph.facebook.com/"+this.fromId+"/picture?height=110&width=110";
     }
 
     /**
