@@ -24,6 +24,7 @@
     </developers>
     <scm>
         <url>https://github.com/developersdo/developer-influencers</url>
+        <developerConnection>https://github.com/carlosvasquez/developer-influencers</developerConnection>
     </scm>
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
