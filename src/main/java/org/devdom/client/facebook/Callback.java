@@ -96,7 +96,7 @@ public class Callback extends HttpServlet{
             em.getTransaction().begin();
             FacebookMember member = new FacebookMember();
             member.setUid(profile.getUid());
-            member.setBirthdayDate(Utils.getDateFormatted(profile.getBirthday(),"MM/dd/yyyy"));
+            member.setBirthdayDate(profile.getBirthday());
             member.setFirstName(profile.getFirstName());
             member.setLastName(profile.getLastName());
             member.setPic(profile.getPic_with_logo());

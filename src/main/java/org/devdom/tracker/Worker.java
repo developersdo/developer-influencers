@@ -23,6 +23,8 @@ import org.devdom.tracker.model.dto.FacebookMember;
 import org.devdom.tracker.model.dto.FacebookMentions;
 import org.devdom.tracker.model.dto.FacebookPost;
 import org.devdom.tracker.model.dto.GroupInformation;
+import org.devdom.tracker.model.dto.Location;
+import org.devdom.tracker.model.dto.Work;
 import org.devdom.tracker.model.dto.WorkInstitution;
 import org.devdom.tracker.model.dto.WorkPK;
 import org.devdom.tracker.util.Configuration;
@@ -80,9 +82,9 @@ public class Worker implements Runnable{
 
             groups.stream().forEach((group) -> {
                 try{
-                    logger.info("Intervalo 0 para grupo ({0})", group.getGroupName());
+                    logger.info("Intervalo 0 para grupo "+ group.getGroupName());
                     updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),0);
-                    logger.info("Intervalo 1 para grupo ({0})", group.getGroupName());
+                    logger.info("Intervalo 1 para grupo "+ group.getGroupName());
                     updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),1);
                 }catch(Exception ex){
                     logger.error(ex.getMessage(),ex);
@@ -124,12 +126,12 @@ public class Worker implements Runnable{
             
             JSONArray posts = json.getJSONArray("data");
             String nextPage = json.getJSONObject("paging").getString("next");
-            logger.info("(nextPage)===> {0}", nextPage);
+            logger.info("(nextPage)===> "+ nextPage);
             
             int len = posts.length();
             int startLength = nextPage.indexOf(groupId);
             relURL = nextPage.substring(startLength,nextPage.length());
-            logger.info("(nextPage)===> {0}", relURL);
+            logger.info("(nextPage)===> "+ relURL);
             
             for(int i=0;i<len;i++){
                 if(!em.getTransaction().isActive()){
@@ -138,9 +140,9 @@ public class Worker implements Runnable{
                 JSONObject post = posts.getJSONObject(i);
                 syncRawPost(groupId,post,em);
                 
-                logger.info("POST GROUP ID  => {0}", groupId);
-                logger.info("POST ID  => {0}", post.getString("id"));
-                logger.info("PAGE -> {"+p+"} + row -> {"+i+"}");
+                logger.info("POST GROUP ID  => "+ groupId);
+                logger.info("POST ID  => "+ post.getString("id"));
+                logger.info("PAGE -> "+p+" + row -> "+i);
                 logger.info("Posts ===> "+len);
                 
                 if(countCommit>=99){
@@ -188,12 +190,12 @@ public class Worker implements Runnable{
         newPost.setGroupId(groupId);
         em.merge(newPost); // crear o actualizar un post existente 
 
-        logger.info("(POST) postId {0}", postId);
-        logger.info("(POST) fromId {0}", fromId);
-        logger.info("(POST) createdTime {0}", createdTime.toString());
-        logger.info("(POST) likes {0}", String.valueOf(likes));
-        logger.info("(POST) message {0}", message);
-        logger.info("(POST) groupId {0}", groupId);
+        logger.info("(POST) postId ", postId);
+        logger.info("(POST) fromId ", fromId);
+        logger.info("(POST) createdTime ", createdTime.toString());
+        logger.info("(POST) likes ", String.valueOf(likes));
+        logger.info("(POST) message ", message);
+        logger.info("(POST) groupId ", groupId);
 
         if(hasMessages)
             syncRawMessages(groupId, postId, json.getJSONObject("comments").getJSONArray("data"), em);
@@ -208,11 +210,8 @@ public class Worker implements Runnable{
 
             for(int i=0;i<len;i++){
                 String tag = tags.getString(i);
-                //JSONArray mentions = json.getJSONObject("message_tags").getJSONArray(tag);
-                //for(int x=0;x<mentions.length();x++){ 
                 JSONArray mention = json.getJSONObject("message_tags").getJSONArray(tag);
                 syncRawMentions(groupId, postId, fromId, "POST", mention, createdTime, em);
-                //}
             }
         }
     }
@@ -242,13 +241,13 @@ public class Worker implements Runnable{
                 String comment = message.isNull("message")?"":message.getString("message");
                 String messageId = message.getString("id");
 
-                logger.info("(Message) createTime {0}", createTime.toString());
-                logger.info("(Message) likes {0}", String.valueOf(likes));
-                logger.info("(Message) fromId {0}", fromId);
-                logger.info("(Message) comment {0}", comment);
-                logger.info("(Message) messageId {0}", messageId);
-                logger.info("(Message) postId {0}", postId);
-                logger.info("(Message) groupId {0}", groupId);
+                logger.info("(Message) createTime "+ createTime.toString());
+                logger.info("(Message) likes "+ String.valueOf(likes));
+                logger.info("(Message) fromId "+ fromId);
+                logger.info("(Message) comment "+ comment);
+                logger.info("(Message) messageId "+ messageId);
+                logger.info("(Message) postId "+ postId);
+                logger.info("(Message) groupId "+ groupId);
 
                 newComment.setCreateTime(createTime);
                 newComment.setLikeCount(likes);
@@ -287,11 +286,11 @@ public class Worker implements Runnable{
             JSONObject mention = mentions.getJSONObject(i);
             String toId = mention.getString("id");
 
-            logger.info("(MENTION) ({"+type+"}) objectId "+ objectId);
-            logger.info("(MENTION) ({"+type+"}) fromId "+fromId);
-            logger.info("(MENTION) ({"+type+"}) toId "+toId);
-            logger.info("(MENTION) ({"+type+"}) type "+type);
-            logger.info("(MENTION) ({"+type+"}) group id "+groupId);
+            logger.info("(MENTION) "+type+" objectId "+ objectId);
+            logger.info("(MENTION) "+type+" fromId "+fromId);
+            logger.info("(MENTION) "+type+" toId "+toId);
+            logger.info("(MENTION) "+type+" type "+type);
+            logger.info("(MENTION) "+type+" group id "+groupId);
 
             newMention.setFromId(fromId);
             newMention.setObjectId(objectId);
@@ -321,21 +320,21 @@ public class Worker implements Runnable{
 
                 JSONArray members = json.getJSONArray("data");
                 String nextPage = json.getJSONObject("paging").getString("next");
-                logger.info("(nextPage)===> {0}", nextPage);
+                logger.info("(nextPage)===> "+ nextPage);
 
                 int len = members.length();
                 int startLength = nextPage.indexOf(groupId);
                 relURL = nextPage.substring(startLength,nextPage.length());
-                logger.info("(nextPage)===> {0}", relURL);
+                logger.info("(nextPage)===> "+ relURL);
 
                 if(!em.getTransaction().isActive()){
                     em.getTransaction().begin();
                 }
                 for(int i=0;i<len;i++){
                     JSONObject member = members.getJSONObject(i);
-                    logger.info("PAGE -> {"+p+"}, member row -> {"+i+"}");
+                    logger.info("PAGE -> "+p+", member row -> "+i);
                     syncRawMember(groupId,member,em);
-                    logger.info("Members {0}  ===> "+ len);
+                    logger.info("Members ===> "+ len);
                     if(counterCommit>=200){
                         if(!em.getTransaction().isActive())
                             em.getTransaction().begin();
@@ -352,7 +351,7 @@ public class Worker implements Runnable{
 
                 logger.info("guardando informacion...");
                 em.getTransaction().commit();
-                logger.info("NEXT===> {0}", relURL);
+                logger.info("NEXT===>"+ relURL);
             }
         }finally{
             if(em.getTransaction().isActive()){
@@ -376,55 +375,52 @@ public class Worker implements Runnable{
 
         String id = member.getString("id");
         String firstName = member.isNull("first_name")?"":member.getString("first_name");
-        String lastName = member.isNull("last_name")?"":member.getString("last_name");
+        String lastName;
         String picture = member.getJSONObject("picture").getJSONObject("data").getString("url");
-        
-        Date birthDay = null;
-        //FacebookMember user = new FacebookMember(id,firstName,lastName, picture);
-        //em.merge(user); // crear o actualizar usuario 
-        id = "710605599";
+        String currentMemberLocation = "";
+        String birthDay;
+
         JSONObject userInformation = getUserAutheticatedInformation(id);
-        logger.info("> "+ userInformation.toString());
-        logger.info("> uid "+ userInformation.getString("uid"));
-        logger.info("> nombre "+ userInformation.getString("first_name"));
-        //if(!userInformation.isNull("data")){
-            logger.info("Guardando informacion para usuario "+firstName);
-            if(!userInformation.isNull("birthday_date")){
-                birthDay = new Date(userInformation.getString("birthday_date"));
-            }
-            String email = userInformation.isNull("email")?"":userInformation.getString("email");
-            String sex = userInformation.isNull("sex")?"":userInformation.getString("sex");
-            
-            FacebookMember profile = em.find(FacebookMember.class,id);
-            if(birthDay!=null)
-                profile.setBirthdayDate(birthDay);
-            profile.setFirstName(firstName);
-            profile.setLastName(lastName);
-            profile.setEmail(email);
-            profile.setSex(sex);
-            em.merge(profile);
+        logger.info("Guardando informacion para usuario "+firstName);
 
-            if(!userInformation.isNull("education")){
-                logger.info("Guardando información de educacion");
-                JSONArray education = userInformation.getJSONArray("education");
-                syncMemberEducationInformation(education,id,em);
-            }
-            
-            if(!userInformation.isNull("work")){
-                logger.info("Guaardando informacion de trabajo");
-                JSONArray work = userInformation.getJSONArray("work");
-                syncMemberWorksInformation(work,id,em);
-            }
-            
-        //}else{
-        //    logger.error("Error al obtener informacion. No existe signin activo para el UID "+id);
-        //}
+        String email = userInformation.isNull("email")?"":userInformation.getString("email");
+        String sex = userInformation.isNull("sex")?"":userInformation.getString("sex");
+        firstName = userInformation.isNull("first_name")?"":userInformation.getString("first_name");
+        lastName = userInformation.isNull("last_name")?"":userInformation.getString("last_name");
+        id = userInformation.isNull("uid")?"":userInformation.getString("uid");
+        birthDay = userInformation.isNull("birthday_date")?"":userInformation.getString("birthday_date");
+        //Listado de informacion educativa
+        if(!userInformation.isNull("education")){
+            JSONArray education = userInformation.getJSONArray("education");
+            syncMemberEducationInformation(education,id,em);
+        }
+        //Listado de los trabajos anteriores y actual
+        if(!userInformation.isNull("work")){
+            JSONArray work = userInformation.getJSONArray("work");
+            syncMemberWorksInformation(work,id,em);
+        }
+        // Manejar informacion de la ubicacion actual de un miembro
+        if(!userInformation.isNull("current_location")){
+            JSONObject currentLocation = userInformation.getJSONObject("current_location");
+            currentMemberLocation = currentLocation.isNull("id")?"":currentLocation.getString("id");
+            syncLocation(currentLocation,id,em);
+        }
 
-        logger.info("(MEMBER) Id -> {0}", id);
-        logger.info("(MEMBER) firstName -> {0}", firstName);
-        logger.info("(MEMBER) lastName -> {0}", lastName);
-        logger.info("(MEMBER) picture -> {0}", picture);
-        logger.info("(MEMBER) groupId -> {0}", groupId);
+        FacebookMember profile = new FacebookMember();
+        profile.setBirthdayDate(birthDay);
+        profile.setFirstName(firstName);
+        profile.setLastName(lastName);
+        profile.setEmail(email);
+        profile.setSex(sex);
+        profile.setCurrentLocationId(currentMemberLocation);
+        profile.setUid(id);
+        em.merge(profile);
+
+        logger.info("(MEMBER) Id -> "+ id);
+        logger.info("(MEMBER) firstName -> "+ firstName);
+        logger.info("(MEMBER) lastName -> "+ lastName);
+        logger.info("(MEMBER) picture -> "+ picture);
+        logger.info("(MEMBER) groupId -> "+ groupId);
     }
     
     /**
@@ -463,18 +459,26 @@ public class Worker implements Runnable{
 
         int len = works.length();
         for(int i=0;i<len;i++){
-            logger.info("guardando informacion de trabajo "+uid);
-            JSONObject employer = works.getJSONArray(i).getJSONObject(0).getJSONObject("employer");
-            JSONObject position = works.getJSONArray(i).getJSONObject(0).getJSONObject("position");
-            String id = employer.getString("id");
-            String name = employer.getString("name");
-            
-            WorkPK newWork = new WorkPK();
-            newWork.setFromId(uid);
-            newWork.setWorkId(id);
-            em.merge(newWork);
-            
-            syncRawWorkInformation(id,em);
+            try{
+                logger.info("guardando informacion de trabajo "+uid);
+                JSONObject employer = works.getJSONObject(i).getJSONObject("employer");
+                String id = employer.getString("id");
+                String name = employer.getString("name");
+
+                WorkPK newWork = new WorkPK();
+                newWork.setFromId(uid);
+                newWork.setWorkId(id);
+                
+                Work work = new Work();
+                work.setWorkPK(newWork);
+                work.setCreatedTime(new Date());
+
+                em.merge(work);
+
+                syncRawWorkInformation(id,em);
+            }catch(Exception ex){
+                logger.error(ex.getMessage(),ex);
+            }
         }
     }
     
@@ -484,11 +488,10 @@ public class Worker implements Runnable{
 
         for(int i=0;i<len;i++){
             try{
-                logger.info("Guardando informacion de educacion "+uid);
                 JSONObject education = educations.getJSONObject(i);
                 JSONObject school = education.getJSONObject("school");
-                String type = education.getString("type");
-                String institutionID = school.getString("id");
+                String type = education.isNull("type")?"":education.getString("type");
+                String institutionID = school.isNull("id")?"":school.getString("id");
                 if("College".equals(type)){
                     logger.info("Educacion (Institucion) UID "+uid);
                     logger.info("Educacion (Institucion) institutionID "+institutionID);
@@ -518,7 +521,6 @@ public class Worker implements Runnable{
         String name = json.getString("name");
         String picture = json.getJSONObject("picture").getJSONObject("data").getString("url");
         
-        logger.info("guardando informacion sobre instituciones de trabajo");
         WorkInstitution newWork = new WorkInstitution();
         newWork.setCategory(category);
         newWork.setId(id);
@@ -527,11 +529,37 @@ public class Worker implements Runnable{
         em.merge(newWork);
     }
     
+    private void syncLocation(JSONObject location, String id, EntityManager em) throws JSONException {
+        String country  = location.isNull("country")?"":location.getString("country");
+        String city = location.isNull("city")?"":location.getString("city");
+        String latitude = location.isNull("latitude")?"":location.getString("latitude");
+        String longitude = location.isNull("longitude")?"":location.getString("longitude");
+        String name = location.isNull("name")?"":location.getString("name");
+        String state = location.isNull("state")?"":location.getString("state");
+        String locationId = location.isNull("id")?"":location.getString("id");
+        
+        try{
+            if(!"".equals(locationId)){
+                logger.info("Guardando ubicacion : "+name);
+                Location newLocation = new Location();
+                newLocation.setCity(city);
+                newLocation.setCountry(country);
+                newLocation.setId(locationId);
+                newLocation.setLatitude(latitude);
+                newLocation.setState(state);
+                newLocation.setLongitude(longitude);
+                newLocation.setName(name);
+                em.merge(newLocation);
+            }
+        }catch(Exception ex){
+            logger.error(ex.getMessage(),ex);
+        }
+    }
+
     private void syncRawInstitutionInformation(String institutionId, EntityManager em) throws FacebookException, JSONException {
 
         RawAPIResponse response = facebook.callGetAPI(institutionId);
         JSONObject json = response.asJSONObject();
-        logger.info("Guardando informacion de instituciones educativas");
         String id = json.getString("id");
         String name = json.getString("name");
         String about = json.isNull("about")?"":json.getString("about");
@@ -542,34 +570,46 @@ public class Worker implements Runnable{
         String city = "";
         String country = "";
         String street = "";
-        
+
         category = category.toUpperCase();
+        try{
+            if(!json.isNull("location")){
+                JSONObject location = json.getJSONObject("location");
+                latitude = location.isNull("latitude")?"":location.getString("latitude");
+                longitude = location.isNull("longitude")?"":location.getString("longitude");
+                city = location.isNull("city")?"":location.getString("city");
+                country = location.isNull("country")?"":location.getString("country");
+                street = location.isNull("street")?"":location.getString("street");
+            }
+            
+            logger.info("About: "+ about);
+            logger.info("category: "+ category);
+            logger.info("id: "+ id);
+            logger.info("Latitude: "+ latitude);
+            logger.info("Longitude: "+ longitude);
+            logger.info("City: "+ city);
+            logger.info("Country: "+ country);
+            logger.info("Street: "+ street);
+            logger.info("Name: "+ name);
+            logger.info("website:"+ website);
 
-        logger.info("=========> cantidad de elementos en location "+json.getJSONObject("location"));
-        
-        if(!json.isNull("location")){
-            logger.info("agregando información de localizacion");
-            //latitude = json.getJSONObject("location").getString("latitude");
-            //longitude = json.getJSONObject("location").getString("longitude");
-            city = json.getJSONObject("location").getString("city");
-            country = json.getJSONObject("location").getString("country");
-            street = json.getJSONObject("location").getString("street");
-        }
-
-        if("UNIVERSITTY".equals(category)){
-            logger.info("(Universidad)  {0}", name);
-            EducationInstitution educationInstitution = new EducationInstitution();
-            educationInstitution.setAbout(about);
-            educationInstitution.setCategory(category);
-            educationInstitution.setId(id);
-            educationInstitution.setLatitude(latitude);
-            educationInstitution.setLatitude(longitude);
-            educationInstitution.setLocationCity(city);
-            educationInstitution.setLocationCountry(country);
-            educationInstitution.setLocationStreet(street);
-            educationInstitution.setName(name);
-            educationInstitution.setWebsite(website);
-            em.merge(educationInstitution);
+            if("COLLEGE,UNIVERSITY".contains(category)){
+                EducationInstitution educationInstitution = new EducationInstitution();
+                educationInstitution.setAbout(about);
+                educationInstitution.setCategory(category);
+                educationInstitution.setId(id);
+                educationInstitution.setLatitude(latitude);
+                educationInstitution.setLatitude(longitude);
+                educationInstitution.setLocationCity(city);
+                educationInstitution.setLocationCountry(country);
+                educationInstitution.setLocationStreet(street);
+                educationInstitution.setName(name);
+                educationInstitution.setWebsite(website);
+                em.merge(educationInstitution);
+            }
+        }catch(Exception ex){
+            logger.error(ex.getMessage(),ex);
         }
     }
+
 }

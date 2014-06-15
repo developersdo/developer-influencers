@@ -20,15 +20,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "fb_locations")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Locations.findAll", query = "SELECT l FROM Locations l"),
-    @NamedQuery(name = "Locations.findById", query = "SELECT l FROM Locations l WHERE l.id = :id"),
-    @NamedQuery(name = "Locations.findByCity", query = "SELECT l FROM Locations l WHERE l.city = :city"),
-    @NamedQuery(name = "Locations.findByState", query = "SELECT l FROM Locations l WHERE l.state = :state"),
-    @NamedQuery(name = "Locations.findByCountry", query = "SELECT l FROM Locations l WHERE l.country = :country"),
-    @NamedQuery(name = "Locations.findByLongitude", query = "SELECT l FROM Locations l WHERE l.longitude = :longitude"),
-    @NamedQuery(name = "Locations.findByLatitude", query = "SELECT l FROM Locations l WHERE l.latitude = :latitude"),
-    @NamedQuery(name = "Locations.findByName", query = "SELECT l FROM Locations l WHERE l.name = :name")})
-public class Locations implements Serializable {
+    @NamedQuery(name = "Location.findAll", query = "SELECT l FROM Location l"),
+    @NamedQuery(name = "Location.findById", query = "SELECT l FROM Location l WHERE l.id = :id"),
+    @NamedQuery(name = "Location.findByCity", query = "SELECT l FROM Location l WHERE l.city = :city"),
+    @NamedQuery(name = "Location.findByState", query = "SELECT l FROM Location l WHERE l.state = :state"),
+    @NamedQuery(name = "Location.findByCountry", query = "SELECT l FROM Location l WHERE l.country = :country"),
+    @NamedQuery(name = "Location.findByLongitude", query = "SELECT l FROM Location l WHERE l.longitude = :longitude"),
+    @NamedQuery(name = "Location.findByLatitude", query = "SELECT l FROM Location l WHERE l.latitude = :latitude"),
+    @NamedQuery(name = "Location.findByName", query = "SELECT l FROM Location l WHERE l.name = :name")})
+public class Location implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -55,10 +55,10 @@ public class Locations implements Serializable {
     @Column(name = "name")
     private String name;
 
-    public Locations() {
+    public Location() {
     }
 
-    public Locations(String id) {
+    public Location(String id) {
         this.id = id;
     }
 
@@ -78,12 +78,12 @@ public class Locations implements Serializable {
         this.city = city;
     }
 
-    public String getLocation_state() {
+    public String getState() {
         return state;
     }
 
-    public void setLocation_state(String location_state) {
-        this.state = location_state;
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getCountry() {
@@ -127,16 +127,16 @@ public class Locations implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Locations)) {
+        if (!(object instanceof Location)) {
             return false;
         }
-        Locations other = (Locations) object;
+        Location other = (Location) object;
         return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
 
     @Override
     public String toString() {
-        return "Locations{" + "id=" + id + ", city=" + city + ", state=" + state + ", country=" + country + ", longitude=" + longitude + ", latitude=" + latitude + ", name=" + name + '}';
+        return "Location{" + "id=" + id + ", city=" + city + ", state=" + state + ", country=" + country + ", longitude=" + longitude + ", latitude=" + latitude + ", name=" + name + '}';
     }
     
 }

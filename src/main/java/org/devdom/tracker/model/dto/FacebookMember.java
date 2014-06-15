@@ -1,12 +1,10 @@
 package org.devdom.tracker.model.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -32,8 +30,7 @@ public class FacebookMember implements Serializable {
     private String pic;
     
     @Column(name = "birthday_date")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date birthdayDate;
+    private String birthdayDate;
 
     @Column(name = "email")
     private String email;
@@ -41,6 +38,9 @@ public class FacebookMember implements Serializable {
     @Column(name = "sex")
     private String sex;
 
+    @Column(name = "current_location_id")
+    private String currentLocationId;
+    
     public FacebookMember() {
     }
     
@@ -131,14 +131,14 @@ public class FacebookMember implements Serializable {
     /**
      * @return the birthdayDate
      */
-    public Date getBirthdayDate() {
+    public String getBirthdayDate() {
         return birthdayDate;
     }
 
     /**
      * @param birthdayDate the birthdayDate to set
      */
-    public void setBirthdayDate(Date birthdayDate) {
+    public void setBirthdayDate(String birthdayDate) {
         this.birthdayDate = birthdayDate;
     }
 
@@ -158,6 +158,14 @@ public class FacebookMember implements Serializable {
         this.sex = sex;
     }
 
+    public String getCurrentLocationId() {
+        return currentLocationId;
+    }
+
+    public void setCurrentLocationId(String currentLocationId) {
+        this.currentLocationId = currentLocationId;
+    }
+    
     @Override
     public String toString() {
         return "FacebookMember{" + "uid=" + uid + ", firstName=" + firstName + ", lastName=" + lastName + ", pic=" + pic + ", birthdayDate=" + birthdayDate + ", email=" + email + '}';
