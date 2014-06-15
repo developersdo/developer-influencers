@@ -35,6 +35,12 @@ public class FacebookMember implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date birthdayDate;
 
+    @Column(name = "email")
+    private String email;
+    
+    @Column(name = "sex")
+    private String sex;
+
     public FacebookMember() {
     }
     
@@ -135,4 +141,26 @@ public class FacebookMember implements Serializable {
     public void setBirthdayDate(Date birthdayDate) {
         this.birthdayDate = birthdayDate;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    @Override
+    public String toString() {
+        return "FacebookMember{" + "uid=" + uid + ", firstName=" + firstName + ", lastName=" + lastName + ", pic=" + pic + ", birthdayDate=" + birthdayDate + ", email=" + email + '}';
+    }
+
 }

@@ -2,21 +2,29 @@
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
   <persistence-unit name="jpa" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>org.devdom.tracker.model.dto.FacebookPost</class>
     <class>org.devdom.tracker.model.dto.FacebookComment</class>
     <class>org.devdom.tracker.model.dto.FacebookMember</class>
     <class>org.devdom.tracker.model.dto.FacebookMentions</class>
-    <class>org.devdom.tracker.model.dto.Influencer</class>
-    <class>org.devdom.tracker.model.dto.GroupRating</class>
-    <class>org.devdom.tracker.model.dto.TopThreeInformation</class>
-    <class>org.devdom.tracker.model.dto.GroupInformation</class>
-    <class>org.devdom.tracker.model.dto.GraphPostsStat</class>
+    <class>org.devdom.tracker.model.dto.FacebookPost</class>
     <class>org.devdom.tracker.model.dto.GraphCommentsStat</class>
+    <class>org.devdom.tracker.model.dto.GraphPostsStat</class>
     <class>org.devdom.tracker.model.dto.GraphResult</class>
+    <class>org.devdom.tracker.model.dto.GroupInformation</class>
+    <class>org.devdom.tracker.model.dto.GroupRating</class>
+    <class>org.devdom.tracker.model.dto.Influencer</class>
+    <class>org.devdom.tracker.model.dto.Top</class>
+    <class>org.devdom.tracker.model.dto.TopThreeInformation</class>
+    <class>org.devdom.tracker.model.dto.YearStat</class>
+    <class>org.devdom.tracker.model.dto.Education</class>
+    <class>org.devdom.tracker.model.dto.EducationInstitution</class>
+    <class>org.devdom.tracker.model.dto.EducationInstitutionCategories</class>
+    <class>org.devdom.tracker.model.dto.Locations</class>
+    <class>org.devdom.tracker.model.dto.University</class>
+    <class>org.devdom.tracker.model.dto.Work</class>
+    <class>org.devdom.tracker.model.dto.WorkInstitution</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
-    <properties>
-      <property name="eclipselink.jpa.uppercase-column-names" value="true"/>
-    </properties>
+    <properties></properties>
   </persistence-unit>
 </persistence>

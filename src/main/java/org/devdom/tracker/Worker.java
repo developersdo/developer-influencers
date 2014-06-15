@@ -5,23 +5,28 @@ import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
 import facebook4j.RawAPIResponse;
 import facebook4j.conf.ConfigurationBuilder;
+import facebook4j.internal.logging.Logger;
 import facebook4j.internal.org.json.JSONArray;
 import facebook4j.internal.org.json.JSONException;
 import facebook4j.internal.org.json.JSONObject;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import org.devdom.tracker.model.dao.GroupRatingDao;
+import org.devdom.tracker.model.dto.Education;
+import org.devdom.tracker.model.dto.EducationInstitution;
 import org.devdom.tracker.model.dto.FacebookComment;
 import org.devdom.tracker.model.dto.FacebookMember;
 import org.devdom.tracker.model.dto.FacebookMentions;
 import org.devdom.tracker.model.dto.FacebookPost;
 import org.devdom.tracker.model.dto.GroupInformation;
+import org.devdom.tracker.model.dto.WorkInstitution;
+import org.devdom.tracker.model.dto.WorkPK;
 import org.devdom.tracker.util.Configuration;
+import org.devdom.tracker.util.FQL;
 import org.devdom.tracker.util.Utils;
 
 /**
@@ -30,7 +35,8 @@ import org.devdom.tracker.util.Utils;
  */
 public class Worker implements Runnable{
 
-    private static final Logger LOGGER = Logger.getLogger(Worker.class .getName());
+    private static final Logger logger = Logger.getLogger(Worker.class);
+    //private static final Logger LOGGER = Logger.getLogger(Worker.class .getName());
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
     private final GroupRatingDao groupDao = new GroupRatingDao();
     private static final ConfigurationBuilder cb = Configuration.getFacebookConfig();
@@ -52,32 +58,34 @@ public class Worker implements Runnable{
         if(groups!=null){
             groups.stream().forEach((group) -> {
                 try{
-                    LOGGER.log(Level.INFO, "Buscando miembros el grupo {0}", group.getGroupName());
-                    //getRawMembersInGroup(group.getGroupId()); // Actualizar miembros en grupo
+                    logger.info("Buscando miembros el grupo "+ group.getGroupName());
+                    getRawMembersInGroup(group.getGroupId()); // Actualizar miembros en grupo
                     Thread.sleep(1000);
-                    LOGGER.log(Level.INFO, "Buscando post y comentarios del grupo {0}", group.getGroupName());
-                    getRawPostsInGroup(group.getGroupId()); // Actualizar interacciones de los miembros de los distintos grupos
+                    //LOGGER.log(Level.INFO, "Buscando post y comentarios del grupo {0}", group.getGroupName());
+                    //getRawPostsInGroup(group.getGroupId()); // Actualizar interacciones de los miembros de los distintos grupos
                 }catch(FacebookException | JSONException | InterruptedException ex){
-                    Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex.getMessage(),ex);
+                } catch (Exception ex) {
+                    logger.error(ex.getMessage(),ex);
                 }
             });
             
             try {
                 Thread.sleep(500);
-                LOGGER.info("Sincronizando data anual de los grupos");
+                logger.info("Sincronizando data anual de los grupos");
                 groupDao.updTablesInformationYear();
             } catch (Exception ex) {
-                Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error(ex.getMessage(),ex);
             }
 
             groups.stream().forEach((group) -> {
                 try{
-                    LOGGER.log(Level.INFO, "Intervalo 0 para grupo ({0})", group.getGroupName());
+                    logger.info("Intervalo 0 para grupo ({0})", group.getGroupName());
                     updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),0);
-                    LOGGER.log(Level.INFO, "Intervalo 1 para grupo ({0})", group.getGroupName());
+                    logger.info("Intervalo 1 para grupo ({0})", group.getGroupName());
                     updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),1);
                 }catch(Exception ex){
-                    Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex.getMessage(),ex);
                 }
             });
             /*
@@ -89,7 +97,7 @@ public class Worker implements Runnable{
                 }
             });
             */
-            LOGGER.info("Finalizacion de actualizacion");
+            logger.info("Finalizacion de actualizacion");
         }
     }
     
@@ -116,12 +124,12 @@ public class Worker implements Runnable{
             
             JSONArray posts = json.getJSONArray("data");
             String nextPage = json.getJSONObject("paging").getString("next");
-            LOGGER.log(Level.INFO, "(nextPage)===> {0}", nextPage);
+            logger.info("(nextPage)===> {0}", nextPage);
             
             int len = posts.length();
             int startLength = nextPage.indexOf(groupId);
             relURL = nextPage.substring(startLength,nextPage.length());
-            LOGGER.log(Level.INFO, "(nextPage)===> {0}", relURL);
+            logger.info("(nextPage)===> {0}", relURL);
             
             for(int i=0;i<len;i++){
                 if(!em.getTransaction().isActive()){
@@ -130,13 +138,13 @@ public class Worker implements Runnable{
                 JSONObject post = posts.getJSONObject(i);
                 syncRawPost(groupId,post,em);
                 
-                LOGGER.log(Level.INFO, "POST GROUP ID  => {0}", groupId);
-                LOGGER.log(Level.INFO, "POST ID  => {0}", post.getString("id"));
-                LOGGER.log(Level.INFO, "PAGE -> {0} + row -> {1}", new Object[]{p, i});
-                LOGGER.log(Level.INFO, "Posts ===> {0}", len);
+                logger.info("POST GROUP ID  => {0}", groupId);
+                logger.info("POST ID  => {0}", post.getString("id"));
+                logger.info("PAGE -> {"+p+"} + row -> {"+i+"}");
+                logger.info("Posts ===> "+len);
                 
                 if(countCommit>=99){
-                    LOGGER.info("guardando informacion...");
+                    logger.info("guardando informacion...");
                     em.getTransaction().commit();
                     countCommit=-1;
                 }
@@ -145,7 +153,7 @@ public class Worker implements Runnable{
             if(!em.getTransaction().isActive())
                 em.getTransaction().begin();
             
-            LOGGER.log(Level.INFO, "NEXT===> {0}", relURL);
+            logger.info("NEXT===> {0}", relURL);
         }
     }
 
@@ -158,11 +166,7 @@ public class Worker implements Runnable{
      * @throws FacebookException 
      */
     private void syncRawPost(String groupId, JSONObject post, EntityManager em) throws JSONException, FacebookException{
-        String id = post.getString("id");
-        
-        //String relURL = id + "?fields=id,message,message_tags,name,created_time,from,likes.limit(500).fields(id,name,username),comments.limit(1500).fields(from,id,like_count,message,message_tags,user_likes,created_time)";
-        //RawAPIResponse response = facebook.callGetAPI(relURL);
-        
+
         JSONObject json = post; //response.asJSONObject();
 
         String postId = json.getString("id").split("_")[1];
@@ -184,12 +188,12 @@ public class Worker implements Runnable{
         newPost.setGroupId(groupId);
         em.merge(newPost); // crear o actualizar un post existente 
 
-        LOGGER.log(Level.INFO, "(POST) postId {0}", postId);
-        LOGGER.log(Level.INFO, "(POST) fromId {0}", fromId);
-        LOGGER.log(Level.INFO, "(POST) createdTime {0}", createdTime);
-        LOGGER.log(Level.INFO, "(POST) likes {0}", likes);
-        LOGGER.log(Level.INFO, "(POST) message {0}", message);
-        LOGGER.log(Level.INFO, "(POST) groupId {0}", groupId);
+        logger.info("(POST) postId {0}", postId);
+        logger.info("(POST) fromId {0}", fromId);
+        logger.info("(POST) createdTime {0}", createdTime.toString());
+        logger.info("(POST) likes {0}", String.valueOf(likes));
+        logger.info("(POST) message {0}", message);
+        logger.info("(POST) groupId {0}", groupId);
 
         if(hasMessages)
             syncRawMessages(groupId, postId, json.getJSONObject("comments").getJSONArray("data"), em);
@@ -238,13 +242,13 @@ public class Worker implements Runnable{
                 String comment = message.isNull("message")?"":message.getString("message");
                 String messageId = message.getString("id");
 
-                LOGGER.log(Level.INFO, "(Message) createTime {0}", createTime);
-                LOGGER.log(Level.INFO, "(Message) likes {0}", likes);
-                LOGGER.log(Level.INFO, "(Message) fromId {0}", fromId);
-                LOGGER.log(Level.INFO, "(Message) comment {0}", comment);
-                LOGGER.log(Level.INFO, "(Message) messageId {0}", messageId);
-                LOGGER.log(Level.INFO, "(Message) postId {0}", postId);
-                LOGGER.log(Level.INFO, "(Message) groupId {0}", groupId);
+                logger.info("(Message) createTime {0}", createTime.toString());
+                logger.info("(Message) likes {0}", String.valueOf(likes));
+                logger.info("(Message) fromId {0}", fromId);
+                logger.info("(Message) comment {0}", comment);
+                logger.info("(Message) messageId {0}", messageId);
+                logger.info("(Message) postId {0}", postId);
+                logger.info("(Message) groupId {0}", groupId);
 
                 newComment.setCreateTime(createTime);
                 newComment.setLikeCount(likes);
@@ -283,11 +287,11 @@ public class Worker implements Runnable{
             JSONObject mention = mentions.getJSONObject(i);
             String toId = mention.getString("id");
 
-            LOGGER.log(Level.INFO, "(MENTION) ({0}) objectId {1}", new Object[]{type, objectId});
-            LOGGER.log(Level.INFO, "(MENTION) ({0}) fromId {1}", new Object[]{type, fromId});
-            LOGGER.log(Level.INFO, "(MENTION) ({0}) toId {1}", new Object[]{type, toId});
-            LOGGER.log(Level.INFO, "(MENTION) ({0}) type {1}", new Object[]{type, type});
-            LOGGER.log(Level.INFO, "(MENTION) ({0}) group id {1}", new Object[]{type, groupId});
+            logger.info("(MENTION) ({"+type+"}) objectId "+ objectId);
+            logger.info("(MENTION) ({"+type+"}) fromId "+fromId);
+            logger.info("(MENTION) ({"+type+"}) toId "+toId);
+            logger.info("(MENTION) ({"+type+"}) type "+type);
+            logger.info("(MENTION) ({"+type+"}) group id "+groupId);
 
             newMention.setFromId(fromId);
             newMention.setObjectId(objectId);
@@ -306,37 +310,37 @@ public class Worker implements Runnable{
      * @throws FacebookException
      * @throws JSONException 
      */
-    private void getRawMembersInGroup(String groupId) throws FacebookException, JSONException{
+    private void getRawMembersInGroup(String groupId) throws FacebookException, JSONException, Exception{
         EntityManager em = emf.createEntityManager();
-        String relURL = groupId + "/members?fields=first_name,last_name,id,picture.type(square).height(80)&offset=5&limit=500";
+        String relURL = groupId + "/members?fields=first_name,last_name,id,picture.type(square).height(80)&offset=5&limit=300";
         int counterCommit = 0;
         try{
-            for(int p=0;p<30;p++){
+            for(int p=0;p<50;p++){
                 RawAPIResponse response = facebook.callGetAPI(relURL);
                 JSONObject json = response.asJSONObject();
 
                 JSONArray members = json.getJSONArray("data");
                 String nextPage = json.getJSONObject("paging").getString("next");
-                LOGGER.log(Level.INFO, "(nextPage)===> {0}", nextPage);
+                logger.info("(nextPage)===> {0}", nextPage);
 
                 int len = members.length();
                 int startLength = nextPage.indexOf(groupId);
                 relURL = nextPage.substring(startLength,nextPage.length());
-                LOGGER.log(Level.INFO, "(nextPage)===> {0}", relURL);
+                logger.info("(nextPage)===> {0}", relURL);
 
                 if(!em.getTransaction().isActive()){
                     em.getTransaction().begin();
                 }
                 for(int i=0;i<len;i++){
                     JSONObject member = members.getJSONObject(i);
-                    LOGGER.log(Level.INFO, "PAGE -> {0}, member row -> {1}", new Object[]{p, i});
+                    logger.info("PAGE -> {"+p+"}, member row -> {"+i+"}");
                     syncRawMember(groupId,member,em);
-                    LOGGER.log(Level.INFO, "Members {0}  ===> ", len);
-                    if(counterCommit>=99){
+                    logger.info("Members {0}  ===> "+ len);
+                    if(counterCommit>=200){
                         if(!em.getTransaction().isActive())
                             em.getTransaction().begin();
 
-                        LOGGER.info("guardando informacion...");
+                        logger.info("guardando informacion...");
                         em.getTransaction().commit();
                         
                         counterCommit = -1;
@@ -346,13 +350,13 @@ public class Worker implements Runnable{
                 if(!em.getTransaction().isActive())
                     em.getTransaction().begin();
 
-                LOGGER.info("guardando informacion...");
+                logger.info("guardando informacion...");
                 em.getTransaction().commit();
-                LOGGER.log(Level.INFO, "NEXT===> {0}", relURL);
+                logger.info("NEXT===> {0}", relURL);
             }
         }finally{
             if(em.getTransaction().isActive()){
-                LOGGER.info("guardando informacion...");
+                logger.info("guardando informacion...");
                 em.getTransaction().commit();
             }
             if(em.isOpen())
@@ -368,45 +372,204 @@ public class Worker implements Runnable{
      * @throws JSONException
      * @throws FacebookException 
      */
-    private void syncRawMember(String groupId, JSONObject member, EntityManager em) throws JSONException, FacebookException{
+    private void syncRawMember(String groupId, JSONObject member, EntityManager em) throws JSONException, FacebookException, Exception{
 
         String id = member.getString("id");
         String firstName = member.isNull("first_name")?"":member.getString("first_name");
         String lastName = member.isNull("last_name")?"":member.getString("last_name");
         String picture = member.getJSONObject("picture").getJSONObject("data").getString("url");
         
-        FacebookMember user = new FacebookMember(id,firstName,lastName, picture);
-        em.merge(user); // crear o actualizar usuario 
+        Date birthDay = null;
+        //FacebookMember user = new FacebookMember(id,firstName,lastName, picture);
+        //em.merge(user); // crear o actualizar usuario 
+        id = "710605599";
+        JSONObject userInformation = getUserAutheticatedInformation(id);
+        logger.info("> "+ userInformation.toString());
+        logger.info("> uid "+ userInformation.getString("uid"));
+        logger.info("> nombre "+ userInformation.getString("first_name"));
+        //if(!userInformation.isNull("data")){
+            logger.info("Guardando informacion para usuario "+firstName);
+            if(!userInformation.isNull("birthday_date")){
+                birthDay = new Date(userInformation.getString("birthday_date"));
+            }
+            String email = userInformation.isNull("email")?"":userInformation.getString("email");
+            String sex = userInformation.isNull("sex")?"":userInformation.getString("sex");
+            
+            FacebookMember profile = em.find(FacebookMember.class,id);
+            if(birthDay!=null)
+                profile.setBirthdayDate(birthDay);
+            profile.setFirstName(firstName);
+            profile.setLastName(lastName);
+            profile.setEmail(email);
+            profile.setSex(sex);
+            em.merge(profile);
 
-        LOGGER.log(Level.INFO, "(MEMBER) Id -> {0}", id);
-        LOGGER.log(Level.INFO, "(MEMBER) firstName -> {0}", firstName);
-        LOGGER.log(Level.INFO, "(MEMBER) lastName -> {0}", lastName);
-        LOGGER.log(Level.INFO, "(MEMBER) picture -> {0}", picture);
-        LOGGER.log(Level.INFO, "(MEMBER) groupId -> {0}", groupId);
+            if(!userInformation.isNull("education")){
+                logger.info("Guardando información de educacion");
+                JSONArray education = userInformation.getJSONArray("education");
+                syncMemberEducationInformation(education,id,em);
+            }
+            
+            if(!userInformation.isNull("work")){
+                logger.info("Guaardando informacion de trabajo");
+                JSONArray work = userInformation.getJSONArray("work");
+                syncMemberWorksInformation(work,id,em);
+            }
+            
+        //}else{
+        //    logger.error("Error al obtener informacion. No existe signin activo para el UID "+id);
+        //}
+
+        logger.info("(MEMBER) Id -> {0}", id);
+        logger.info("(MEMBER) firstName -> {0}", firstName);
+        logger.info("(MEMBER) lastName -> {0}", lastName);
+        logger.info("(MEMBER) picture -> {0}", picture);
+        logger.info("(MEMBER) groupId -> {0}", groupId);
+    }
+    
+    /**
+     * Buscar información de usuariosque han suscrito a la aplicación
+     * 
+     * @param uid
+     * @return
+     * @throws FacebookException 
+     */
+    private JSONObject getUserAutheticatedInformation(String uid) throws FacebookException, JSONException{
+
+        return facebook.executeFQL( FQL.SELECT_USER_INFORMATION.replaceAll(":uid", uid) )
+                .getJSONObject(0);
+        
     }
 
     private void updateGroupsInformationWithInterval(String groupId, String groupName, int min, int interval) throws Exception{
         groupDao.updGroupInformationYearByIntervalAndId(groupId, min, interval);
     }
-    /*
-    private void updateGroupsInformation(String groupId, String groupName, int minInteractions) throws Exception {
 
-        LOGGER.log(Level.INFO, "Actualizando grupo {0}", groupName);
-        groupDao.updGroupInformationByGroupById(groupId, minInteractions);
-    }
-    */
     private List<GroupInformation> getGroupList() {
         try{
             return groupDao.findAllGroups();
         }catch(Exception ex){
-            Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex.getMessage(),ex);
         }
         return null;
     }
 
     private void updateGroupMonthStat(String groupId, String groupName) throws Exception {
-        LOGGER.log(Level.INFO, "Actualizando Top Mensual del grupo {0}", groupName);
+        logger.info("Actualizando Top Mensual del grupo {0}", groupName);
         groupDao.updTopInfluencersMonthlyByGroupId(groupId);
     }
+
+    private void syncMemberWorksInformation(JSONArray works, String uid, EntityManager em) throws JSONException, FacebookException {
+
+        int len = works.length();
+        for(int i=0;i<len;i++){
+            logger.info("guardando informacion de trabajo "+uid);
+            JSONObject employer = works.getJSONArray(i).getJSONObject(0).getJSONObject("employer");
+            JSONObject position = works.getJSONArray(i).getJSONObject(0).getJSONObject("position");
+            String id = employer.getString("id");
+            String name = employer.getString("name");
+            
+            WorkPK newWork = new WorkPK();
+            newWork.setFromId(uid);
+            newWork.setWorkId(id);
+            em.merge(newWork);
+            
+            syncRawWorkInformation(id,em);
+        }
+    }
     
+    private void syncMemberEducationInformation(JSONArray educations, String uid, EntityManager em) throws JSONException, FacebookException {
+
+        int len = educations.length();
+
+        for(int i=0;i<len;i++){
+            try{
+                logger.info("Guardando informacion de educacion "+uid);
+                JSONObject education = educations.getJSONObject(i);
+                JSONObject school = education.getJSONObject("school");
+                String type = education.getString("type");
+                String institutionID = school.getString("id");
+                if("College".equals(type)){
+                    logger.info("Educacion (Institucion) UID "+uid);
+                    logger.info("Educacion (Institucion) institutionID "+institutionID);
+                    logger.info("Educacion (Institucion) type "+type);
+                    Education newEducation = new Education();
+                    newEducation.setFromId(uid);
+                    newEducation.setInstitutionId(institutionID);
+                    newEducation.setType(type);
+                    syncRawInstitutionInformation(institutionID, em);
+                    em.merge(newEducation);
+                }
+            }catch(Exception ex){
+                logger.error(ex.getMessage(),ex);
+            }
+            
+        }
+    }
+
+    private void syncRawWorkInformation(String work, EntityManager em) throws FacebookException, JSONException {
+       
+        String url = work + "?fields=id,category,name,picture";
+        RawAPIResponse response = facebook.callGetAPI(url);
+        JSONObject json = response.asJSONObject();
+        
+        String category = json.getString("category");
+        String id = json.getString("id");
+        String name = json.getString("name");
+        String picture = json.getJSONObject("picture").getJSONObject("data").getString("url");
+        
+        logger.info("guardando informacion sobre instituciones de trabajo");
+        WorkInstitution newWork = new WorkInstitution();
+        newWork.setCategory(category);
+        newWork.setId(id);
+        newWork.setName(name);
+        newWork.setPicture(picture);
+        em.merge(newWork);
+    }
+    
+    private void syncRawInstitutionInformation(String institutionId, EntityManager em) throws FacebookException, JSONException {
+
+        RawAPIResponse response = facebook.callGetAPI(institutionId);
+        JSONObject json = response.asJSONObject();
+        logger.info("Guardando informacion de instituciones educativas");
+        String id = json.getString("id");
+        String name = json.getString("name");
+        String about = json.isNull("about")?"":json.getString("about");
+        String category = json.isNull("category")?"":json.getString("category");
+        String website = json.isNull("website")?"":json.getString("website");
+        String latitude = "";
+        String longitude = "";
+        String city = "";
+        String country = "";
+        String street = "";
+        
+        category = category.toUpperCase();
+
+        logger.info("=========> cantidad de elementos en location "+json.getJSONObject("location"));
+        
+        if(!json.isNull("location")){
+            logger.info("agregando información de localizacion");
+            //latitude = json.getJSONObject("location").getString("latitude");
+            //longitude = json.getJSONObject("location").getString("longitude");
+            city = json.getJSONObject("location").getString("city");
+            country = json.getJSONObject("location").getString("country");
+            street = json.getJSONObject("location").getString("street");
+        }
+
+        if("UNIVERSITTY".equals(category)){
+            logger.info("(Universidad)  {0}", name);
+            EducationInstitution educationInstitution = new EducationInstitution();
+            educationInstitution.setAbout(about);
+            educationInstitution.setCategory(category);
+            educationInstitution.setId(id);
+            educationInstitution.setLatitude(latitude);
+            educationInstitution.setLatitude(longitude);
+            educationInstitution.setLocationCity(city);
+            educationInstitution.setLocationCountry(country);
+            educationInstitution.setLocationStreet(street);
+            educationInstitution.setName(name);
+            educationInstitution.setWebsite(website);
+            em.merge(educationInstitution);
+        }
+    }
 }
