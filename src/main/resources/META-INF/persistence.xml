@@ -18,10 +18,10 @@
     <class>org.devdom.tracker.model.dto.Education</class>
     <class>org.devdom.tracker.model.dto.EducationInstitution</class>
     <class>org.devdom.tracker.model.dto.EducationInstitutionCategories</class>
-    <class>org.devdom.tracker.model.dto.Locations</class>
     <class>org.devdom.tracker.model.dto.University</class>
     <class>org.devdom.tracker.model.dto.Work</class>
     <class>org.devdom.tracker.model.dto.WorkInstitution</class>
+    <class>org.devdom.tracker.model.dto.Location</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
