@@ -22,9 +22,11 @@
     <class>org.devdom.tracker.model.dto.Work</class>
     <class>org.devdom.tracker.model.dto.WorkInstitution</class>
     <class>org.devdom.tracker.model.dto.Location</class>
+    <class>org.devdom.tracker.model.dto.FacebookInteraction</class>
+    <class>org.devdom.tracker.model.dto.FacebookLikes</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
-    <properties></properties>
+    <properties> </properties>
   </persistence-unit>
 </persistence>

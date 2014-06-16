@@ -14,21 +14,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Carlos Vasquez Polanco
  */
-
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-@Table(name = "dev_dom_mentions")
+@Table(name = "dev_dom_likes")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "FacebookMentions.findAll", query = "SELECT c FROM FacebookMentions c")
+    @NamedQuery(name = "FacebookLikes.findAll", query = "SELECT c FROM FacebookLikes c")
 })
-public class FacebookMentions extends FacebookInteraction implements Serializable{
+public class FacebookLikes extends FacebookInteraction implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
 
     /**
      * @return the fromId
      */
     @Override
-    public String getFromId(){
+    public String getFromId() {
         return super.getFromId();
     }
 
@@ -36,7 +37,7 @@ public class FacebookMentions extends FacebookInteraction implements Serializabl
      * @param fromId the fromId to set
      */
     @Override
-    public void setFromId(String fromId){
+    public void setFromId(String fromId) {
         super.setFromId(fromId);
     }
 
@@ -44,7 +45,7 @@ public class FacebookMentions extends FacebookInteraction implements Serializabl
      * @return the toId
      */
     @Override
-    public String getToId(){
+    public String getToId() {
         return super.getToId();
     }
 
@@ -52,7 +53,7 @@ public class FacebookMentions extends FacebookInteraction implements Serializabl
      * @param toId the toId to set
      */
     @Override
-    public void setToId(String toId){
+    public void setToId(String toId) {
         super.setToId(toId);
     }
 
@@ -60,7 +61,7 @@ public class FacebookMentions extends FacebookInteraction implements Serializabl
      * @return the createdTime
      */
     @Override
-    public Date getCreatedTime(){
+    public Date getCreatedTime() {
         return super.getCreatedTime();
     }
 
@@ -68,7 +69,7 @@ public class FacebookMentions extends FacebookInteraction implements Serializabl
      * @param createdTime the createdTime to set
      */
     @Override
-    public void setCreatedTime(Date createdTime){
+    public void setCreatedTime(Date createdTime) {
         super.setCreatedTime(createdTime);
     }
 
@@ -76,7 +77,7 @@ public class FacebookMentions extends FacebookInteraction implements Serializabl
      * @return the type
      */
     @Override
-    public String getType(){
+    public String getType() {
         return super.getType();
     }
 
@@ -84,7 +85,7 @@ public class FacebookMentions extends FacebookInteraction implements Serializabl
      * @param type the type to set
      */
     @Override
-    public void setType(String type){
+    public void setType(String type) {
         super.setType(type);
     }
 
@@ -92,7 +93,7 @@ public class FacebookMentions extends FacebookInteraction implements Serializabl
      * @return the objectId
      */
     @Override
-    public String getObjectId(){
+    public String getObjectId() {
         return super.getObjectId();
     }
 
@@ -100,7 +101,7 @@ public class FacebookMentions extends FacebookInteraction implements Serializabl
      * @param objectId the objectId to set
      */
     @Override
-    public void setObjectId(String objectId){
+    public void setObjectId(String objectId) {
         super.setObjectId(objectId);
     }
 
@@ -108,7 +109,7 @@ public class FacebookMentions extends FacebookInteraction implements Serializabl
      * @return the groupId
      */
     @Override
-    public String getGroupId(){
+    public String getGroupId() {
         return super.getGroupId();
     }
 
@@ -116,7 +117,7 @@ public class FacebookMentions extends FacebookInteraction implements Serializabl
      * @param groupId the groupId to set
      */
     @Override
-    public void setGroupId(String groupId){
+    public void setGroupId(String groupId) {
         super.setGroupId(groupId);
     }
 
