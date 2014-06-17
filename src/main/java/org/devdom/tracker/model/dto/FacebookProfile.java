@@ -16,6 +16,8 @@ public class FacebookProfile implements Serializable {
     private String email;
     private String pic_with_logo;
     private String sex;
+    private String currentLocationId;
+    private String currentLocation;
 
     /**
      * @return the uid
@@ -114,5 +116,21 @@ public class FacebookProfile implements Serializable {
     public void setSex(String sex) {
         this.sex = sex;
     }
-    
+
+    public String getCurrentLocationId() {
+        return currentLocationId;
+    }
+
+    public void setCurrentLocationId(String currentLocationId) {
+        this.currentLocationId = currentLocationId;
+    }
+
+    public String getCurrentLocation() {
+        return currentLocation;
+    }
+
+    public void setCurrentLocation(String currentLocation) {
+        this.currentLocation = currentLocation;
+    }
+
 }

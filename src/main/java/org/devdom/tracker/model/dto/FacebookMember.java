@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Carlos Vásquez Polanco
+ * @author Carlos Vasquez Polanco
  */
 @Entity
 @Table(name = "dev_dom_user")
@@ -40,6 +40,9 @@ public class FacebookMember implements Serializable {
 
     @Column(name = "current_location_id")
     private String currentLocationId;
+    
+    @Column(name = "current_location")
+    private String currentLocation;
     
     public FacebookMember() {
     }
@@ -165,10 +168,18 @@ public class FacebookMember implements Serializable {
     public void setCurrentLocationId(String currentLocationId) {
         this.currentLocationId = currentLocationId;
     }
-    
+
+    public String getCurrentLocation() {
+        return currentLocation;
+    }
+
+    public void setCurrentLocation(String currentLocation) {
+        this.currentLocation = currentLocation;
+    }
+
     @Override
     public String toString() {
-        return "FacebookMember{" + "uid=" + uid + ", firstName=" + firstName + ", lastName=" + lastName + ", pic=" + pic + ", birthdayDate=" + birthdayDate + ", email=" + email + '}';
+        return "FacebookMember{" + "uid=" + uid + ", firstName=" + firstName + ", lastName=" + lastName + ", pic=" + pic + ", birthdayDate=" + birthdayDate + ", email=" + email + ", sex=" + sex + ", currentLocationId=" + currentLocationId + ", currentLocation=" + currentLocation + '}';
     }
 
 }
