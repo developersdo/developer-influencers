@@ -29,4 +29,14 @@
         <managed-bean-class>org.devdom.tracker.bean.GroupInformationController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>top</managed-bean-name>
+        <managed-bean-class>org.devdom.tracker.bean.TopController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>stats</managed-bean-name>
+        <managed-bean-class>org.devdom.tracker.bean.StatsController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>

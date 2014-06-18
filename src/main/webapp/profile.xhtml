@@ -10,11 +10,43 @@
                     <ui:param name="index" value="0" />
                     <c:choose>
                         <c:when test="#{fb.logged}">
-                            <div class="stats_bar">
-                                <c:forEach var="widget" items="${stats.positionsInTop}">
-                                    <div class="butpro butstyle" onclick="document.href='groupTop20.xhtml?g=${widget.groupId}';">
-                                        <div class="sub"><span>${widget.groupName}</span>${widget.currentInteractionsCount} interacciones <br/> ${widget.currentLikesCount + widget.currentMentionsCount} reacciones</div>
-                                        <div class="stat"><span class="${widget.rankIndicator}">${widget.currentPosition}</span></div>
+                            <div>
+                                <div class="profile-panel">
+                                    <p>&nbsp;</p>
+                                    <h3>Carlos Vásquez Polanco</h3>
+                                    <div style="position:relative;top:-10px;font-size:12px;">Santo Domingo, Republica Dominicana</div>
+                                    <br/>
+                                    <h4 style="color:blue;"><span class="glyphicon glyphicon-star"></span>&nbsp;Skillset</h4><br/>
+                                    <hr style="position:relative;top:-42px;"/>
+                                    <div style="top:-40px;position:relative;">
+
+<h5><span style="color:red;" class="glyphicon glyphicon-chevron-right"></span>&nbsp;Development Platform</h5><br/>
+                                  <div style="position:relative;top:-30px;">
+                                      <h5 style="float:left;padding-left:20px;"><span class="label label-default">Blackberry</span></h5>
+                                        <h5 style="float:left;padding-left:5px;"><span class="label label-default">Windows Phone</span></h5>
+                                    <h5 style="float:left;padding-left:5px;"><span class="label label-default">Windows 8</span></h5>
+                                    
+                                    
+<br/><br/>
+<h5><span style="color:red;" class="glyphicon glyphicon-chevron-right"></span>&nbsp;Development Platform</h5><br/>
+                                  <div style="position:relative;top:-30px;">
+                                      <h5 style="float:left;padding-left:20px;"><span class="label label-default">Blackberry</span></h5>
+                                        <h5 style="float:left;padding-left:5px;"><span class="label label-default">Windows Phone</span></h5>
+                                    <h5 style="float:left;padding-left:5px;"><span class="label label-default">Windows 8</span></h5>                                    
+                                    
+                                    
+                                    
+
+<br/><br/>
+<h5><span style="color:red;" class="glyphicon glyphicon-chevron-right"></span>&nbsp;Development Platform</h5><br/>
+                                  <div style="position:relative;top:-30px;">
+                                      <h5 style="float:left;padding-left:20px;"><span class="label label-default">Blackberry</span></h5>
+                                        <h5 style="float:left;padding-left:5px;"><span class="label label-default">Windows Phone</span></h5>
+                                    <h5 style="float:left;padding-left:5px;"><span class="label label-default">Windows 8</span></h5>                                    
+
+                                    
+                                    
+                                      </div>
                                     </div>
                                     <c:if test="${(widget.id%2)==0}">
                                         <br/>

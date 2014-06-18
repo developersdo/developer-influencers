@@ -77,6 +77,7 @@
     height:100%;
     overflow-y:hidden; 
     overflow-x:hidden;
+    width:280px;
 }
 
 .ui-layout-north {
@@ -160,7 +161,7 @@ div.demo > p{
     position:relative;
     float:left;
     left:-60px;
-    top:-65px;
+    top:0px;
     text-align: center;
 }
 
@@ -175,7 +176,7 @@ div.demo > p{
 #group{
     position:relative;
     float:left;
-    top:-68px;
+    top:0px;
     font-size: 12px;
     text-align: center;
     left:25px;
@@ -190,17 +191,17 @@ div.demo > p{
 #profile-position{
     position:relative;
     float:top;
-    top:18px;
-    left:78px;
+    top:14px;
+    left:70px;
     z-index:1;
     color:white;
     text-align:left;
-    width:45px;
-    height:14px;
+    width:65px;
+    height:15px;
     font-size:12px;
     font-weight: bold;
     padding-left:4px;
-    border-radius: 5px;
+    border-radius: 5px 0px 0px 0px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     
@@ -705,8 +706,13 @@ div.demo > p{
 }
 
 .stats_bar {
-    margin-top: 15px;
-    text-align: center;
+    margin-top:0px;
+    text-align:center;
+    height: 100%;
+    position: relative; 
+    float: right; 
+    padding: 0px; 
+    width: 30%;
 }
 .butstyle:first-child {
     margin-left: 0;
@@ -716,9 +722,9 @@ div.demo > p{
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
-    background-color: #F8F8F8;
-    background-image: linear-gradient(to bottom, #FFFFFF 50%, #F8F8F8 100%);
-    border-color: #DEDFE0 #C8C8C8 #C8C8C8;
+    background-color: #f8f8f8;
+    background-image: linear-gradient(to bottom, #ffffff 50%, #f8f8f8 100%);
+    border-color: #dedfe0 #c8c8c8 #c8c8c8;
     border-image: none;
     border-style: solid;
     border-width: 1px;
@@ -728,11 +734,11 @@ div.demo > p{
     display: inline-block;
     font-family: 'Open Sans',Verdana,sans-serif;
     font-size: 11px;
-    margin-bottom: 15px;
-    margin-right: 1.8%;
-    padding: 6px 9px 4px;
+    margin-bottom: 10px;
+    margin-right: 0px;
+    padding: 0 1px 2px;
     transition: border-color 0.21s ease-out 0s;
-    width: 14.2%;
+    width: 95%;
 }
 .butpro {
     vertical-align: top;
@@ -763,7 +769,7 @@ div.demo > p{
 .butpro .sub span {
     color: #434D55;
     display: block;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 400;
     line-height: 26px;
     text-align: center;
@@ -773,4 +779,30 @@ div.demo > p{
     background: url("../images/stat-same.png") no-repeat scroll left center rgba(0, 0, 0, 0);
     font-size: 12px;
     padding: 0 0 0 19px;
+}
+
+.profile-panel{
+    position:relative;
+    float:left;
+    width:70%;
+    padding-left:5px;
+    height:100%;
+}
+
+.bg-header-position{
+    text-shadow: 0 -1px 0 #082783;
+    color:white;
+    margin-left:8px;
+    padding:3px;
+    height:25px;
+    width:95%;
+    text-align:center;
+    background: #d0e4f7; /* Old browsers */
+    background: -moz-linear-gradient(top,  #d0e4f7 0%, #73b1e7 24%, #0a77d5 50%, #539fe1 79%, #202d77 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d0e4f7), color-stop(24%,#73b1e7), color-stop(50%,#0a77d5), color-stop(79%,#539fe1), color-stop(100%,#202d77)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#202d77 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#202d77 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#202d77 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#202d77 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d0e4f7', endColorstr='#202d77',GradientType=0 ); /* IE6-9 */
 }

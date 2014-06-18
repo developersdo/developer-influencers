@@ -60,8 +60,8 @@ public class Worker implements Runnable{
         if(groups!=null){
             groups.stream().forEach((group) -> {
                 try{
-                    logger.info("Buscando miembros el grupo "+ group.getGroupName());
-                    getRawMembersInGroup(group.getGroupId()); // Actualizar miembros en grupo
+                    //logger.info("Buscando miembros el grupo "+ group.getGroupName());
+                    //getRawMembersInGroup(group.getGroupId()); // Actualizar miembros en grupo
                     Thread.sleep(1000);
                     logger.info("Buscando post y comentarios del grupo "+group.getGroupName());
                     getRawPostsInGroup(group.getGroupId()); // Actualizar interacciones de los miembros de los distintos grupos
@@ -69,6 +69,8 @@ public class Worker implements Runnable{
                     logger.error(ex.getMessage(),ex);
                 } catch (Exception ex) {
                     logger.error(ex.getMessage(),ex);
+                }finally{
+                    //em.getTransaction().commit();
                 }
             });
             
@@ -88,6 +90,14 @@ public class Worker implements Runnable{
                     updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),1);
                 }catch(Exception ex){
                     logger.error(ex.getMessage(),ex);
+                }
+            });
+            
+            groups.stream().forEach((group) -> {
+                try{
+                    updGroupInformationByGroupById(group.getGroupId(),group.getGroupName(), group.getMinInteractions());
+                }catch(Exception ex){
+                    logger.error(ex.getMessage(), ex);
                 }
             });
             /*
@@ -118,43 +128,63 @@ public class Worker implements Runnable{
         EntityManager em = emf.createEntityManager();
         int countCommit = 0;
         String relURL = API.FEEDS_BY_GRUOP_ID.replace(":group-id", groupId);
+        try{
+            for(int p=0;p<2;p++){
+                RawAPIResponse response = facebook.callGetAPI(relURL);
+                JSONObject json = response.asJSONObject();
 
-        for(int p=0;p<50;p++){
-            RawAPIResponse response = facebook.callGetAPI(relURL);
-            JSONObject json = response.asJSONObject();
-            
-            JSONArray posts = json.getJSONArray("data");
-            String nextPage = json.getJSONObject("paging").getString("next");
-            logger.info("(nextPage)===> "+ nextPage);
-            
-            int len = posts.length();
-            int startLength = nextPage.indexOf(groupId);
-            relURL = nextPage.substring(startLength,nextPage.length());
-            logger.info("(nextPage)===> "+ relURL);
-            
-            for(int i=0;i<len;i++){
+                JSONArray posts = json.getJSONArray("data");
+                String nextPage = json.getJSONObject("paging").getString("next");
+                //logger.info("(nextPage)===> "+ nextPage);
+
+                int len = posts.length();
+                int startLength = nextPage.indexOf(groupId);
+                relURL = nextPage.substring(startLength,nextPage.length());
+                //logger.info("(nextPage)===> "+ relURL);
+
+                for(int i=0;i<len;i++){
+                    if(!em.getTransaction().isActive()){
+                        em.getTransaction().begin();
+                    }
+                    JSONObject post = posts.getJSONObject(i);
+                    syncRawPost(groupId,post,em);
+
+                    logger.info("POST GROUP ID  => "+ groupId);
+                    logger.info("POST ID  => "+ post.getString("id"));
+                    logger.info("PAGE -> "+p+" + row -> "+i);
+                    logger.info("Posts ===> "+len);
+
+                    if(countCommit>=99){
+                        logger.info("guardando informacion...");
+                        em.getTransaction().commit();
+                        countCommit=-1;
+                    }
+                    countCommit++;
+                }
                 if(!em.getTransaction().isActive()){
                     em.getTransaction().begin();
                 }
-                JSONObject post = posts.getJSONObject(i);
-                syncRawPost(groupId,post,em);
-                
-                logger.info("POST GROUP ID  => "+ groupId);
-                logger.info("POST ID  => "+ post.getString("id"));
-                logger.info("PAGE -> "+p+" + row -> "+i);
-                logger.info("Posts ===> "+len);
-                
-                if(countCommit>=99){
-                    logger.info("guardando informacion...");
-                    em.getTransaction().commit();
-                    countCommit=-1;
-                }
-                countCommit++;
+                em.getTransaction().commit();
+                //logger.info("NEXT===> {0}", relURL);
             }
-            if(!em.getTransaction().isActive())
+        }catch(FacebookException | JSONException ex){
+            if(!em.getTransaction().isActive()){
                 em.getTransaction().begin();
-            
-            logger.info("NEXT===> {0}", relURL);
+            }
+            em.getTransaction().commit();
+            logger.error(ex.getMessage(), ex);
+        }catch(Exception ex){
+            if(!em.getTransaction().isActive()){
+                em.getTransaction().begin();
+            }
+            em.getTransaction().commit();
+        }
+        finally{
+            if(!em.getTransaction().isActive()){
+                em.getTransaction().begin();
+            }
+            em.getTransaction().commit();
+            em.close();
         }
     }
 
@@ -326,7 +356,7 @@ public class Worker implements Runnable{
             FacebookMentions newMention = new FacebookMentions();
             JSONObject mention = mentions.getJSONObject(i);
             String toId = mention.getString("id");
-
+            /*
             logger.info("(MENTION) "+type+" objectId "+ objectId);
             logger.info("(MENTION) "+type+" fromId "+fromId);
             logger.info("(MENTION) "+type+" toId "+toId);
@@ -470,6 +500,7 @@ public class Worker implements Runnable{
         logger.info("(MEMBER) lastName -> "+ lastName);
         logger.info("(MEMBER) picture -> "+ picture);
         logger.info("(MEMBER) groupId -> "+ groupId);
+        */
     }
     
     /**
@@ -700,6 +731,11 @@ public class Worker implements Runnable{
             }
         }
         
+    }
+
+    private void updGroupInformationByGroupById(String groupId, String groupName, int minInteractions) throws Exception {
+        logger.info("Actualizando Rating general para el grupo "+ groupName);
+        groupDao.updGroupInformationByGroupById(groupId, minInteractions);
     }
 
 }
