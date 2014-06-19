@@ -75,7 +75,7 @@ public class ProfileDao {
     public List<EducationHistory> getEducationInformation(String profileId) throws Exception{
         EntityManager em = emf.createEntityManager();
         try{
-            return em.createNamedQuery("EducationHistory.findWorkByUid")
+            return em.createNamedQuery("EducationHistory.findEducationByUid")
                     .setParameter("from_id", profileId)
                     .getResultList();
         }finally{
