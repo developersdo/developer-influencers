@@ -86,9 +86,32 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       direction=Direction.IN,
                                                                       type=Integer.class)
                                 }
+                                ),
+    @NamedStoredProcedureQuery( name="GroupInformation.updTopInfluencers_day",
+                                procedureName="updTopInfluencers_day",
+                                returnsResultSet=true,
+                                resultClass=GroupInformation.class,
+                                parameters={@StoredProcedureParameter(queryParameter="min_interactions",
+                                                                      name="min_interactions",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class),
+                                            @StoredProcedureParameter(queryParameter="day_of_year",
+                                                                      name="day_of_year",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class),
+                                            @StoredProcedureParameter(queryParameter="in_year",
+                                                                      name="in_year",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class),
+                                            @StoredProcedureParameter(queryParameter="group_id",
+                                                                      name="group_id",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class
+                                                                      )
+                                }
                                 )
 })
-public class GroupInformation implements Serializable { 
+public class GroupInformation implements Serializable { //
 
     @Id
     @Column(name = "id")

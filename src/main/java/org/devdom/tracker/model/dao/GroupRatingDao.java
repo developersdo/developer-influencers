@@ -58,6 +58,30 @@ public class GroupRatingDao {
     }
     
     /**
+     * 
+     * @param dayofYear
+     * @param year
+     * @param groupId
+     * @param minInteraction
+     * @return
+     * @throws Exception 
+     */
+    public GroupInformation findDayActivityGroupById(int dayofYear,int year,String groupId, int minInteraction)throws Exception{
+        EntityManager em = emf.createEntityManager();
+        try{
+            return (GroupInformation) em.createNamedQuery("GroupInformation.updTopInfluencers_day")
+                    .setParameter("min_interactions",minInteraction)
+                    .setParameter("day_of_year", dayofYear)
+                    .setParameter("in_year", year)
+                    .setParameter("group_id", groupId)
+                    .getSingleResult();
+        }finally{
+            if(em.isOpen())
+                em.close();
+        }
+    }
+    
+    /**
      * Genera el top de los developers de un grupo determinado según el ID
      * @param groupId
      * @param minInteraction

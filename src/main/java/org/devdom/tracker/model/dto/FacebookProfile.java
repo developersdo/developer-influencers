@@ -17,9 +17,6 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
  * @author Carlos Vasquez Polanco
  */
 
-
-
-
 @Entity
 @XmlRootElement
 @NamedStoredProcedureQueries({
