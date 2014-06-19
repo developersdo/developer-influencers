@@ -17,8 +17,8 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
 @Entity
 @XmlRootElement
 @NamedStoredProcedureQueries({
-    @NamedStoredProcedureQuery( name="EducationHistory.findWorkByUid",
-                                procedureName="findWorkByUid",
+    @NamedStoredProcedureQuery( name="EducationHistory.findEducationByUid",
+                                procedureName="findEducationByUid",
                                 returnsResultSet=true,
                                 resultClass=EducationHistory.class,
                                 parameters={@StoredProcedureParameter(queryParameter="from_id",

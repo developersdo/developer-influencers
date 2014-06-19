@@ -30,7 +30,7 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
 public class WorkHistory implements Serializable {
     
     @Id
-    @Column(name = "word_id")
+    @Column(name = "work_id")
     String workId;
     
     @Column(name = "work")

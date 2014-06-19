@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -19,11 +19,11 @@ public class MasterProfile implements Serializable {
     private String fromId;
     @OneToOne
     private FacebookProfile profile;
-    @ManyToOne
+    @OneToMany
     private List<Skill> skill;
-    @ManyToOne
+    @OneToMany
     private List<WorkHistory> work;
-    @ManyToOne
+    @OneToMany
     private List<EducationHistory> education;
 
     public String getFromId() {
