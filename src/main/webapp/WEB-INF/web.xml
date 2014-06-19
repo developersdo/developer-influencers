@@ -60,4 +60,7 @@
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
+    <listener>
+        <listener-class>org.devdom.tracker.Start</listener-class>
+    </listener>
 </web-app>
