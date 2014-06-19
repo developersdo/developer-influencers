@@ -24,9 +24,14 @@
     <class>org.devdom.tracker.model.dto.Location</class>
     <class>org.devdom.tracker.model.dto.FacebookInteraction</class>
     <class>org.devdom.tracker.model.dto.FacebookLikes</class>
+    <class>org.devdom.tracker.model.dto.EducationHistory</class>
+    <class>org.devdom.tracker.model.dto.Skill</class>
+    <class>org.devdom.tracker.model.dto.WorkHistory</class>
+    <class>org.devdom.tracker.model.dto.FacebookProfile</class>
+    <class>org.devdom.tracker.model.dto.MasterProfile</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
-    <properties> </properties>
+    <properties></properties>
   </persistence-unit>
 </persistence>
