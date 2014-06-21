@@ -1,68 +1,48 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-    <html xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-        <ui:composition template="template/layout.xhtml">
-            <ui:define name="content">
-                <h:form>
-                    <ui:param name="index" value="0" />
-                    <c:choose>
-                        <c:when test="#{fb.logged}">
-                            <div>
-                                <div class="profile-panel">
-                                    <p>&nbsp;</p>
-                                    <h3>Carlos Vásquez Polanco</h3>
-                                    <div style="position:relative;top:-10px;font-size:12px;">Santo Domingo, Republica Dominicana</div>
-                                    <br/>
-                                    <h4 style="color:blue;"><span class="glyphicon glyphicon-star"></span>&nbsp;Skillset</h4><br/>
-                                    <hr style="position:relative;top:-42px;"/>
-                                    <div style="top:-40px;position:relative;">
-
-<h5><span style="color:red;" class="glyphicon glyphicon-chevron-right"></span>&nbsp;Development Platform</h5><br/>
-                                  <div style="position:relative;top:-30px;">
-                                      <h5 style="float:left;padding-left:20px;"><span class="label label-default">Blackberry</span></h5>
-                                        <h5 style="float:left;padding-left:5px;"><span class="label label-default">Windows Phone</span></h5>
-                                    <h5 style="float:left;padding-left:5px;"><span class="label label-default">Windows 8</span></h5>
-                                    
-                                    
-<br/><br/>
-<h5><span style="color:red;" class="glyphicon glyphicon-chevron-right"></span>&nbsp;Development Platform</h5><br/>
-                                  <div style="position:relative;top:-30px;">
-                                      <h5 style="float:left;padding-left:20px;"><span class="label label-default">Blackberry</span></h5>
-                                        <h5 style="float:left;padding-left:5px;"><span class="label label-default">Windows Phone</span></h5>
-                                    <h5 style="float:left;padding-left:5px;"><span class="label label-default">Windows 8</span></h5>                                    
-                                    
-                                    
-                                    
-
-<br/><br/>
-<h5><span style="color:red;" class="glyphicon glyphicon-chevron-right"></span>&nbsp;Development Platform</h5><br/>
-                                  <div style="position:relative;top:-30px;">
-                                      <h5 style="float:left;padding-left:20px;"><span class="label label-default">Blackberry</span></h5>
-                                        <h5 style="float:left;padding-left:5px;"><span class="label label-default">Windows Phone</span></h5>
-                                    <h5 style="float:left;padding-left:5px;"><span class="label label-default">Windows 8</span></h5>                                    
-
-                                    
-                                    
-                                      </div>
-                                    </div>
-                                    <c:if test="${(widget.id%2)==0}">
-                                        <br/>
-                                    </c:if>
-                                </c:forEach>
+    <ui:composition template="template/layout.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <c:choose>
+                    <c:when test="#{fb.logged}">
+                        <div>
+                            <div class="profile-panel">
+                                <p>&nbsp;</p>
+                                <h3>#{profilePanel.information.firstName} #{profilePanel.information.lastName}</h3>
+                                <div style="position:relative;top:-10px;font-size:12px;">#{profilePanel.information.currentLocation}</div>
+                                <br/>
+                                <h:outputText value="#{profilePanel.educationPanel}" escape="false"/>
+                                <h:outputText value="#{profilePanel.worksPanel}" escape="false"/>
+                                <h:outputText value="#{profilePanel.skillsPanel}" escape="false"/>
+                                <br/><br/>
                             </div>
+                        </div>
+                        <div class="stats_bar">
+                            <div class="bg-header-position">Posiciones</div>
+                            <c:forEach var="widget" items="${stats.positionsInTop}">
+                                <div class="butpro butstyle" onclick="document.href='groupTop20.xhtml?g=${widget.groupId}';">
+                                    <div class="sub"><span>${widget.groupName}</span>${widget.currentInteractionsCount} interacciones <br/> ${widget.currentLikesCount + widget.currentMentionsCount} reacciones</div>
+                                    <div class="stat"><span class="${widget.rankIndicator}">${widget.currentPosition}</span></div>
+                                </div>
+                                <c:if test="${(widget.id%2)==0}">
+                                    <br/>
+                                </c:if>
+                            </c:forEach>
+                        </div>
                             <!-- $("#sparkline").sparkline([5,6,7,8,4,6,7,4], {
     type: 'bar',
     height: '30'});-->
                             
-                        </c:when>
-                        <c:otherwise>
-                            <h:outputText value="#{fb.loginButton}" escape="false" />
-                        </c:otherwise>
-                    </c:choose>
-                </h:form>
-            </ui:define>
-        </ui:composition>
-    </html>
+                    </c:when>
+                    <c:otherwise>
+                        <h:outputText value="#{fb.loginButton}" escape="false" />
+                    </c:otherwise>
+                </c:choose>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

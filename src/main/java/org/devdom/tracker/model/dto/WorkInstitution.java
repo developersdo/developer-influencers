@@ -23,8 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "WorkInstitution.findAll", query = "SELECT w FROM WorkInstitution w"),
     @NamedQuery(name = "WorkInstitution.findById", query = "SELECT w FROM WorkInstitution w WHERE w.id = :id"),
     @NamedQuery(name = "WorkInstitution.findByName", query = "SELECT w FROM WorkInstitution w WHERE w.name = :name"),
-    @NamedQuery(name = "WorkInstitution.findByCategory", query = "SELECT w FROM WorkInstitution w WHERE w.category = :category"),
-    @NamedQuery(name = "WorkInstitution.findByPicture", query = "SELECT w FROM WorkInstitution w WHERE w.picture = :picture")})
+    @NamedQuery(name = "WorkInstitution.findByCategory", query = "SELECT w FROM WorkInstitution w WHERE w.category = :category")})
 public class WorkInstitution implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,9 +38,6 @@ public class WorkInstitution implements Serializable {
     @Size(max = 200)
     @Column(name = "category")
     private String category;
-    @Size(max = 800)
-    @Column(name = "picture")
-    private String picture;
 
     public WorkInstitution() {
     }
@@ -74,14 +70,6 @@ public class WorkInstitution implements Serializable {
         this.category = category;
     }
 
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -100,7 +88,7 @@ public class WorkInstitution implements Serializable {
 
     @Override
     public String toString() {
-        return "WorkInstitution{" + "id=" + id + ", name=" + name + ", category=" + category + ", picture=" + picture + '}';
+        return "WorkInstitution{" + "id=" + id + ", name=" + name + ", category=" + category + '}';
     }
 
 }
