@@ -3,48 +3,50 @@
     <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
         <ui:composition template="template/layout.xhtml">
             <ui:define name="content">
                 <h:form style="padding:0px;border:solid 0px #fff;">
-                    <c:choose>                        
-                        <c:when test="#{fb.logged}">
-                            
+                    <c:choose>
+                        <c:when test="${fb.logged}">
                             <ui:include src="template/groupMenu.xhtml"/>
-                            
-                            <div style="font-size:12px;">
-                                <c:choose>
-                                    <c:when test="#{group.groupInformation.groupId == 1}">
-                                        Detalles estadísticos de todos los grupos de desarrollo de aplicaciones de la República Dominicana
-                                    </c:when>
-                                    <c:otherwise>
-                                        Detalles estadísticos del grupo <b style="color:red">#{group.groupActivityByGroupId.groupName}</b>
-                                    </c:otherwise>
-                                </c:choose>
-                                <br/>
-                                <b style="color:red">#{group.groupActivityByGroupId.activeMembersInYear}</b> miembros activos entre el #{group.groupActivityByGroupId.createdTimeFrom} y el #{group.groupActivityByGroupId.createdTimeTo}
-                                <br/><br/>
-                                <p:panel header="Informacion del grupo #{group.groupActivityByGroupId.groupName}"> 
-                                    <h:panelGrid columns="5" cellpadding="5" width="810"> 
-                                        <p:outputLabel value="publicaciones" />
-                                        <p:outputLabel value="comentarios" />
-                                        <p:outputLabel value="Interaccions mínimas para entrar en top 20" />
-                                        <p:outputLabel value="Prom. de publicaciones por día" />
-                                        <p:outputLabel value="Prom. de comentarios por día" /> 
+                            <div style="font-size:12px;padding:5px;padding-right:10px;padding-top:0px;">
+                                <h3 style="padding:0px;">${group.activity.groupName}</h3>
+                                <div class="group-details">
+                                    Detalles estadísticos del grupo <b>Developers Dominicanos</b>
+                                    <br/>
+                                    Fue recopilada todas las interacciones entre el ${group.activity.createdTimeFrom} y ${group.activity.createdTimeTo}
+                                </div>
+                                <div style="background-color:#323232;height:60px;">
+                                    <div class="group-summary" style="width:11%;">
+                                        ${group.activity.postAmount}
+                                        <br/>
+                                        <span class="group-summary-title">Publicaciones</span>
+                                    </div>
+                                    <div class="group-summary" style="width:8%;">
+                                        ${group.activity.commentsAmount}
+                                        <br/>
+                                        <span class="group-summary-title">Comentarios</span>
+                                    </div>
+                                    <div class="group-summary" style="width:16%;">
+                                        ${group.activity.minInteractions}
+                                        <br/><span class="group-summary-title">Requisitos para top 20</span>
+                                    </div>
 
-                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.postAmount}" escape="false"/>
-                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.commentsAmount}" escape="false"/>
-                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.minInteractions}" escape="false"/>
-                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.postPerDay}" escape="false"/>
-                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.commentsPerDay}" escape="false"/>
-                                    </h:panelGrid>
-                                </p:panel>
-
+                                    <div class="group-summary" style="width:19%;">
+                                        ${group.activity.postPerDay}
+                                        <br/><span class="group-summary-title">Prom. de publicaciones x día</span>
+                                    </div>
+                                    <div class="group-summary" style="width:19%;">
+                                        ${group.activity.commentsPerDay}
+                                        <br/><span class="group-summary-title">Prom. de comentarios x día</span>
+                                    </div>
+                                </div>
+                                <h:outputText value="#{group.adminsContainer}" escape="false"/>
                             </div>
                         </c:when>
                         <c:otherwise>
-                            <h:outputText value="#{fb.loginButton}" escape="false" />
+                            <h:outputText value="${fb.loginButton}" escape="false" />
                         </c:otherwise>
                     </c:choose>
                 </h:form>

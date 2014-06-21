@@ -3,6 +3,8 @@ package org.devdom.tracker.model.dto;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -13,11 +15,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Carlos Vasquez
  */
 @Entity
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @Table(name = "fb_group_admins")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "GroupAdmin.findAll", query = "SELECT g FROM GroupAdmin g"),
-    @NamedQuery(name = "GroupAdmin.findById", query = "SELECT g FROM GroupAdmin g WHERE g.groupAdminsPK.id = :id"),
     @NamedQuery(name = "GroupAdmin.findByGroupId", query = "SELECT g FROM GroupAdmin g WHERE g.groupAdminsPK.groupId = :groupId"),
     @NamedQuery(name = "GroupAdmin.findByUid", query = "SELECT g FROM GroupAdmin g WHERE g.groupAdminsPK.uid = :uid")})
 public class GroupAdmin implements Serializable {
@@ -32,8 +34,8 @@ public class GroupAdmin implements Serializable {
         this.groupAdminsPK = groupAdminsPK;
     }
 
-    public GroupAdmin(short id, String groupId, String uid) {
-        this.groupAdminsPK = new GroupAdminPK(id, groupId, uid);
+    public GroupAdmin(String groupId, String uid) {
+        this.groupAdminsPK = new GroupAdminPK(groupId, uid);
     }
 
     public GroupAdminPK getGroupAdminsPK() {

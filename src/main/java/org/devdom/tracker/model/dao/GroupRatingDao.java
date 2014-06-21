@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import org.devdom.tracker.model.dto.GroupAdminsInformation;
 import org.devdom.tracker.model.dto.GroupInformation;
 import org.devdom.tracker.model.dto.GroupRating;
 
@@ -33,7 +34,7 @@ public class GroupRatingDao {
                     .setParameter("from_id", fromId)
                     .getResultList();
         }finally{
-            if(em!=null|em.isOpen())
+            if(em.isOpen())
                 em.close();
         }
     }
@@ -52,7 +53,7 @@ public class GroupRatingDao {
                     .setParameter("group_id", groupId)
                     .getSingleResult();
         }finally{
-            if(em!=null|em.isOpen())
+            if(em.isOpen())
                 em.close();
         }
     }
@@ -96,7 +97,7 @@ public class GroupRatingDao {
                      .setParameter("min_interaction", minInteraction)
                     .getSingleResult();
         }finally{
-            if(em!=null|em.isOpen())
+            if(em.isOpen())
                 em.close();
         }
     }
@@ -119,7 +120,7 @@ public class GroupRatingDao {
                     .setParameter("in_interval_month",interval)
                     .getSingleResult();
         }finally{
-            if(em!=null|em.isOpen())
+            if(em.isOpen())
                 em.close();
         }
     }
@@ -135,7 +136,7 @@ public class GroupRatingDao {
             return (GroupInformation) em.createNamedQuery("GroupInformation.updTablesInformationYear")
                     .getSingleResult();
         }finally{
-            if(em!=null|em.isOpen())
+            if(em.isOpen())
                 em.close();
         }
     }
@@ -150,7 +151,7 @@ public class GroupRatingDao {
             return (List<GroupInformation>) em.createNamedQuery("GroupInformation.findAll")
                     .getResultList();
         }finally{
-            if(em!=null|em.isOpen())
+            if(em.isOpen())
                 em.close();
         }
     }
@@ -162,7 +163,7 @@ public class GroupRatingDao {
                     .setParameter("group_id", groupId)
                     .getSingleResult();
         }finally{
-            if(em!=null|em.isOpen())
+            if(em.isOpen())
                 em.close();
         }
     }
@@ -180,8 +181,21 @@ public class GroupRatingDao {
                     .setParameter("group_id", groupId)
                     .getSingleResult();
         }finally{
-            if(em!=null|em.isOpen())
+            if(em.isOpen())
                 em.close();
+        }
+    }
+
+    public List<GroupAdminsInformation> findAdminsByGroupId(String groupId){
+        EntityManager em = emf.createEntityManager();
+        try{
+            return (List<GroupAdminsInformation>) em.createNamedQuery("GroupInformation.findAdminsByGroupId")
+                    .setParameter("group_id", groupId)
+                    .getResultList();
+        }finally{
+            if(em.isOpen()){
+                em.close();
+            }
         }
     }
 }

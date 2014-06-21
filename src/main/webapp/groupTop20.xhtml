@@ -1,57 +1,56 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+        xmlns:p="http://primefaces.org/ui">
         <ui:composition template="template/layout.xhtml">
             <ui:define name="content">
                 <h:form style="padding:0px;border:solid 0px #fff;">
                     <c:choose>                        
-                        <c:when test="#{fb.logged}">
+                        <c:when test="${fb.logged}">
                             <ui:include src="template/groupMenu.xhtml"/>
                             <div style="font-size:12px;">
                                 <c:choose>
-                                    <c:when test="#{group.groupInformation.groupId == 1}">
+                                    <c:when test="${group.groupInformation.groupId == 1}">
                                         Top 20 de los developers más influyentes en todos los grupos de desarrollo en República Dominicana,
-                                        se analizaron #{group.groupInformation.postAmount} publicaciones
-                                        y #{group.groupInformation.commentsAmount} comentarios.
+                                        se analizaron ${group.groupInformation.postAmount} publicaciones
+                                        y ${group.groupInformation.commentsAmount} comentarios.
                                         <br/>
-                                        La cantidad mínima de interacciones para entrar en el top es #{group.groupInformation.minInteractions}
+                                        La cantidad mínima de interacciones para entrar en el top es ${group.groupInformation.minInteractions}
                                         <br/><br/>
                                     </c:when>
                                     <c:otherwise>
-                                        Top 20 de los developers más influyentes en el grupo <b>#{group.groupInformation.groupName}</b>,
-                                        se analizaron #{group.groupInformation.postAmount} publicaciones
-                                        y #{group.groupInformation.commentsAmount} comentarios.
+                                        Top 20 de los developers más influyentes en el grupo <b>${group.groupInformation.groupName}</b>,
+                                        se analizaron ${group.groupInformation.postAmount} publicaciones
+                                        y ${group.groupInformation.commentsAmount} comentarios.
                                         <br/>
-                                        La cantidad mínima de interacciones para entrar en el top es #{group.groupInformation.minInteractions}
+                                        La cantidad mínima de interacciones para entrar en el top es ${group.groupInformation.minInteractions}
                                         <br/><br/>
                                     </c:otherwise>
                                 </c:choose>
                             </div>
-                            <p:dataGrid lazy="true" var="dev" value="#{topController.top20Devs}" columns="6"
+                            <p:dataGrid lazy="true" var="dev" value="${topController.top20Devs}" columns="6"
                                         rows="20" paginator="false" id="top20-developer" emptyMessage="Sin registros para mostrar">
 
-                                <p:panel header="##{dev.position} #{dev.fullName}" style="font-size:12px;text-align:center;width:90%;">
+                                <p:panel header="#${dev.position} ${dev.fullName}" style="font-size:12px;text-align:center;width:90%;">
                                     <h:panelGrid columns="1" style="width:130px;text-align: left;">
-                                        <p:graphicImage value="#{dev.picture}"/>
-                                        <b>Rating:</b> #{dev.ratio}<br/>
-                                        <b>Posts:</b> #{dev.postsCount}<br/>
-                                        <b>Comments:</b> #{dev.messagesCount}<br/>
-                                        <b>Likes:</b> #{dev.likesCount}<br/>
-                                        <b>Mentions:</b> #{dev.mentionsCount}<br/>
+                                        <p:graphicImage value="${dev.picture}"/>
+                                        <b>Rating:</b> ${dev.ratio}<br/>
+                                        <b>Posts:</b> ${dev.postsCount}<br/>
+                                        <b>Comments:</b> ${dev.messagesCount}<br/>
+                                        <b>Likes:</b> ${dev.likesCount}<br/>
+                                        <b>Mentions:</b> ${dev.mentionsCount}<br/>
                                     </h:panelGrid>
                                 </p:panel>
                             </p:dataGrid>
                         </c:when>
                         <c:otherwise>
-                            <h:outputText value="#{fb.loginButton}" escape="false" />
+                            <h:outputText value="${fb.loginButton}" escape="false" />
                         </c:otherwise>
                     </c:choose>
                 </h:form>
             </ui:define>
         </ui:composition>
-    </html>      
+    </html>

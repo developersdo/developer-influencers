@@ -1,6 +1,8 @@
 package org.devdom.tracker.model.dto;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,6 +11,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.eclipse.persistence.annotations.Direction;
 import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
@@ -111,42 +114,38 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                 }
                                 )
 })
-public class GroupInformation implements Serializable { //
-
+public class GroupInformation implements Serializable{
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "post_amount")
+    private int postAmount;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "comments_amount")
+    private int commentsAmount;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "min_interactions")
+    private int minInteractions;
+    @Column(name = "active_members_in_year")
+    private int activeMembersInYear;
+    @Column(name = "created_time_from")
+    private String createdTimeFrom;
+    @Column(name = "created_time_to")
+    private String createdTimeTo;
+    @Column(name = "post_per_day")
+    private int postPerDay;
+    @Column(name = "comments_per_day")
+    private int commentsPerDay;
     @Id
     @Column(name = "id")
     private int id;
-    
     @Column(name = "fb_id")
     private String groupId;
-    
     @Column(name = "name")
     private String groupName;
     
-    @Column(name = "post_amount")
-    private int postAmount;
-    
-    @Column(name = "comments_amount")
-    private int commentsAmount;
-    
-    @Column(name = "min_interactions")
-    private int minInteractions;
-    
-    @Column(name = "active_members_in_year")
-    private int activeMembersInYear;
-    
-    @Column(name = "post_per_day")
-    private int postPerDay;
-    
-    @Column(name = "comments_per_day")
-    private int commentsPerDay;
-    
-    @Column(name = "created_time_from")
-    private String createdTimeFrom;
-    
-    @Column(name = "created_time_to")
-    private String createdTimeTo; 
-
+    DecimalFormat df = new DecimalFormat("#,###,###,###");
     /**
      * @return the groupId
      */
@@ -178,8 +177,8 @@ public class GroupInformation implements Serializable { //
     /**
      * @return the postAmount
      */
-    public int getPostAmount() {
-        return postAmount;
+    public String getPostAmount() {
+        return df.format(Long.valueOf(postAmount));
     }
 
     /**
@@ -192,8 +191,8 @@ public class GroupInformation implements Serializable { //
     /**
      * @return the commentsAmount
      */
-    public int getCommentsAmount() {
-        return commentsAmount;
+    public String getCommentsAmount() {
+        return df.format(Long.valueOf(commentsAmount));
     }
 
     /**
@@ -206,8 +205,8 @@ public class GroupInformation implements Serializable { //
     /**
      * @return the minInteractions
      */
-    public int getMinInteractions() {
-        return minInteractions;
+    public String getMinInteractions() {
+        return df.format(Long.valueOf(minInteractions));
     }
 
     /**
@@ -294,4 +293,6 @@ public class GroupInformation implements Serializable { //
         this.createdTimeTo = createdTimeTo;
     }
 
+    public GroupInformation() {
+    }
 }

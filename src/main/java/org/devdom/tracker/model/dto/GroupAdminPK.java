@@ -14,9 +14,6 @@ import javax.validation.constraints.Size;
 @Embeddable
 public class GroupAdminPK implements Serializable {
     @Basic(optional = false)
-    @Column(name = "id")
-    private short id;
-    @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "group_id")
@@ -30,18 +27,9 @@ public class GroupAdminPK implements Serializable {
     public GroupAdminPK() {
     }
 
-    public GroupAdminPK(short id, String groupId, String uid) {
-        this.id = id;
+    public GroupAdminPK(String groupId, String uid) {
         this.groupId = groupId;
         this.uid = uid;
-    }
-
-    public short getId() {
-        return id;
-    }
-
-    public void setId(short id) {
-        this.id = id;
     }
 
     public String getGroupId() {
@@ -63,7 +51,6 @@ public class GroupAdminPK implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) id;
         hash += (groupId != null ? groupId.hashCode() : 0);
         hash += (uid != null ? uid.hashCode() : 0);
         return hash;
@@ -76,9 +63,6 @@ public class GroupAdminPK implements Serializable {
             return false;
         }
         GroupAdminPK other = (GroupAdminPK) object;
-        if (this.id != other.id) {
-            return false;
-        }
         if ((this.groupId == null && other.groupId != null) || (this.groupId != null && !this.groupId.equals(other.groupId))) {
             return false;
         }
@@ -90,7 +74,7 @@ public class GroupAdminPK implements Serializable {
 
     @Override
     public String toString() {
-        return "org.devdom.tracker.model.dto.GroupAdminPK[ id=" + id + ", groupId=" + groupId + ", uid=" + uid + " ]";
+        return "GroupAdminPK{" + "groupId=" + groupId + ", uid=" + uid + '}';
     }
     
 }
