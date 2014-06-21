@@ -806,3 +806,59 @@ div.demo > p{
     background: linear-gradient(to bottom,  #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#202d77 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d0e4f7', endColorstr='#202d77',GradientType=0 ); /* IE6-9 */
 }
+/*@Override bootstrap style*/
+h4, .h4, h5, .h5, h6, .h6{
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+div#profile-container{
+    display: flex; justify-content: space-between; 
+    margin:20px;
+    
+}
+div#profile-container figure{
+    display: inline-block;
+}
+div#profile-container figure div{
+    border-radius: 50%;
+    overflow: hidden; 
+    background-blend-mode: luminosity;
+    border: 5px solid #000;
+    width: 14rem; height: 14rem;
+    transition: .4s linear;
+}
+div#profile-container figure div:hover{
+    border: 8px solid #000;
+    background-color: transparent;
+}
+div#profile-container figcaption{
+    margin-top: 1rem;
+    text-align: center; 
+}
+
+.group-summary{
+    color:#E6D9D1;
+    font-size:25px;
+    height:60px;
+    text-align:center;
+    padding-top:5px;
+    position:relative;
+    float:left;
+}
+
+.group-details{
+    padding:10px;
+    background-color:blue;
+    width:100%;
+    color:white;
+    font-size:14px;
+}
+
+.group-summary-title{
+    font-size:11px;
+    font-weight:bold;
+    position:relative;
+    top:-15px;
+    color:#817B6B;
+}
