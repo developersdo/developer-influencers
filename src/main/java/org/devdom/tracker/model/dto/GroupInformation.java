@@ -1,12 +1,17 @@
 package org.devdom.tracker.model.dto;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.eclipse.persistence.annotations.Direction;
 import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
@@ -20,6 +25,7 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
 @Entity
 @Table(name = "fb_groups")
 @XmlRootElement
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @NamedQueries({
     @NamedQuery(name = "GroupInformation.findAll", 
                 query = "SELECT g FROM GroupInformation g"),
@@ -54,43 +60,90 @@ import org.eclipse.persistence.annotations.StoredProcedureParameter;
                                                                       direction=Direction.IN,
                                                                       type=String.class
                                                                       )}
+                                ),
+    @NamedStoredProcedureQuery( name="GroupInformation.updTopInfluencers_monthBatch",
+                                procedureName="updTopInfluencers_monthBatch",
+                                returnsResultSet=true,
+                                resultClass=GroupInformation.class,
+                                parameters={@StoredProcedureParameter(queryParameter="group_id",
+                                                                      name="group_id",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class
+                                                                      )}
+                                ),
+    @NamedStoredProcedureQuery( name="GroupInformation.updTopInfluencers_year",
+                                procedureName="updTopInfluencers_year",
+                                returnsResultSet=true,
+                                resultClass=GroupInformation.class,
+                                parameters={@StoredProcedureParameter(queryParameter="in_group_id",
+                                                                      name="in_group_id",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class
+                                                                      ),
+                                            @StoredProcedureParameter(queryParameter="in_min_interactions",
+                                                                      name="in_min_interactions",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class),
+                                            @StoredProcedureParameter(queryParameter="in_interval_month",
+                                                                      name="in_interval_month",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class)
+                                }
+                                ),
+    @NamedStoredProcedureQuery( name="GroupInformation.updTopInfluencers_day",
+                                procedureName="updTopInfluencers_day",
+                                returnsResultSet=true,
+                                resultClass=GroupInformation.class,
+                                parameters={@StoredProcedureParameter(queryParameter="min_interactions",
+                                                                      name="min_interactions",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class),
+                                            @StoredProcedureParameter(queryParameter="day_of_year",
+                                                                      name="day_of_year",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class),
+                                            @StoredProcedureParameter(queryParameter="in_year",
+                                                                      name="in_year",
+                                                                      direction=Direction.IN,
+                                                                      type=Integer.class),
+                                            @StoredProcedureParameter(queryParameter="group_id",
+                                                                      name="group_id",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class
+                                                                      )
+                                }
                                 )
 })
-public class GroupInformation implements Serializable {
-
+public class GroupInformation implements Serializable{
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "post_amount")
+    private int postAmount;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "comments_amount")
+    private int commentsAmount;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "min_interactions")
+    private int minInteractions;
+    @Column(name = "active_members_in_year")
+    private int activeMembersInYear;
+    @Column(name = "created_time_from")
+    private String createdTimeFrom;
+    @Column(name = "created_time_to")
+    private String createdTimeTo;
+    @Column(name = "post_per_day")
+    private int postPerDay;
+    @Column(name = "comments_per_day")
+    private int commentsPerDay;
     @Id
     @Column(name = "id")
     private int id;
-    
     @Column(name = "fb_id")
     private String groupId;
-    
     @Column(name = "name")
     private String groupName;
-    
-    @Column(name = "post_amount")
-    private int postAmount;
-    
-    @Column(name = "comments_amount")
-    private int commentsAmount;
-    
-    @Column(name = "min_interactions")
-    private int minInteractions;
-    
-    @Column(name = "active_members_in_year")
-    private int activeMembersInYear;
-    
-    @Column(name = "post_per_day")
-    private int postPerDay;
-    
-    @Column(name = "comments_per_day")
-    private int commentsPerDay;
-    
-    @Column(name = "created_time_from")
-    private String createdTimeFrom;
-    
-    @Column(name = "created_time_to")
-    private String createdTimeTo; 
 
     /**
      * @return the groupId
@@ -123,8 +176,9 @@ public class GroupInformation implements Serializable {
     /**
      * @return the postAmount
      */
-    public int getPostAmount() {
-        return postAmount;
+    public String getPostAmount() {
+        DecimalFormat df = new DecimalFormat("#,###,###,###");
+        return df.format(Long.valueOf(postAmount));
     }
 
     /**
@@ -137,8 +191,9 @@ public class GroupInformation implements Serializable {
     /**
      * @return the commentsAmount
      */
-    public int getCommentsAmount() {
-        return commentsAmount;
+    public String getCommentsAmount() {
+        DecimalFormat df = new DecimalFormat("#,###,###,###");
+        return df.format(Long.valueOf(commentsAmount));
     }
 
     /**
@@ -239,4 +294,6 @@ public class GroupInformation implements Serializable {
         this.createdTimeTo = createdTimeTo;
     }
 
+    public GroupInformation() {
+    }
 }

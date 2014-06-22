@@ -4,47 +4,118 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
         <ui:composition template="template/layout.xhtml">
             <ui:define name="content">
                 <h:form style="padding:0px;border:solid 0px #fff;">
-                    <c:choose>                        
-                        <c:when test="#{fb.logged}">
-                            
+                    <c:choose>
+                        <c:when test="${fb.logged}">
                             <ui:include src="template/groupMenu.xhtml"/>
-                            
-                            <div style="font-size:12px;">
-                                <c:choose>
-                                    <c:when test="#{group.groupInformation.groupId == 1}">
-                                        Detalles estadísticos de todos los grupos de desarrollo de aplicaciones de la República Dominicana
-                                    </c:when>
-                                    <c:otherwise>
-                                        Detalles estadísticos del grupo <b style="color:red">#{group.groupActivityByGroupId.groupName}</b>
-                                    </c:otherwise>
-                                </c:choose>
-                                <br/>
-                                <b style="color:red">#{group.groupActivityByGroupId.activeMembersInYear}</b> miembros activos entre el #{group.groupActivityByGroupId.createdTimeFrom} y el #{group.groupActivityByGroupId.createdTimeTo}
-                                <br/><br/>
-                                <p:panel header="Informacion del grupo #{group.groupActivityByGroupId.groupName}"> 
-                                    <h:panelGrid columns="5" cellpadding="5" width="810"> 
-                                        <p:outputLabel value="publicaciones" />
-                                        <p:outputLabel value="comentarios" />
-                                        <p:outputLabel value="Interaccions mínimas para entrar en top 20" />
-                                        <p:outputLabel value="Prom. de publicaciones por día" />
-                                        <p:outputLabel value="Prom. de comentarios por día" /> 
+                            <div style="font-size:12px;padding:5px;padding-right:10px;padding-top:0px;">
+                                <h3 style="padding:0px;">${group.activity.groupName}</h3>
+                                <div class="group-details">
+                                    Detalles estadísticos del grupo <b>${group.activity.groupName}</b>
+                                    <br/>
+                                    Fue recopilada todas las interacciones entre el ${group.activity.createdTimeFrom} y ${group.activity.createdTimeTo}
+                                </div>
+                                <div style="background-color:#323232;height:60px;">
+                                    <div class="group-summary" style="width:11%;">
+                                        ${group.activity.activeMembersInYear}
+                                        <br/>
+                                        <span class="group-summary-title">Miembros activos</span>
+                                    </div>
+                                    <div class="group-summary" style="width:11%;">
+                                        ${group.activity.postAmount}
+                                        <br/>
+                                        <span class="group-summary-title">Publicaciones</span>
+                                    </div>
+                                    <div class="group-summary" style="width:8%;">
+                                        ${group.activity.commentsAmount}
+                                        <br/>
+                                        <span class="group-summary-title">Comentarios</span>
+                                    </div>
+                                    <div class="group-summary" style="width:16%;">
+                                        ${group.activity.minInteractions}
+                                        <br/><span class="group-summary-title">Requisitos para top 20</span>
+                                    </div>
 
-                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.postAmount}" escape="false"/>
-                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.commentsAmount}" escape="false"/>
-                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.minInteractions}" escape="false"/>
-                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.postPerDay}" escape="false"/>
-                                        <h:outputText style="font-weight:bold;" value="#{group.groupActivityByGroupId.commentsPerDay}" escape="false"/>
-                                    </h:panelGrid>
-                                </p:panel>
-
+                                    <div class="group-summary" style="width:19%;">
+                                        ${group.activity.postPerDay}
+                                        <br/><span class="group-summary-title">Prom. de publicaciones x día</span>
+                                    </div>
+                                    <div class="group-summary" style="width:19%;">
+                                        ${group.activity.commentsPerDay}
+                                        <br/><span class="group-summary-title">Prom. de comentarios x día</span>
+                                    </div>
+                                </div><br/><br/>
+                                <h:outputText value="#{group.adminsContainer}" escape="false"/>
                             </div>
+                            <style>
+                                .ui-widget-content{
+                                    border: 0 solid;
+                                }
+                            </style>
+                            <div>
+                                <div style="float:left;padding:3px;width:32%;height:500px;">
+                                    <p:dataList style="height:500px;" id="top-interaction-most-liked-post" value="#{topInteraction.topMostLikedPostByGroupId}" var="interaction" type="definition">
+                                        <f:facet name="header">Top de publicaciones con más likes</f:facet>
+                                        <div style="width:55px;float:left;vertical-align:middle;height:60px;">
+                                            <a href="profile.xhtml?pid=#{interaction.uid}"><p:graphicImage value="#{interaction.picture}" styleClass="glow"/></a>
+                                        </div>
+                                        <div style="width:170px;float:left;font-size:12px;vertical-align: middle;height:60px;font-weight:100">
+                                            <br/><a href="profile.xhtml?pid=#{interaction.uid}">#{interaction.fullName}</a>
+                                        </div>
+                                        <div style="width:30px;float:left;font-size:12px;vertical-align: middle;height:60px;">
+                                            <br/><a href="profile.xhtml?pid=#{interaction.uid}">#{interaction.topCount}</a>
+                                        </div>
+                                        <div style="width:50px;float: left;font-size:11px;vertical-align: middle;height:60px;font-weight:100">
+                                            <br/><a href="profile.xhtml?pid=#{interaction.uid}">#{interaction.createdTime}</a>
+                                        </div>
+                                    </p:dataList>
+                                    <br/><br/>
+                                </div>
+                                <div style="float:left;padding:3px;width:34%;height:500px;">
+                                    <p:dataList style="height:500px;" id="top-interaction-most-comments-post" value="#{topInteraction.topMostCommentedPostByGroupId}" var="interaction" type="definition">
+                                        <f:facet name="header">Top de publicaciones con más comentarios</f:facet>
+                                        <div style="width:55px;float:left;vertical-align:middle;height:60px;">
+                                            <a href="profile.xhtml?pid=#{interaction.uid}"><p:graphicImage value="#{interaction.picture}" styleClass="glow"/></a>
+                                        </div>
+                                        <div style="width:170px;float:left;font-size:12px;vertical-align: middle;height:60px;font-weight:100">
+                                            <br/><a href="profile.xhtml?pid=#{interaction.uid}">#{interaction.fullName}</a>
+                                        </div>
+                                        <div style="width:30px;float:left;font-size:12px;vertical-align: middle;height:60px;">
+                                            <br/><a href="profile.xhtml?pid=#{interaction.uid}">#{interaction.topCount}</a>
+                                        </div>
+                                        <div style="width:50px;float: left;font-size:11px;vertical-align: middle;height:60px;font-weight:100">
+                                            <br/><a href="profile.xhtml?pid=#{interaction.uid}">#{interaction.createdTime}</a>
+                                        </div>
+                                    </p:dataList>
+                                    <br/><br/>
+                                </div>
+                                <div style="float:left;padding:3px;width:33%;height:500px;">
+                                    <p:dataList style="height:500px;" id="top-interaction-most-liked-comments" value="#{topInteraction.topMostLikedCommentsByGroupId}" var="interaction" type="definition">
+                                        <f:facet class="stats-height" name="header">Top de comentarios con más likes</f:facet>
+                                        <div style="width:55px;float:left;vertical-align:middle;height:60px;">
+                                            <a href="profile.xhtml?pid=#{interaction.uid}"><p:graphicImage value="#{interaction.picture}" styleClass="glow"/></a>
+                                        </div>
+                                        <div style="width:170px;float:left;font-size:12px;vertical-align: middle;height:60px;font-weight:100">
+                                            <br/><a href="profile.xhtml?pid=#{interaction.uid}">#{interaction.fullName}</a>
+                                        </div>
+                                        <div style="width:30px;float:left;font-size:12px;vertical-align: middle;height:60px;">
+                                            <br/><a href="profile.xhtml?pid=#{interaction.uid}">#{interaction.topCount}</a>
+                                        </div>
+                                        <div style="width:50px;float: left;font-size:11px;vertical-align: middle;height:60px;font-weight:100">
+                                            <br/><a href="profile.xhtml?pid=#{interaction.uid}">#{interaction.createdTime}</a>
+                                        </div>
+                                    </p:dataList>
+                                    <br/><br/>
+                                </div>                                
+                            </div>
+                            <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
                         </c:when>
                         <c:otherwise>
-                            <h:outputText value="#{fb.loginButton}" escape="false" />
+                            <h:outputText value="${fb.loginButton}" escape="false" />
                         </c:otherwise>
                     </c:choose>
                 </h:form>

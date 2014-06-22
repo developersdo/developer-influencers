@@ -1,17 +1,15 @@
 package org.devdom.tracker.model.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Carlos Vásquez Polanco
+ * @author Carlos Vasquez Polanco
  */
 @Entity
 @Table(name = "dev_dom_user")
@@ -32,9 +30,20 @@ public class FacebookMember implements Serializable {
     private String pic;
     
     @Column(name = "birthday_date")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date birthdayDate;
+    private String birthdayDate;
 
+    @Column(name = "email")
+    private String email;
+    
+    @Column(name = "sex")
+    private String sex;
+
+    @Column(name = "current_location_id")
+    private String currentLocationId;
+    
+    @Column(name = "current_location")
+    private String currentLocation;
+    
     public FacebookMember() {
     }
     
@@ -125,14 +134,52 @@ public class FacebookMember implements Serializable {
     /**
      * @return the birthdayDate
      */
-    public Date getBirthdayDate() {
+    public String getBirthdayDate() {
         return birthdayDate;
     }
 
     /**
      * @param birthdayDate the birthdayDate to set
      */
-    public void setBirthdayDate(Date birthdayDate) {
+    public void setBirthdayDate(String birthdayDate) {
         this.birthdayDate = birthdayDate;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getCurrentLocationId() {
+        return currentLocationId;
+    }
+
+    public void setCurrentLocationId(String currentLocationId) {
+        this.currentLocationId = currentLocationId;
+    }
+
+    public String getCurrentLocation() {
+        return currentLocation;
+    }
+
+    public void setCurrentLocation(String currentLocation) {
+        this.currentLocation = currentLocation;
+    }
+
+    @Override
+    public String toString() {
+        return "FacebookMember{" + "uid=" + uid + ", firstName=" + firstName + ", lastName=" + lastName + ", pic=" + pic + ", birthdayDate=" + birthdayDate + ", email=" + email + ", sex=" + sex + ", currentLocationId=" + currentLocationId + ", currentLocation=" + currentLocation + '}';
+    }
+
 }

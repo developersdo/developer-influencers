@@ -1,22 +1,63 @@
 package org.devdom.tracker.model.dto;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Direction;
+import org.eclipse.persistence.annotations.NamedStoredProcedureQueries;
+import org.eclipse.persistence.annotations.NamedStoredProcedureQuery;
+import org.eclipse.persistence.annotations.StoredProcedureParameter;
 
 /**
  *
  * @author Carlos Vasquez Polanco
  */
+
+@Entity
+@XmlRootElement
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery( name="profile.findProfileInformation",
+                                procedureName="findProfileInformation",
+                                returnsResultSet=true,
+                                resultClass=FacebookProfile.class,
+                                parameters={@StoredProcedureParameter(queryParameter="from_id",
+                                                                      name="from_id",
+                                                                      direction=Direction.IN,
+                                                                      type=String.class)}
+                                )
+})
 public class FacebookProfile implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    @Id
+    @Column(name = "uid")
     private String uid = "";
+    
+    @Column(name = "first_name")
     private String firstName;
+    
+    @Column(name = "last_name")
     private String lastName;
+    
+    @Column(name = "birthday")
     private String birthday;
+    
+    @Column(name = "email")
     private String email;
-    private String pic_with_logo;
+    
+    @Column(name = "sex")
     private String sex;
+    
+    @Column(name= "current_location_id")
+    private String currentLocationId;
+    
+    @Column(name = "current_location")
+    private String currentLocation;
 
+    private String pic_with_logo;
     /**
      * @return the uid
      */
@@ -114,5 +155,21 @@ public class FacebookProfile implements Serializable {
     public void setSex(String sex) {
         this.sex = sex;
     }
-    
+
+    public String getCurrentLocationId() {
+        return currentLocationId;
+    }
+
+    public void setCurrentLocationId(String currentLocationId) {
+        this.currentLocationId = currentLocationId;
+    }
+
+    public String getCurrentLocation() {
+        return currentLocation;
+    }
+
+    public void setCurrentLocation(String currentLocation) {
+        this.currentLocation = currentLocation;
+    }
+
 }
