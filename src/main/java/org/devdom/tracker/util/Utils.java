@@ -38,4 +38,8 @@ public class Utils {
         }
         return new Date();
     }
+    
+    public static Date getDateFormatted(Date date, String format){
+        return getDateFormatted(date.toString(), format);
+    }
 }

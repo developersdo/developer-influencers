@@ -39,4 +39,14 @@
         <managed-bean-class>org.devdom.tracker.bean.StatsController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>profilePanel</managed-bean-name>
+        <managed-bean-class>org.devdom.tracker.bean.ProfileController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>topInteraction</managed-bean-name>
+        <managed-bean-class>org.devdom.tracker.bean.TopInteractionController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>
