@@ -34,7 +34,7 @@
                             <p:dataGrid lazy="true" var="dev" value="${topController.top20Devs}" columns="6"
                                         rows="20" paginator="false" id="top20-developer" emptyMessage="Sin registros para mostrar">
 
-                                <p:panel header="#${dev.position} ${dev.fullName}" style="font-size:12px;text-align:center;width:90%;">
+                                <p:panel header="##{dev.position} #{dev.fullName}" style="font-size:12px;text-align:center;width:90%;">
                                     <h:panelGrid columns="1" style="width:130px;text-align: left;">
                                         <p:graphicImage value="${dev.picture}"/>
                                         <b>Rating:</b> ${dev.ratio}<br/>

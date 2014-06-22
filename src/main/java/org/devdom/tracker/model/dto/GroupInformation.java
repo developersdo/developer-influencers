@@ -144,8 +144,7 @@ public class GroupInformation implements Serializable{
     private String groupId;
     @Column(name = "name")
     private String groupName;
-    
-    DecimalFormat df = new DecimalFormat("#,###,###,###");
+
     /**
      * @return the groupId
      */
@@ -178,6 +177,7 @@ public class GroupInformation implements Serializable{
      * @return the postAmount
      */
     public String getPostAmount() {
+        DecimalFormat df = new DecimalFormat("#,###,###,###");
         return df.format(Long.valueOf(postAmount));
     }
 
@@ -192,6 +192,7 @@ public class GroupInformation implements Serializable{
      * @return the commentsAmount
      */
     public String getCommentsAmount() {
+        DecimalFormat df = new DecimalFormat("#,###,###,###");
         return df.format(Long.valueOf(commentsAmount));
     }
 
@@ -205,8 +206,8 @@ public class GroupInformation implements Serializable{
     /**
      * @return the minInteractions
      */
-    public String getMinInteractions() {
-        return df.format(Long.valueOf(minInteractions));
+    public int getMinInteractions() {
+        return minInteractions;
     }
 
     /**

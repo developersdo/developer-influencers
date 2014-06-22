@@ -47,7 +47,7 @@ public class GroupAdminsInformation implements Serializable{
     String uid;
     
     @Column(name = "position_id")
-    String position_id;
+    String position;
     
     @Column(name = "ratio")
     String ratio;
@@ -96,12 +96,12 @@ public class GroupAdminsInformation implements Serializable{
         this.uid = uid;
     }
 
-    public String getPosition_id() {
-        return position_id;
+    public String getPosition() {
+        return position;
     }
 
-    public void setPosition_id(String position_id) {
-        this.position_id = position_id;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     public String getRatio() {

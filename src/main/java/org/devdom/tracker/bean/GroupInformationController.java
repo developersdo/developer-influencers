@@ -21,13 +21,11 @@ import org.devdom.tracker.model.dto.GroupInformation;
 public class GroupInformationController {
     
     private final GroupRatingDao dao = new GroupRatingDao();
+    private final ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    private final Map<String,String> request = externalContext.getRequestParameterMap();        
+    private final String groupId = request.get("g");
     
     public GroupInformation getGroupInformation(){
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String,String> request = externalContext.getRequestParameterMap();
-        
-        String groupId = request.get("g");
-        
         try {
             return dao.findGroupInformationById(groupId);
         } catch (Exception ex) {
@@ -40,11 +38,6 @@ public class GroupInformationController {
      * @return 
      */
     public GroupInformation getActivity(){
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String,String> request = externalContext.getRequestParameterMap();
-
-        String groupId = request.get("g");
-        
         try{
             return dao.findGroupActivityByGroupId(groupId);
         }catch(Exception ex){
@@ -52,12 +45,8 @@ public class GroupInformationController {
             return null;
         }
     }
-    
-    public String getAdminsContainer(){
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String,String> request = externalContext.getRequestParameterMap();
 
-        String groupId = request.get("g");
+    public String getAdminsContainer(){
         
         List<GroupAdminsInformation> admins = dao.findAdminsByGroupId(groupId);
         
@@ -70,9 +59,13 @@ public class GroupInformationController {
         
         html+= "<div id=\"profile-container\">";
         for(GroupAdminsInformation admin : admins){
-            html+="<a href=\"profile.xhtml?"+admin.getUid()+"\">";
+            html+="<a href=\"profile.xhtml?pid="+admin.getUid()+"\">";
             html+="<figure>";
-            html+="<div style=\"background: url("+admin.getPicture()+") no-repeat center hsl(200,50%,50%); background-size: cover;\"></div>";
+            html+="<div style=\"background: url("+admin.getPicture()+") no-repeat center hsl(200,50%,50%); background-size: cover;\">";
+            html+="<span class=\"figure-position\">\n";
+            html+="#"+ admin.getPosition();
+            html+="</span>";
+            html+="</div>";
             html+="<figcaption>"+admin.getFullName()+"</figcaption>";
             html+="</figure></a>";
         }
