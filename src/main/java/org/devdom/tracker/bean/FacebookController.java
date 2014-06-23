@@ -1,8 +1,10 @@
 package org.devdom.tracker.bean;
 
 import java.io.Serializable;
+import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.devdom.tracker.model.dto.FacebookProfile;
@@ -17,16 +19,18 @@ public class FacebookController implements Serializable{
     
     private static final long serialVersionUID = 1L;
     
-    private FacesContext facesContext = FacesContext.getCurrentInstance();
-    private HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+    private final FacesContext facesContext = FacesContext.getCurrentInstance();
+    private final ExternalContext externalContext = facesContext.getExternalContext();
+    private final HttpSession session = (HttpSession) externalContext.getSession(true);
+    private final Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
 
+    private final AdministrationController admin = new AdministrationController();
     /**
      * return la imagen guardada en session por el usuario que se encuentra logueado
      * desde Facebook
      * @return 
      */
     public String getProfilePicture(){
-        session = (HttpSession) facesContext.getExternalContext().getSession(true);
         FacebookProfile profile = (FacebookProfile) session.getAttribute("profile");
         if(profile==null)
             return "";
@@ -40,7 +44,6 @@ public class FacebookController implements Serializable{
      * @return 
      */
     public String getLoggedName(){
-        session = (HttpSession) facesContext.getExternalContext().getSession(true);
         FacebookProfile profile = (FacebookProfile) session.getAttribute("profile");
         if(profile==null)
             return "";
@@ -54,7 +57,6 @@ public class FacebookController implements Serializable{
      * @return 
      */
     public String getFacebookID(){
-        session = (HttpSession) facesContext.getExternalContext().getSession(true);
         FacebookProfile profile = (FacebookProfile) session.getAttribute("profile");
         if(profile==null)
             return "";
@@ -66,8 +68,17 @@ public class FacebookController implements Serializable{
      * @return 
      */
     public boolean isLogged(){
-        facesContext = FacesContext.getCurrentInstance();
-        session = (HttpSession) facesContext.getExternalContext().getSession(true);
+        boolean logged = session.getAttribute("facebook") != null;
+        if(!logged){
+            session.setAttribute("lastViewID",admin.getViewId());
+
+            if(parameterMap.containsKey("g"))
+                session.setAttribute("g", parameterMap.get("g"));
+
+            if(parameterMap.containsKey("pid"))
+                session.setAttribute("pid", parameterMap.get("pid"));
+
+        }
         return session.getAttribute("facebook") != null;
     }
 

@@ -139,6 +139,14 @@ public class GraphController  implements Serializable{
 "                                                                \"title\": \"C#.do\",\n" +
 "                                                                \"type\": \"smoothedLine\",\n" +
 "                                                                \"valueField\": \"column-634620033215438\"\n" +
+"                                                            },\n" +
+"                                                            {\n" +
+"                                                                \"balloonText\": \"[[value]] comentarios en [[category]] por [[title]]\",\n" +
+"                                                                \"bullet\": \"round\",\n" +
+"                                                                \"id\": \"179901595397349\",\n" +
+"                                                                \"title\": \"CDDV - Comunidad Dominicana de Desarrolladores de Videojuegos\",\n" +
+"                                                                \"type\": \"smoothedLine\",\n" +
+"                                                                \"valueField\": \"column-179901595397349\"\n" +
 "                                                            }\n" +
 "                                                    ],\n" +
 "                                                    \"guides\": [],\n" +
@@ -293,6 +301,14 @@ public class GraphController  implements Serializable{
 "                                                                \"title\": \"C#.do\",\n" +
 "                                                                \"type\": \"smoothedLine\",\n" +
 "                                                                \"valueField\": \"column-634620033215438\"\n" +
+"                                                            },\n" +
+"                                                            {\n" +
+"                                                                \"balloonText\": \"[[value]] post en [[category]] por [[title]]\",\n" +
+"                                                                \"bullet\": \"round\",\n" +
+"                                                                \"id\": \"179901595397349\",\n" +
+"                                                                \"title\": \"CDDV - Comunidad Dominicana de Desarrolladores de Videojuegos\",\n" +
+"                                                                \"type\": \"smoothedLine\",\n" +
+"                                                                \"valueField\": \"column-179901595397349\"\n" +
 "                                                            }\n" +
 "                                                    ],\n" +
 "                                                    \"guides\": [],\n" +
