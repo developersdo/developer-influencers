@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.1" 
-         xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-         metadata-complete="true">
+<web-app metadata-complete="true" version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <display-name>Facebook-Client</display-name>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <servlet> 
+    <servlet>
         <servlet-name>signin</servlet-name>
         <servlet-class>org.devdom.client.facebook.SignIn</servlet-class>
     </servlet>
@@ -61,6 +57,6 @@
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
     <listener>
-        <listener-class>org.devdom.tracker.Start</listener-class>
+        <listener-class>org.devdom.influencer.Start</listener-class>
     </listener>
 </web-app>

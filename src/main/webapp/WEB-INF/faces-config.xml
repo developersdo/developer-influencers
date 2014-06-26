@@ -6,47 +6,47 @@
     <application> </application>
     <managed-bean>
         <managed-bean-name>fb</managed-bean-name>
-        <managed-bean-class>org.devdom.tracker.bean.FacebookController</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.devdom.influencer.bean.FacebookController</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>admin</managed-bean-name>
-        <managed-bean-class>org.devdom.tracker.bean.AdministrationController</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.devdom.influencer.bean.AdministrationController</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>influencer</managed-bean-name>
-        <managed-bean-class>org.devdom.tracker.bean.InfluencerController</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.devdom.influencer.bean.InfluencerController</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>graph</managed-bean-name>
-        <managed-bean-class>org.devdom.tracker.bean.GraphController</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.devdom.influencer.bean.GraphController</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>group</managed-bean-name>
-        <managed-bean-class>org.devdom.tracker.bean.GroupInformationController</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.devdom.influencer.bean.GroupInformationController</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>top</managed-bean-name>
-        <managed-bean-class>org.devdom.tracker.bean.TopController</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.devdom.influencer.bean.TopController</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>stats</managed-bean-name>
-        <managed-bean-class>org.devdom.tracker.bean.StatsController</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.devdom.influencer.bean.StatsController</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>profilePanel</managed-bean-name>
-        <managed-bean-class>org.devdom.tracker.bean.ProfileController</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.devdom.influencer.bean.ProfileController</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>topInteraction</managed-bean-name>
-        <managed-bean-class>org.devdom.tracker.bean.TopInteractionController</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>org.devdom.influencer.bean.TopInteractionController</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
 </faces-config>
