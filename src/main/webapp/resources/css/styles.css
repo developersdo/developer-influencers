@@ -14,15 +14,12 @@
     padding: 4px 0;
     position: relative;
 }
-
 #logo {
     text-align: left;
     width: 30%;
     padding-left: 10px;
     position: absolute;
 }
-
-
 #top-menu{
     height:129px;
     overflow: hidden;
@@ -32,7 +29,6 @@
     top: 15px;
     width:350px;
 }
-
 .circularProfileImage{
     border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -40,7 +36,6 @@
     border:solid 4px #fff;
     width: 140px;
 }
-
 #fbbutton{
     -moz-user-select: none;
     background: #2A49A5;
@@ -52,11 +47,9 @@
     text-shadow: 0 -1px 0 #082783;
     font: 15px Verdana, sans-serif;
 }
-
 .ui-widget-content{
     background-color:transparent;
 }
-
 #header-unit{
     padding:0px;
     border:solid 0px #fff; 
@@ -64,12 +57,10 @@
     background-position: 0 38px;
     background-repeat: repeat-x;
 }
-
 #header, #content, #leftMenu{
     padding:0px;
     border:solid 0px #fff;
 }
-
 #leftMenu{
     background-image: url('../images/left-bg.png');
     background-position:right;
@@ -79,16 +70,13 @@
     overflow-x:hidden;
     width:280px;
 }
-
 .ui-layout-north {
     z-index:20 !important;
     overflow:visible !important;;
 }
-
 .ui-layout-north .ui-layout-unit-content {
     overflow:visible !important;
 }
-
 #devs-carrousel{
     position:relative;
     top:-130px;
@@ -98,15 +86,12 @@
     border:solid 1px gray;
     height:75px;
 }
-
 .left-carrousel-image{
     position:relative;
     top:-1px;
     float:left;
     left:4px;
-    /*overflow:scroll;*/
 }
-
 .dev-carrousel-button{
     background-size: 65px auto;
     float: left;
@@ -116,13 +101,11 @@
     opacity:0.4;
     filter:alpha(opacity=40); /* For IE8 and earlier */
 }
-
 .glow{
     -webkit-box-shadow: 0px 0px 2px 2px rgba(190, 192, 194, .75);
     -moz-box-shadow: 0px 0px 2px 2px rgba(190, 192, 194, .75);
     box-shadow: 0px 0px 2px 2px rgba(190, 192, 194, .75); 
 }
-
 #leftForm{
     overflow-y:hidden;
     overflow-x:hidden;
@@ -142,11 +125,7 @@
     position: relative;
     top: 5px;
 }
-/*
-.ui-layout-unit-content .ui-widget-content{
-    overflow:hidden;
-}
-*/
+
 p{
     font-size: 30px; line-height: 30px
 }
@@ -212,8 +191,7 @@ div.demo > p{
     background: -o-linear-gradient(top,  #3b679e 0%,#2b88d9 50%,#207cca 51%,#7db9e8 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top,  #3b679e 0%,#2b88d9 50%,#207cca 51%,#7db9e8 100%); /* IE10+ */
     background: linear-gradient(to bottom,  #3b679e 0%,#2b88d9 50%,#207cca 51%,#7db9e8 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3b679e', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
-     
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3b679e', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */    
 }
 
 .groupList{
@@ -233,17 +211,6 @@ div.demo > p{
     border-top:1px solid #6A7180;
     border-bottom: solid 3px #6A7180;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 #wrapper {
     height: 100%;
@@ -581,24 +548,6 @@ div.demo > p{
     width: 100%;
     z-index: 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* make sidebar nav vertical */ 
 @media (min-width: 768px) {
   .sidebar-nav .navbar .navbar-collapse {
     padding: 0;
@@ -617,23 +566,6 @@ div.demo > p{
     padding-bottom: 12px;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .container:after {
     clear: both;
@@ -780,7 +712,6 @@ div.demo > p{
     font-size: 12px;
     padding: 0 0 0 19px;
 }
-
 .profile-panel{
     position:relative;
     float:left;
@@ -788,7 +719,6 @@ div.demo > p{
     padding-left:5px;
     height:100%;
 }
-
 .bg-header-position{
     text-shadow: 0 -1px 0 #082783;
     color:white;
@@ -806,7 +736,6 @@ div.demo > p{
     background: linear-gradient(to bottom,  #d0e4f7 0%,#73b1e7 24%,#0a77d5 50%,#539fe1 79%,#202d77 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d0e4f7', endColorstr='#202d77',GradientType=0 ); /* IE6-9 */
 }
-/*@Override bootstrap style*/
 h4, .h4, h5, .h5, h6, .h6{
     margin-bottom: 5px;
     margin-top: 10px;
@@ -836,7 +765,6 @@ div#profile-container figcaption{
     margin-top: 1rem;
     text-align: center; 
 }
-
 .group-summary{
     color:#E6D9D1;
     font-size:25px;
@@ -846,7 +774,6 @@ div#profile-container figcaption{
     position:relative;
     float:left;
 }
-
 .group-details{
     padding:10px;
     background-color:blue;
@@ -854,11 +781,21 @@ div#profile-container figcaption{
     color:white;
     font-size:14px;
 }
-
 .group-summary-title{
     font-size:11px;
     font-weight:bold;
     position:relative;
     top:-15px;
     color:#817B6B;
+}
+.figure-position{
+    position:relative;
+    left:30px;
+    top:100px;
+    font-size:15px;
+    color:white;
+    text-shadow: 0 -1px 0 #082783;
+}
+.stats-height{
+    height:600px;
 }
