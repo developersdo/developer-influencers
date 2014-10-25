@@ -32,18 +32,18 @@ public interface Configuration{
     static ConfigurationBuilder getFacebookConfig(){
        return new ConfigurationBuilder()
                .setDebugEnabled(true)
-               .setOAuthAppId("118535914888096")
-               .setOAuthAppSecret("9a52f6713237cfcbb59fef66c750b46a")
-                   .setOAuthAccessToken("CAAGA8ZCvdzxUBAGILu6pJG4sLcvCcX8uZCFOI64BQh6RGeEm3ojNx0PpcIRv5Dbf5UAdGlzZBLXtLL0lZCnll35inKD4gWLoJkBX0GptEzpiCFVOAhJa9enYqJcZCIGb8V7JH0afJk6NUggyRbXbfTENAqi7FbddTaiJux2IEZBgGR1eRqISJewicySsFy7IvVNrMrYHF3lAZDZD")
+               .setOAuthAppId("****************")
+               .setOAuthAppSecret("************************************")
+               .setOAuthAccessToken("****************************")
                .setOAuthPermissions("email,user_likes,user_location,user_birthday,user_hometown,user_questions,user_groups,user_work_history,user_education_history,friends_work_history,email");
     }
-    
+
     static Map JPAConfig(){
         Map<String, String> properties = new HashMap<>();
-        properties.put("javax.persistence.jdbc.url", "jdbc:mysql://ec2-50-19-213-136.compute-1.amazonaws.com:3306/devs?zeroDateTimeBehavior=convertToNull");
-        properties.put("javax.persistence.jdbc.password", "w311d0n3");
+        properties.put("javax.persistence.jdbc.url", "jdbc:mysql://");
+        properties.put("javax.persistence.jdbc.password", "***********");
         properties.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
-        properties.put("javax.persistence.jdbc.user", "devuser");
+        properties.put("javax.persistence.jdbc.user", "**************");
         return properties;
     }
     

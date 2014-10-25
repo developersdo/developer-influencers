@@ -91,11 +91,6 @@ public class Callback extends HttpServlet{
                 updateMember(profile);
             } catch (Exception ex) {
                 logger.error(ex.getMessage(),ex);
-            }finally{
-                Runnable worker = new Worker();
-                Thread thread = new Thread(worker);
-                thread.setName("worker");
-                thread.start();
             }
         } catch (FacebookException ex) {
             logger.error(ex.getMessage(),ex);

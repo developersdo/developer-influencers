@@ -10,7 +10,7 @@ public interface API {
                              + "likes.limit(1000).fields(id),"
                              + "comments.limit(1000).fields(id,comment_count,message_tags,message,created_time,user_likes,"
                              + "from,like_count,comments,likes.limit(1000).fields(id,name,pic_crop,picture)),"
-                             + "picture,with_tags&limit=30";
+                             + "picture,with_tags&limit=100";
     
     String LIKES_IN_COMMENT = ":group-id_:post-id_:comment-id?fields=likes.limit(1000).fields(id),like_count,id,from,created_time";
 

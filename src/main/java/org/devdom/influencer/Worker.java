@@ -1,9 +1,13 @@
 package org.devdom.influencer;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
 import facebook4j.RawAPIResponse;
+import facebook4j.auth.AccessToken;
 import facebook4j.conf.ConfigurationBuilder;
 import facebook4j.internal.logging.Logger;
 import facebook4j.internal.org.json.JSONArray;
@@ -16,6 +20,7 @@ import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import org.devdom.client.facebook.Oauth;
 import org.devdom.influencer.model.dao.GroupRatingDao;
 import org.devdom.influencer.model.dto.Education;
 import org.devdom.influencer.model.dto.EducationInstitution;
@@ -46,7 +51,12 @@ public class Worker implements Runnable{
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa");
     private final GroupRatingDao groupDao = new GroupRatingDao();
     private static final ConfigurationBuilder cb = Configuration.getFacebookConfig();
+    private static facebook4j.conf.Configuration configuration; // = cb.build();
     private Facebook facebook;
+    private AccessToken accessToken;
+    private final int SEC = 1000;
+    private final int MIN = SEC * 60;
+    private final int TIME_TO_SEEK = MIN * 15;
 
     /**
      * 
@@ -58,35 +68,67 @@ public class Worker implements Runnable{
 
     @Override
     public void run() {
-        facebook = new FacebookFactory(cb.build()).getInstance();
+        int idx = 0;
+        
+        try{
+            final JSONObject JToken = Oauth.getNewJSONToken();
+            String newToken = JToken.getString("access_token");
 
+            logger.info("New Token > "+newToken);
+
+            cb.setOAuthAccessToken(newToken);
+            configuration = cb.build();
+            facebook = new FacebookFactory(configuration).getInstance();
+        }catch(JSONException ex){
+            logger.error(ex.getMessage(),ex);
+        }
+        
+        while(true){
+            try {
+                logger.info("revision -> "+ idx);
+                seek(idx);
+                Thread.sleep(TIME_TO_SEEK);
+            } catch (InterruptedException ex) {
+                logger.error(ex.getMessage(),ex);
+            }
+            if(idx==100){
+                idx = 0;
+            }
+            ++idx;
+        }
+    }
+    
+    public void seek(int idx){
+        
         List<GroupInformation> groups = getGroupList();
         if(groups!=null){
-            /*
-            groups.stream().forEach((group) -> {
-                try{
-                    logger.info("Buscando miembros el grupo "+ group.getGroupName());
-                    getRawMembersInGroup(group.getGroupId()); // Actualizar miembros en grupo
-                }catch(InterruptedException ex){
-                    logger.error(ex.getMessage(),ex);
-                }catch (FacebookException | JSONException ex) {
-                    logger.error(ex.getMessage(),ex);
-                }catch (Exception ex){
-                    java.util.logging.Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-            */
+            /* */
+            if(idx==100){
+                groups.stream().forEach((group) -> {
+                    try{
+                        logger.info("Buscando miembros el grupo "+ group.getGroupName());
+                        getRawMembersInGroup(group); // Actualizar miembros en grupo
+                    }catch(InterruptedException ex){
+                        logger.error(ex.getMessage(),ex);
+                    }catch (FacebookException | JSONException ex) {
+                        logger.error(ex.getMessage(),ex);
+                    }catch (Exception ex){
+                        java.util.logging.Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+            }
+            /* */
             groups.stream().forEach((group) -> {
                 try{
                     Thread.sleep(100);
                     logger.info("Buscando post y comentarios del grupo "+group.getGroupName());
-                    getRawPostsInGroup(group.getGroupId()); // Actualizar interacciones de los miembros de los distintos grupos
+                    getRawPostsInGroup(group.getGroupId(), idx); // Actualizar interacciones de los miembros de los distintos grupos
                 }catch(InterruptedException ex){
                     logger.error(ex.getMessage(),ex);
                 } catch (FacebookException | JSONException ex) {
                     logger.error(ex.getMessage(),ex);
                 } catch (Exception ex) {
-                    java.util.logging.Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex.getMessage(),ex);
                 }
             });
             
@@ -100,6 +142,14 @@ public class Worker implements Runnable{
 
             groups.stream().forEach((group) -> {
                 try{
+                    updGroupInformationByGroupById(group.getGroupId(),group.getGroupName(), group.getMinInteractions());
+                }catch(Exception ex){
+                    logger.error(ex.getMessage(), ex);
+                }
+            });
+            
+            groups.stream().forEach((group) -> {
+                try{
                     logger.info("Intervalo 0 para grupo "+ group.getGroupName());
                     updateGroupsInformationWithInterval(group.getGroupId(),group.getGroupName(),group.getMinInteractions(),0);
                     logger.info("Intervalo 1 para grupo "+ group.getGroupName());
@@ -109,14 +159,6 @@ public class Worker implements Runnable{
                 }
             });
             
-            groups.stream().forEach((group) -> {
-                try{
-                    updGroupInformationByGroupById(group.getGroupId(),group.getGroupName(), group.getMinInteractions());
-                }catch(Exception ex){
-                    logger.error(ex.getMessage(), ex);
-                }
-            });
-
             groups.stream().forEach((group) -> {
                 try{
                     logger.info("Actualizando top diario para el grupo group "+group.getGroupName()+" dev_dom_user_dashboard_days_"+group.getGroupId()+"");
@@ -139,26 +181,76 @@ public class Worker implements Runnable{
         }
     }
     
+    /**
+     * 
+     * @return
+     * @throws FacebookException
+     * @throws JSONException 
+     */
+    private AccessToken getRawFacebookExchangeToken() throws FacebookException, JSONException{
+        String url = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token";
+        String appId = configuration.getOAuthAppId(); 
+        String secret = configuration.getOAuthAppSecret(); 
+        String oldToken = configuration.getOAuthAccessToken(); 
+
+        url += "&client_id="+appId+
+               "&client_secret="+secret+
+               "&fb_exchange_token="+oldToken;
+
+        logger.info("entro a generar el nuevo token con el URL "+ url);
+        JSONObject json = getRawFacebookCall(url);
+
+        return new AccessToken(json.getString("access_token"), json.getLong("expires"));
+        
+    }       
     
+    private JSONObject getRawFacebookCall(String url){
+        
+        logger.info("URL -> "+ url);
+        
+        try {
+            Client client = Client.create();
+            WebResource webResource = client
+                .resource(url);
+ 
+            ClientResponse response = webResource.accept("application/json")
+                .get(ClientResponse.class);
+ 
+            if (response.getStatus() != 200) {
+                    throw new RuntimeException("HTTP error code : " + response.getStatus());
+            }
+ 
+            String output = response.getEntity(String.class); 
+            output = "{"+output+"}";
+            output = output.replace("&expires=", ",expires=");
+            return new JSONObject(output);
+
+        } catch (RuntimeException | JSONException ex) { 
+            logger.error(ex.getMessage(),ex);
+        }
+        return null;
+    }
+
     /**
      * 
      * Llamada al API de Facebook para retornar un JSON crudo para ser manipulado
      * con informacion referente a los post del grupo que se especifique segun su ID
      * 
      * @param groupId
+     * @param idx
      * @throws FacebookException
      * @throws JSONException 
      */
-    public void getRawPostsInGroup(String groupId) throws FacebookException, JSONException {
-
+    public void getRawPostsInGroup(String groupId, int idx) throws FacebookException, JSONException {
+        logger.info("ENTRO------------------------->");
         EntityManager em = emf.createEntityManager();
         int countCommit = 0;
         String relURL = API.FEEDS_BY_GRUOP_ID.replace(":group-id", groupId);
         try{
-            for(int p=0;p<=1;p++){
+            for(int p=0;p<=5;p++){
                 RawAPIResponse response = facebook.callGetAPI(relURL);
                 JSONObject json = response.asJSONObject();
-
+                logger.info("cantidad !!!!!! "+json.length());
                 JSONArray posts = json.getJSONArray("data");
                 String nextPage = json.getJSONObject("paging").getString("next");
 
@@ -173,14 +265,19 @@ public class Worker implements Runnable{
                     JSONObject post = posts.getJSONObject(i);
                     syncRawPost(groupId,post,em);
 
-                    logger.info("POST GROUP ID  => "+ groupId);
-                    logger.info("POST ID  => "+ post.getString("id"));
-                    logger.info("PAGE -> "+p+" + row -> "+i);
-                    logger.info("Posts ===> "+len);
+                    logger.info("("+idx+") POST GROUP ID  => "+ groupId);
+                    logger.info("("+idx+") POST ID  => "+ post.getString("id"));
+                    logger.info("("+idx+") PAGE -> "+p+" + row -> "+i);
+                    logger.info("("+idx+") Posts ===> "+len);
 
-                    if(countCommit>=99){
+                    if(countCommit>=1000){
                         logger.info("guardando informacion...");
                         em.getTransaction().commit();
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException ex1) {
+                            logger.error(ex1.getMessage(), ex1);
+                        }
                         countCommit=-1;
                     }
                     countCommit++;
@@ -191,16 +288,16 @@ public class Worker implements Runnable{
                 em.getTransaction().commit();
             }
         }catch(FacebookException | JSONException ex){
-            if(!em.getTransaction().isActive()){
-                em.getTransaction().begin();
-            }
-            em.getTransaction().commit();
             logger.error(ex.getMessage(), ex);
-        }catch(Exception ex){
             if(!em.getTransaction().isActive()){
                 em.getTransaction().begin();
             }
             em.getTransaction().commit();
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException ex1) {
+                logger.error(ex1.getMessage(), ex1);
+            }
         }
         finally{
             if(!em.getTransaction().isActive()){
@@ -208,6 +305,11 @@ public class Worker implements Runnable{
             }
             em.getTransaction().commit();
             em.close();
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException ex1) {
+                logger.error(ex1.getMessage(), ex1);
+            }
         }
     }
 
@@ -377,17 +479,17 @@ public class Worker implements Runnable{
     /**
      * 
      * Metodo para extraer informacion de los miembros de un grupo
-     * @param groupId
+     * @param group
      * @throws FacebookException
      * @throws JSONException 
      */
-    private void getRawMembersInGroup(String groupId) throws FacebookException, JSONException, Exception{
+    private void getRawMembersInGroup(GroupInformation group) throws FacebookException, JSONException, Exception{
         EntityManager em = emf.createEntityManager();
-        String relURL = API.MEMBERS_IN_GROUP.replace(":group-id", groupId);
+        String relURL = API.MEMBERS_IN_GROUP.replace(":group-id", group.getGroupId());
 
         int counterCommit = 0;
         try{
-            for(int p=0;p<=50;p++){
+            for(int p=0;p<=112;p++){
                 RawAPIResponse response = facebook.callGetAPI(relURL);
                 JSONObject json = response.asJSONObject();
 
@@ -395,7 +497,7 @@ public class Worker implements Runnable{
                 String nextPage = json.getJSONObject("paging").getString("next");
 
                 int len = members.length();
-                int startLength = nextPage.indexOf(groupId);
+                int startLength = nextPage.indexOf(group.getGroupId());
                 relURL = nextPage.substring(startLength,nextPage.length());
 
                 if(!em.getTransaction().isActive()){
@@ -403,32 +505,47 @@ public class Worker implements Runnable{
                 }
                 for(int i=0;i<len;i++){
                     JSONObject member = members.getJSONObject(i);
-                    logger.info("GROUP-ID->",groupId);
+                    logger.info("GROUP-> "+group.getGroupName());
                     logger.info("PAGE -> "+p+", member row -> "+i);
 
-                    syncRawMember(groupId,member,em);
+                    syncRawMember(group.getGroupId(),member,em);
 
                     if(counterCommit>=200){
-                        if(!em.getTransaction().isActive())
+                        if(!em.getTransaction().isActive()){
                             em.getTransaction().begin();
-
+                        }
                         logger.info("guardando informacion...");
                         em.getTransaction().commit();
-                        
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException ex1) {
+                            logger.error(ex1.getMessage(), ex1);
+                        }
                         counterCommit = -1;
                     }
                     counterCommit++;
                 }
-                if(!em.getTransaction().isActive())
+                if(!em.getTransaction().isActive()){
                     em.getTransaction().begin();
+                }
 
                 logger.info("guardando informacion...");
                 em.getTransaction().commit();
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException ex1) {
+                    logger.error(ex1.getMessage(), ex1);
+                }
             }
         }finally{
             if(em.getTransaction().isActive()){
                 logger.info("guardando informacion...");
                 em.getTransaction().commit();
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException ex1) {
+                    logger.error(ex1.getMessage(), ex1);
+                }
             }
             if(em.isOpen())
                 em.close();
@@ -524,7 +641,7 @@ public class Worker implements Runnable{
     private void updateTopGroupInfluencersDay(String groupId, String groupName, int min) throws Exception{
         Calendar calendar = Calendar.getInstance();
         int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
-        int fromDay = dayOfYear-2;
+        int fromDay = dayOfYear-8;
         int year = calendar.get(Calendar.YEAR);
         
         if(fromDay<=0){
@@ -579,7 +696,7 @@ public class Worker implements Runnable{
                 em.merge(work);
 
                 syncRawWorkInformation(id,em);
-            }catch(Exception ex){
+            }catch(JSONException | FacebookException ex){
                 logger.error(ex.getMessage(),ex);
             }
         }
@@ -605,7 +722,7 @@ public class Worker implements Runnable{
                     em.merge(newEducation);
                     
                 }
-            }catch(Exception ex){
+            }catch(JSONException | FacebookException ex){
                 logger.error(ex.getMessage(),ex);
             }
             
