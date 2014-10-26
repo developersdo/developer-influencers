@@ -1,0 +1,210 @@
+* {
+    border:0;
+    margin:0;
+    padding:0;
+}
+body{
+    font-family: "Consolas";
+    font-size: 13px;
+    font-weight:lighter;
+}
+
+@font-face {
+    font-family: "Consolas";
+    src: url('../fonts/consola.eot');
+    src: url('../fonts/consola.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/consola.svg#Consolas') format('svg'),
+        url('../fonts/consola.woff') format('woff'),
+        url('../fonts/consola.ttf') format('truetype');
+    font-style: normal;
+}
+
+header{
+    padding: 15px 0px 0px 15px;
+}
+.top-ul-menu{
+    width: 95%;
+}
+.main-menu{
+    padding-top: 30px;
+    height: 70px;
+    width: 80%;
+    display: inline-block;
+    vertical-align: bottom;
+}
+.main-menu{
+    padding-left: 30px;
+}
+.menu-top , .menu-top-sep{
+    display: inline-block;
+}
+.menu-top{
+    color:#858592;
+}
+.menu-top-sep{
+    font-weight: bold;
+    color:#fff;
+}
+.menu-top a, .menu-top a:link, .menu-top a:visited, 
+.menu-top a:hover, .menu-top a:active{
+    color:#858592;
+    text-decoration: none;
+}
+.top-link-selected{
+    color:#C7C7CD;
+}
+div#logo{
+    width: 25%;
+    display: block;
+}
+div#content{
+    width: 100%;
+    position:relative;
+    top:85px;
+    background: #323943;
+    height: 1500px;
+}
+#container{
+    background-color: #323943;
+}
+#search-box{
+    width: 65%;
+}
+#search-panel{
+    background: white;
+    margin-top: 2.2em;
+    vertical-align: middle;
+    display: inline-block;
+    height: 36px;
+    width: 100%;
+    border-radius: 0.25em;
+}
+#search-finder{
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background: white;
+    height: 25px;
+    width: 90%;
+    color:#B9B9C8;
+}
+.menu-drop-top{
+    background: red; border-radius: 0px; padding: 0;
+    top: 100%;
+    display: block;
+    list-style: none;
+    display: inline-table;
+    position: relative;
+    display:none;
+}
+.menu-drop-top li{
+    float: none; 
+    border-top: 1px solid #6b727c;
+    border-bottom: 1px solid #575f6a;
+    display: block;
+    float: none; 
+    border-top: 1px solid #6b727c;
+    border-bottom: 1px solid #575f6a; 
+    position: relative;
+}
+.menu-icon-top{
+    vertical-align: top;
+    padding-top:22px;
+}
+#splash{
+    background-color:#F4F4F4;
+    width: 100%;
+    height: 250px;
+    padding-left:13%;
+    padding-right:13%;
+    border-top:solid 1px #D0D0D0;
+    border-bottom:solid 1px #D0D0D0;
+    -moz-box-shadow:    inset 0 0 5px #000000;
+    -webkit-box-shadow: inset 0 0 5px #000000;
+    box-shadow:         inset 0 0 5px #000000;
+}
+#app-welcome{
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 0.3em;
+    background-color:#fff;
+    max-width: 75%;
+    height: 70px;
+}
+#app-welcome h1{
+    margin:0;
+    min-width: 100%;
+}
+#app-welcome h1 .red{
+    color:red;
+}
+#app-welcome h1 .blue{
+    color:blue;
+}
+#app-welcome .subtitle{
+    padding-top: 0px;
+    color:gray;
+    position:relative;
+    top:-13px;
+}
+#display-intro-content{
+    width: 100%;
+    min-height: 100%;
+}
+.panel-content{
+    padding-top: 15px;
+    width: 100%;
+    height: 100%;
+    padding-left: 5%;
+}
+.panel-content .panel-profile{
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border:solid 4px #fff;
+    display: block;
+}
+.panel-profile .panel-profile-title, .panel-profile-rating{
+    padding-left:5px;
+    color:white;
+    text-shadow: 1px 1px 1px black;
+}
+.panel-profile{
+    display: inline-block;
+    float: left;
+}
+#quote{
+    display: inline-block;
+    height: 160px;
+    vertical-align: middle;
+    line-height: normal; 
+    padding: 15px;
+    color:gray;
+    text-shadow: 1px 1px 1px white;
+    width: 70%;
+    overflow:hidden; 
+    text-overflow-multiline:ellipsis;
+}
+#skillset ul li{
+    display: inline-block;
+    padding: 3px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border:solid 1px #C1C1CA;
+    background-color: #EAEAEA;
+}
+#skillset span{
+    position: relative;
+    float: left;
+    padding: 7px;
+}
+#skillset{
+    padding-top: 40px;
+    float:left;
+    position: relative;
+    padding-left:20px;
+    width: 70%;
+}
